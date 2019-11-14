@@ -8,6 +8,6 @@ class Color:
 
 
 class FieldProperties:
-    CELL_LENGTH = 20  # Длина стороны одной клетки пикселях
+    CELL_LENGTH = 40  # Длина стороны одной клетки в пикселях
     WIDTH = 17  # В клетках
     HEIGHT = 15  # В клетках
