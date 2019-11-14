@@ -1,26 +1,28 @@
 import pygame
 from constants import FieldProperties, Color
+from objects.base import DrawObject
 
 
-class Field:
-    def __init__(self, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+class Field(DrawObject):
+    def __init__(self, game, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+        super().__init__(game)
         self.field = []
         self.width = width  # Ширина поля в клетках
         self.height = height  # Высота поля в клетках
         for y in range(height):
             self.field += [[]]
             for x in range(width):
-                self.field[-1].append(Cell(x, y, 'images/ground.png'))
+                self.field[-1].append(Cell(game, x, y, 'images/ground.png'))
 
-    def render(self, screen):
-        screen.fill(Color.WHITE)
+    def process_draw(self):
         for i in self.field:
             for cell in i:
-                cell.render(screen)
+                cell.process_draw()
 
 
-class Cell:
-    def __init__(self, x, y, image):
+class Cell(DrawObject):
+    def __init__(self, game, x, y, image):
+        super().__init__(game)
         self.x = x
         self.y = y
         self.image = pygame.image.load(image)
@@ -29,5 +31,5 @@ class Cell:
         self.rect.y = y * FieldProperties.CELL_LENGTH
         self.rect.width = self.rect.height = FieldProperties.CELL_LENGTH
 
-    def render(self, screen):
-        screen.blit(self.image, self.rect)
+    def process_draw(self):
+        self.game.screen.blit(self.image, self.rect)
