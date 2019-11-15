@@ -17,23 +17,23 @@ class Bomberman(DrawObject):
     def process_event(self, event):
         if event.type == pygame.KEYDOWN:
             if chr(event.key) == 'w':
-                self.image = pygame.image.load('images/bomberman_up1.jpg')
-                self.image = pygame.image.load('images/bomberman_up2.jpg')
+                self.image = pygame.image.load('images/bomberman/bomberman_up1.png')
+                # self.image = pygame.image.load('images/bomberman/bomberman_up2.png')
                 self.current_shift_y = -1
             elif chr(event.key) == 's':
-                self.image = pygame.image.load('images/bomberman_down1.jpg')
+                self.image = pygame.image.load('images/bomberman/bomberman_down1.png')
                 self.current_shift_y = 1
             elif chr(event.key) == 'a':
-                self.image = pygame.image.load('images/bomberman_left1.jpg')
+                self.image = pygame.image.load('images/bomberman/bomberman_left1.png')
                 self.current_shift_x = -1
             elif chr(event.key) == 'd':
-                self.image = pygame.image.load('images/bomberman_right1.jpg')
+                self.image = pygame.image.load('images/bomberman/bomberman_right1.png')
                 self.current_shift_x = 1
         elif event.type == pygame.KEYUP:
             if event.key in [97, 100, 115, 119]:
                 self.current_shift_x = 0
                 self.current_shift_y = 0
-                self.image = pygame.image.load('images/bomberman.jpg')
+                self.image = pygame.image.load('images/bomberman/bomberman.png')
 
     def process_logic(self):
 
