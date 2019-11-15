@@ -3,7 +3,7 @@ import time
 from objects.base import DrawObject
 
 class Bomberman(DrawObject):
-    filename = 'images/bomberman.png'
+    filename = 'images/bomberman/bomberman.png'
 
     def __init__(self, game, x = 150, y = 150):
         super().__init__(game)
@@ -38,16 +38,16 @@ class Bomberman(DrawObject):
     def process_logic(self):
 
         if self.current_shift_y == 1:
-            if self.rect.y <= self.game.height - 25:
+            if self.rect.y <= self.game.height - 80:
                 self.rect.y += 2
         elif self.current_shift_y == -1:
-            if self.rect.y > 0:
+            if self.rect.y > 40:
                 self.rect.y -= 2
         elif self.current_shift_x == 1:
-            if self.rect.x <= self.game.width - 25:
+            if self.rect.x <= self.game.width - 80:
                 self.rect.x += 2
         elif self.current_shift_x == -1:
-            if self.rect.x != 0:
+            if self.rect.x > 40:
                 self.rect.x -= 2
 
 
