@@ -1,18 +1,18 @@
 import pygame
-import time
+from random import randint
 from objects.base import DrawObject
 
 class Bomberman(DrawObject):
     filename = 'images/bomberman/bomberman.png'
 
-    def __init__(self, game, x = 150, y = 150):
+    def __init__(self, game, x = 400, y = 300):
         super().__init__(game)
         self.image = pygame.image.load(Bomberman.filename)
         self.current_shift_x = 0
         self.current_shift_y = 0
         self.x = x
         self.y = y
-        self.rect = pygame.Rect(self.x,self.y,150,150)
+        self.rect = pygame.Rect(self.x,self.y,30,35)
 
     def process_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -29,6 +29,9 @@ class Bomberman(DrawObject):
             elif chr(event.key) == 'd':
                 self.image = pygame.image.load('images/bomberman/bomberman_right1.png')
                 self.current_shift_x = 1
+            elif event.key == pygame.K_SPACE:  # Закладка бомбы
+                pass
+
         elif event.type == pygame.KEYUP:
             if event.key in [97, 100, 115, 119]:
                 self.current_shift_x = 0

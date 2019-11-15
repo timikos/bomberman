@@ -6,7 +6,7 @@ from objects.base import DrawObject
 class Ghost(DrawObject):
     filename = 'images/ghosts/ghostE.png'
 
-    def __init__(self, game, x = 100, y = 100):
+    def __init__(self, game, x = 40, y = 40):
         super().__init__(game)
         self.image = pygame.image.load(Ghost.filename)
         self.x = x
@@ -15,7 +15,7 @@ class Ghost(DrawObject):
         self.current_shift_y = 0
         self.window_width = self.game.width
         self.window_height = self.game.height
-        self.rect = pygame.Rect(self.x, self.y, 250, 250)
+        self.rect = pygame.Rect(self.x, self.y, 30, 35)
         self.rect.x = randint(40, self.window_width - self.rect.width - 80)
         self.rect.y = randint(40, self.window_height - self.rect.height - 80)
         self.start_move()
@@ -54,9 +54,9 @@ class Ghost(DrawObject):
         elif start_move == 3 and self.rect.y != 40:
             self.current_shift_y = -1
 
-    def collides_with(self, other_ball):
-        # return pygame.sprite.collide_mask(self, other_ball)
-        pass
+    def collides_with(self, bomberman):
+        return self.rect.colliderect(bomberman)
+
 
     def collision(self, other_ball):
         # self.shift_x, other_ball.shift_x = other_ball.shift_x, self.shift_x
