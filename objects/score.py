@@ -42,6 +42,7 @@ class Score(DrawObject):
 
     def set(self, count):
         self.count = count
+        self.update()
 
     def add(self, delta):
         self.count += delta
