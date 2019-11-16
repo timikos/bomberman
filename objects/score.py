@@ -2,6 +2,7 @@ import pygame
 from enum import Enum
 from objects.base import DrawObject
 from constants import Color
+import os
 
 
 class ScorePos(Enum):
@@ -83,3 +84,20 @@ class Score(DrawObject):
 
     def process_draw(self):
         self.game.screen.blit(self.text, self.get_coordinates())
+
+    def write_to_file(self, file_path, name):
+        players = {}
+        if os.path.isfile(file_path):
+            with open(file_path, 'r') as f:
+                for line in f.readlines():
+                    if line != '\n' and line != '':
+                        player, score = line.split('=>')
+                        score = int(score)
+                        if player not in players.keys() or players[player] < score:
+                            players[player] = score
+        if name not in players.keys() or players[name] < self.count:
+            players[name] = self.count
+        players = sorted(players.items(), key=lambda x: x[1], reverse=True)
+        with open(file_path, 'w') as f:
+            for p in players:
+                f.write(p[0] + '=>' + str(p[1]) + '\n')
