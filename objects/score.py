@@ -14,7 +14,6 @@ class ScorePos(Enum):
 
 
 class Score(DrawObject):
-
     def __init__(self, game, color=Color.ORANGE, count=0, size=60, pos=ScorePos.RIGHT_BOTTOM, text_before="SCORE: ",
                  text_after="", border_shift=(10, 10)):
         self.color = color
@@ -37,6 +36,9 @@ class Score(DrawObject):
 
     def get_height(self):
         return self.text.get_height()
+
+    def get(self):
+        return self.count
 
     def set(self, count):
         self.count = count
