@@ -3,6 +3,7 @@ from objects.field import Field
 from scenes.base import Scene
 from objects.ghosts import Ghost
 
+
 class MainScene(Scene):
     def create_objects(self):
         self.ghosts = [Ghost(self.game) for _ in range(5)]
