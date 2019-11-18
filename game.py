@@ -13,7 +13,7 @@ class Game:
     GAMEOVER_SCENE_INDEX = 2
     INFO_SCENE_INDEX = 3
 
-    def __init__(self, width=800, height=600):
+    def __init__(self, width=800, height=670):
         self.width = width
         self.height = height
         self.size = self.width, self.height

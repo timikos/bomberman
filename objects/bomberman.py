@@ -40,7 +40,7 @@ class Bomberman(DrawObject):
     def process_logic(self):
 
         if self.current_shift_y == 1:
-            if self.rect.y <= self.game.height - 80:
+            if self.rect.y <= self.game.height - 150:
                 self.rect.y += 2
         elif self.current_shift_y == -1:
             if self.rect.y > 40:
