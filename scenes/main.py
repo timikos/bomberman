@@ -5,6 +5,7 @@ from objects.ghosts import Ghost
 from objects.score import Score
 
 
+
 class MainScene(Scene):
     def create_objects(self):
         self.ghosts = [Ghost(self.game) for _ in range(5)]
