@@ -56,7 +56,7 @@ class Score(DrawObject):
         self.update()
 
     def update(self):
-        self.font = pygame.font.Font(None, self.size)
+        self.font = pygame.font.Font('fonts/pixel_font.ttf', self.size)
         self.text = self.font.render(self.get_text(), 1, self.color)
 
     def get_coordinates(self):
