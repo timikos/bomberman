@@ -13,16 +13,18 @@ class ButtonAnim(object):
         self.hovered = False
         self.hover_text = None
         self.clicked_text = None
+        self.basic_font = 20 #Минимальный размер текста кнопки
+        self.animation = self.basic_font
         self.process_kwargs(kwargs)
         self.render_text()
-        self.animation = 16
-        self.animation_step = 16
-        self.fonts = pg.font.SysFont('Comic Sans', self.animation, False, False)
+        self.animation_step = 1
+        self.fonts = pg.font.Font('fonts/pixel_font.ttf', self.animation)
+
 
     def process_kwargs(self, kwargs):
         """Various optional customization you can change by passing kwargs."""
         settings = {"text": None,
-                    "font": pg.font.Font(None, 16),
+                    "font": pg.font.Font(None, self.basic_font),
                     "call_on_release": True,
                     "hover_color": None,
                     "clicked_color": None,
@@ -87,16 +89,16 @@ class ButtonAnim(object):
                 text = self.clicked_text
         elif self.hovered and self.hover_color:
             color = self.hover_color
-            if self.animation>40:
+            if self.animation>self.basic_font+20:
                 self.animation_step=-1
-            elif self.animation<=16:
+            elif self.animation<=self.basic_font:
                 self.animation_step=1
             self.animation=self.animation+self.animation_step
             if self.hover_font_color:
                 text = self.hover_text
         elif self.hovered==False:
-            self.animation=16
-        self.fonts = pg.font.SysFont('Comic Sans', self.animation, False, False)
+            self.animation=self.basic_font
+        self.fonts = pg.font.Font('fonts/pixel_font.ttf', self.animation)
         if self.text:
             text_rect = text.get_rect(center=self.rect.center)
             surface.blit(text, text_rect)
