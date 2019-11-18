@@ -125,14 +125,16 @@ class HighScoreTable(DrawObject):
     @staticmethod
     def parse_file(file_path='score.txt'):
         players = []
-        with open(file_path, 'r') as f:
-            for line in f.readlines():
-                if line != '\n' and line != '':
-                    player, score = line.split('=>')
-                    score = int(score)
-                    players += [{'name': player, 'score': score}]
-        players.sort(key=lambda x: x['score'], reverse=True)
-        return players[:HighScoreTable.PLAYER_COUNT]
+        if os.path.isfile(file_path):
+            with open(file_path, 'r') as f:
+                for line in f.readlines():
+                    if line != '\n' and line != '':
+                        player, score = line.split('=>')
+                        score = int(score)
+                        players += [{'name': player, 'score': score}]
+            players.sort(key=lambda x: x['score'], reverse=True)
+            return players[:HighScoreTable.PLAYER_COUNT]
+        return []
 
     def __init__(self, game, file_path):
         self.file_path = file_path
