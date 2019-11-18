@@ -5,3 +5,4 @@ class Color:
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     ORANGE = (255, 180, 0)
+    YELLOW = (255, 179, 0)
