@@ -2,6 +2,7 @@ from objects.bomberman import Bomberman
 from objects.field import Field
 from scenes.base import Scene
 from objects.ghosts import Ghost
+from objects.blocks import TileMap
 from objects.score import Score
 
 
@@ -12,7 +13,10 @@ class MainScene(Scene):
         self.bomberman = Bomberman(self.game)
         self.score = Score(self.game)
         self.field = Field(self.game)
-        self.objects = [self.field] + [self.bomberman] + self.ghosts + [self.score]
+        self.tilemap = TileMap(self.game)
+        self.objects = [self.field] + [self.tilemap] + [self.bomberman] + self.ghosts
+        self.objects = [self.field] + [self.tilemap] + [self.bomberman] + self.ghosts + [self.score]
+
 
     def additional_logic(self):
         self.process_ghost_collisions()
