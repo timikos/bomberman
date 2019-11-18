@@ -1,5 +1,6 @@
 from constants import Color
 from objects.text import Text
+from objects.score import HighScoreTable
 from scenes.base import Scene
 
 
@@ -16,7 +17,8 @@ class FinalScene(Scene):
 
     def create_objects(self):
         self.text_gameover = Text(self.game, text=self.get_gameover_str(), color=Color.RED, x=310, y=290)
-        self.objects = [self.text_gameover]
+        self.highscore = HighScoreTable(self.game)
+        self.objects = [self.text_gameover] + [self.highscore]
 
     def additional_logic(self):
         self.game.ticks += 1
