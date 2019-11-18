@@ -85,7 +85,7 @@ class Score(DrawObject):
     def process_draw(self):
         self.game.screen.blit(self.text, self.get_coordinates())
 
-    def write_to_file(self, file_path, name):
+    def write_to_file(self, file_path='score.txt', name='Player'):
         players = {}
         if os.path.isfile(file_path):
             with open(file_path, 'r') as f:
@@ -123,7 +123,7 @@ class HighScoreTable(DrawObject):
         return pygame.font.Font(None, HighScoreTable.FONT_SIZE, bold=bold).render(str(s), 1, HighScoreTable.COLOR)
 
     @staticmethod
-    def parse_file(file_path):
+    def parse_file(file_path='score.txt'):
         players = []
         with open(file_path, 'r') as f:
             for line in f.readlines():
