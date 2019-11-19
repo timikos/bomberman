@@ -81,7 +81,7 @@ class DestroyedBlock(Block):
         if event.type == pygame.KEYDOWN:
             if chr(event.key) == ' ':  # space bar is pressed
                 DestroyedBlock.explosion_event = pygame.USEREVENT + 1
-                pygame.time.set_timer(DestroyedBlock.explosion_event, 2000)
+                pygame.time.set_timer(DestroyedBlock.explosion_event, 2000) # задержка в две секунды
 
         if self.readyToBreak:
             if event.type == DestroyedBlock.explosion_event:

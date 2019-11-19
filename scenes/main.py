@@ -4,6 +4,8 @@ from scenes.base import Scene
 from objects.ghosts import Ghost
 from objects.blocks import TileMap, DestroyableTileMap
 from objects.score import Score
+from objects.bombs import Bomb
+
 
 
 class MainScene(Scene):
@@ -38,7 +40,7 @@ class MainScene(Scene):
         '''
         for row in self.block.tiles:
             for tile in row:
-                delta_x = abs(((self.bomberman.rect.x + self.bomberman.rect.width // 2) // 40) - (tile.x // 40))
+                delta_x = abs(((self.bomberman.rect.x + self.bomberman.rect.width // 2) // 40) - (tile.x // 40)) # вычисление разницы в координатах гг и блока
                 delta_y = abs(((self.bomberman.rect.y - self.bomberman.rect.height // 2) // 40) -
                               ((tile.y - 40) // 40))
                 if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
