@@ -27,3 +27,4 @@ class FinalScene(Scene):
 
     def exit(self):
         self.game.game_over = True
+
