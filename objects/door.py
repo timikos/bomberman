@@ -12,9 +12,6 @@ class Door(DrawObject):
         self.x = x
         self.y = y
         self.rect = pygame.Rect(self.x, self.y, 40, 35)
-        #self.rect = self.image.get_rect()  # rect необходим для коллизии игрока с дверью
-        #self.rect.x = 120
-        #self.rect.y = 400
 
 
     def collides_with(self, bomberman):
