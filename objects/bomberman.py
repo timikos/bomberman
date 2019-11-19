@@ -52,6 +52,8 @@ class Bomberman(DrawObject):
             if self.rect.x > 80:
                 self.rect.x -= 2
 
+    def collides_with(self, other):
+        return self.rect.colliderect(other)
 
     def process_draw(self):
         self.game.screen.blit(self.image, self.rect)

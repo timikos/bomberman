@@ -48,10 +48,10 @@ class Bomb(DrawObject):
         seconds = (pygame.time.get_ticks() - self.start_ticks) / 1000
         if not self.hidden and seconds <= 2:
             self.game.screen.blit(self.image, self.rect)
-        elif 2 < seconds <= 3:
+        elif not self.hidden and 2 < seconds <= 3:
             self.create_fire(self.rect.x, self.rect.y)
             self.show_fire()
-        elif seconds > 3:
+        elif not self.hidden and seconds > 3:
             self.hide_bomb()
             self.fire_rects[0].x = 800
             self.fire_rects[0].y = 0
