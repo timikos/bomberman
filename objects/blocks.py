@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from constants import FieldProperties
 from objects.base import DrawObject
 
@@ -62,25 +63,52 @@ class DestroyedBlock(Block):
     filename = 'images/blocks/d_block_0.png'
     explosion_event = pygame.USEREVENT + 1
 
-    def __init__(self, game, x, y):
-        super().__init__(game, x, y)
-        self.x = x
-        self.y = y
+    def __init__(self, game, x=3, y=4):
+        super().__init__(game, x * 40, y * 40)
+        self.x = x * 40
+        self.y = y * 40
+        self.readyToBreak = False
         self.isDestroyed = False
         self.image = pygame.image.load(DestroyedBlock.filename)
 
     def process_draw(self):
         if not self.isDestroyed:
             self.game.screen.blit(self.image, self.rect)
+           # print(self.x)
 
     def process_event(self, event):
+
         if event.type == pygame.KEYDOWN:
             if chr(event.key) == ' ':  # space bar is pressed
-                print('APC')
                 DestroyedBlock.explosion_event = pygame.USEREVENT + 1
                 pygame.time.set_timer(DestroyedBlock.explosion_event, 2000)
 
-        if event.type == DestroyedBlock.explosion_event:
-            DestroyedBlock.explosion_event = None
-            self.isDestroyed = True
-            print('boom')
+        if self.readyToBreak:
+            if event.type == DestroyedBlock.explosion_event:
+                DestroyedBlock.explosion_event = None
+                self.isDestroyed = True
+
+
+class DestroyableTileMap(DrawObject):
+
+    def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+        super().__init__(game)
+        self.x = x
+        self.y = y
+        self.tiles = []
+        for x in range(width):
+            self.tiles += [[]]
+            for y in range(height):
+                if not (x == 0 or x == width - 1 or y == 0 or y == height - 1) \
+                        and not ((x + 1) % 2 != 0 and (y + 1) % 2 != 0) and (randint(0, 1)):
+                    self.tiles[-1].append(DestroyedBlock(game, self.x + x, self.y + y))
+
+    def process_draw(self):
+        for x in self.tiles:
+            for tile in x:
+                tile.process_draw()
+
+    def process_event(self, event):
+        for x in self.tiles:
+            for tile in x:
+                tile.process_event(event)
