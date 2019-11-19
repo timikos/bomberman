@@ -85,7 +85,7 @@ class Score(DrawObject):
     def process_draw(self):
         self.game.screen.blit(self.text, self.get_coordinates())
 
-    def write_to_file(self, file_path, name):
+    def write_to_file(self, file_path='score.txt', name='Player'):
         players = {}
         if os.path.isfile(file_path):
             with open(file_path, 'r') as f:
