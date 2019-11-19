@@ -46,7 +46,6 @@ class Bomb(DrawObject):
 
     def process_draw(self):
         seconds = (pygame.time.get_ticks() - self.start_ticks) / 1000
-        print('seconds: ', seconds)
         if not self.hidden and seconds <= 2:
             self.game.screen.blit(self.image, self.rect)
         elif 2 < seconds <= 3:
