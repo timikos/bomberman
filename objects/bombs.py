@@ -3,8 +3,11 @@ from objects.base import DrawObject
 
 
 class Bomb(DrawObject):
+    pygame.mixer.init()  # Звуки
     filename = 'images/bombs/bomb.png'
     fire_filename = 'images/bombs/fire.png'
+    sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
+    sound_explosion.set_volume(min(0.2,0.3))
 
     def __init__(self, game, hidden=True):
         super().__init__(game)
@@ -15,8 +18,8 @@ class Bomb(DrawObject):
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
 
+
     def create_bomb(self, x, y):
-        print('bomb created')
         self.rect.x = x
         self.rect.y = y
         self.fire_rects[0].x = x - 40
@@ -32,6 +35,7 @@ class Bomb(DrawObject):
 
     def show_fire(self):
         for i in range(len(self.fire_rects)):
+            self.sound_explosion.play()
             self.game.screen.blit(self.fire_image, self.fire_rects[i])
 
     def hide_bomb(self):
@@ -47,3 +51,6 @@ class Bomb(DrawObject):
             self.show_fire()
         elif seconds > 3:
             self.hide_bomb()
+
+    def collides_with(self, other):
+        return self.rect.colliderect(other)
