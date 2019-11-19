@@ -21,10 +21,11 @@ class FinalScene(Scene):
         self.objects = [self.text_gameover] + [self.highscore]
 
     def additional_logic(self):
-        self.game.ticks += 1
-        seconds_left = self.MAX_TICKS // 100 - self.game.ticks // 100
-        if seconds_left < self.seconds_left:  # Оптимизация производительности:
-            self.seconds_left = seconds_left  # вызываем font.render только тогда,
-            self.text_gameover.update_text(self.get_gameover_str())  # когда текст изменился
-        if self.seconds_left == 0:
-            self.game.game_over = True
+        pass
+        # self.game.ticks += 1
+        # seconds_left = self.MAX_TICKS // 100 - self.game.ticks // 100
+        # if seconds_left < self.seconds_left:  # Оптимизация производительности:
+        #     self.seconds_left = seconds_left  # вызываем font.render только тогда,
+        #     self.text_gameover.update_text(self.get_gameover_str())  # когда текст изменился
+        # if self.seconds_left == 0:
+        #     self.game.game_over = True
