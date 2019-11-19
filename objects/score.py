@@ -101,6 +101,7 @@ class Score(DrawObject):
         with open(file_path, 'w') as f:
             for p in players:
                 f.write(p[0] + '=>' + str(p[1]) + '\n')
+        HighScoreTable.need_to_update()
 
 
 
@@ -118,6 +119,7 @@ class HighScoreTable(DrawObject):
     DISPLAY_HEADER = True  # Отображать заголовок таблицы
     COLOR = Color.ORANGE
     HEADER = ['N', 'Имя игрока', 'Счет']
+    info_updated = False
 
     @staticmethod
     def str_to_text(s, bold=False):
@@ -137,10 +139,17 @@ class HighScoreTable(DrawObject):
             return players[:HighScoreTable.PLAYER_COUNT]
         return []
 
+    @staticmethod
+    def need_to_update():
+        HighScoreTable.info_updated = False
 
-    def __init__(self, game, file_path='score.txt'):
+    def __init__(self, game, file_path):
         self.file_path = file_path
         self.cells = [self.PLAYER_NUM_WIDTH, self.NAME_WIDTH, self.SCORE_WIDTH]
+        self.texts = []
+        super().__init__(game)
+
+    def update_info(self):
         self.texts = []
         if self.DISPLAY_HEADER:
             self.texts += [[]]
@@ -153,7 +162,7 @@ class HighScoreTable(DrawObject):
             self.texts[-1] += [self.str_to_text(i + 1)]
             self.texts[-1] += [self.str_to_text(players[i]['name'])]
             self.texts[-1] += [self.str_to_text(players[i]['score'])]
-        super().__init__(game)
+        HighScoreTable.info_updated = True
 
     def get_width(self):
         return int(self.game.width * self.WIDTH / 100)
@@ -176,6 +185,8 @@ class HighScoreTable(DrawObject):
         self.game.screen.blit(text, (x, y))
 
     def process_draw(self):
+        if not self.info_updated:
+            self.update_info()
         x = self.get_x()
         y = self.get_y()
         width = self.get_width()
