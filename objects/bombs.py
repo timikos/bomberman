@@ -36,7 +36,7 @@ class Bomb(DrawObject):
 
     def show_fire(self):
         for i in range(len(self.fire_rects)):
-            # self.sound_explosion.play()
+            self.sound_explosion.play()
             self.game.screen.blit(self.fire_image, self.fire_rects[i])
 
     def hide_bomb(self):
