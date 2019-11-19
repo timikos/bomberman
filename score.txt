@@ -1,2 +1,3 @@
-Ãðóïïà 04=>1
-Group 04=>0
+Player=>5
+Group 04=>1
+Smirnov=>0
