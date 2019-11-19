@@ -18,10 +18,9 @@ class Bomb(DrawObject):
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
 
-
     def create_bomb(self, x, y):
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = x + 3
+        self.rect.y = y + 3
         self.hidden = False
         self.start_ticks = pygame.time.get_ticks()
 
@@ -37,7 +36,7 @@ class Bomb(DrawObject):
 
     def show_fire(self):
         for i in range(len(self.fire_rects)):
-            self.sound_explosion.play()
+            # self.sound_explosion.play()
             self.game.screen.blit(self.fire_image, self.fire_rects[i])
 
     def hide_bomb(self):

@@ -4,6 +4,12 @@ from objects.base import DrawObject
 
 
 class Field(DrawObject):
+    @staticmethod
+    def get_cell_by_pos(x, y):
+        cell_x = (x + 10) // 40 * 40
+        cell_y = (y + 10) // 40 * 40
+        return [cell_x, cell_y]
+
     def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.field = []
@@ -21,11 +27,6 @@ class Field(DrawObject):
         for i in self.field:
             for cell in i:
                 cell.process_draw()
-
-    def get_cell_by_pos(self, x, y):
-        n = (x - self.x) // FieldProperties.CELL_LENGTH
-        m = (y - self.y) // FieldProperties.CELL_LENGTH
-        return self.field[n][m]
 
 
 class Cell(DrawObject):

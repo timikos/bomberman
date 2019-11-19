@@ -31,7 +31,9 @@ class Bomberman(DrawObject):
                 self.image = pygame.image.load('images/bomberman/bomberman_right1.png')
                 self.current_shift_x = 1
             elif event.key == pygame.K_SPACE:  # Закладка бомбы
-                self.game.scenes[1].bomb.create_bomb(self.rect.x, self.rect.y)
+                cur_cell = self.game.scenes[1].field.get_cell_by_pos(self.rect.x, self.rect.y)
+                # self.game.scenes[1].bomb.create_bomb(self.rect.x, self.rect.y)
+                self.game.scenes[1].bomb.create_bomb(cur_cell[0], cur_cell[1])
 
         elif event.type == pygame.KEYUP:
             if event.key in [97, 100, 115, 119]:
