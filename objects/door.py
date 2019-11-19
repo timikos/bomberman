@@ -5,7 +5,7 @@ from objects.base import DrawObject
 class Door(DrawObject):
     filename = 'images/door/door.png'
 
-    def __init__(self, game, hidden=True, x=40, y=80):
+    def __init__(self, game, hidden=True, x=20, y=80):
         super().__init__(game)
         self.image = pygame.image.load(Door.filename)
         self.hidden = hidden
@@ -21,7 +21,7 @@ class Door(DrawObject):
 
     def show_door(self):
         self.hidden = False
-        self.rect.x = 45
+        self.rect.x = 42
 
     def process_logic(self):
         pass

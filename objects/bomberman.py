@@ -47,7 +47,7 @@ class Bomberman(DrawObject):
             if self.rect.y > 40:
                 self.rect.y -= self.speed
         elif self.current_shift_x == 1:
-            if self.rect.x <= self.game.width - 80:
+            if self.rect.x <= self.game.width - 160:
                 self.rect.x += self.speed
         elif self.current_shift_x == -1:
             if self.rect.x > 80:

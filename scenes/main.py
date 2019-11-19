@@ -22,7 +22,7 @@ class MainScene(Scene):
         self.tilemap = TileMap(self.game)
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
-        self.modifiers = [SpeedModifier(self.game, 80, 80), SpeedModifier(self.game, 160, 160)]
+        self.modifiers = [SpeedModifier(self.game, 85, 85), SpeedModifier(self.game, 165, 165)]
         self.objects = [self.field] + [self.tilemap] + [self.bomberman] + self.ghosts + [self.score] + [self.health] + \
                        [self.door] + [self.bomb] + self.modifiers
 
