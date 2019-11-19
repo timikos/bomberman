@@ -23,8 +23,8 @@ class Field(DrawObject):
                 cell.process_draw()
 
     def get_cell_by_pos(self, x, y):
-        n = (x - self.x) // FieldProperties.CELL_LENGTH
-        m = (y - self.y) // FieldProperties.CELL_LENGTH
+        n = (y - self.y) // FieldProperties.CELL_LENGTH
+        m = (x - self.x) // FieldProperties.CELL_LENGTH
         return self.field[n][m]
 
 
