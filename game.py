@@ -26,8 +26,9 @@ class Game:
 
     def create_window(self):
         pygame.init()
-        # pygame.mixer.music.load("sound/")
-        # pygame.mixer.music.play()
+        pygame.mixer.music.load('sounds/game_music.mp3')
+        pygame.mixer.music.set_volume(0.1)
+        pygame.mixer.music.play()
         self.screen = pygame.display.set_mode(self.size, pygame.RESIZABLE)
 
     def main_loop(self):

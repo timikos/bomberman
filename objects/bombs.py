@@ -14,7 +14,7 @@ class Bomb(DrawObject):
         self.hidden = hidden
         self.start_ticks = 0
         self.fire_image = pygame.image.load(Bomb.fire_filename)
-        self.fire_rects = [pygame.Rect(0, 0, 40, 40), pygame.Rect(0, 0, 40, 40), pygame.Rect(0, 0, 40, 40), pygame.Rect(0, 0, 40, 40)]
+        self.fire_rects = [pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30)]
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
 
@@ -54,6 +54,14 @@ class Bomb(DrawObject):
             self.show_fire()
         elif seconds > 3:
             self.hide_bomb()
+            self.fire_rects[0].x = 800
+            self.fire_rects[0].y = 0
+            self.fire_rects[1].x = 800
+            self.fire_rects[1].y = 0
+            self.fire_rects[2].x = 800
+            self.fire_rects[2].y = 0
+            self.fire_rects[3].x = 800
+            self.fire_rects[3].y = 0
 
     def collides_with(self, other):
         return self.rect.colliderect(other)

@@ -1,3 +1,4 @@
+import pygame
 
 from objects.bomberman import Bomberman
 from objects.field import Field
@@ -10,6 +11,7 @@ from objects.bombs import Bomb
 
 
 class MainScene(Scene):
+
     def create_objects(self):
         self.bomberman = Bomberman(self.game)
         self.ghosts = [Ghost(self.game) for _ in range(5)]
