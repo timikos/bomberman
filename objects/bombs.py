@@ -4,7 +4,7 @@ from objects.base import DrawObject
 
 class Bomb(DrawObject):
     filename = 'images/bombs/bomb.png'
-    fire_filename = 'images/bombs/badaomb.png'
+    fire_filename = 'images/bombs/fire.png'
 
     def __init__(self, game, hidden=True):
         super().__init__(game)
