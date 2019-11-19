@@ -30,13 +30,12 @@ class MainScene(Scene):
         self.process_ghost_collisions_bomb()
         self.process_show_door()
         self.process_game_lose()
+        self.process_bomberman_collision_bomb_fire()
 
     def process_ghost_collisions(self):
         for ghost in self.ghosts:  # Коллизия бомбермэна с призраками
             if ghost.collides_with(self.bomberman):
-                self.health.sub(1)
-                self.bomberman.rect.x = 400
-                self.bomberman.rect.y = 300
+                self.respawn_bomberman_after_collision()
 
     def process_ghost_collisions_bomb(self):
         for ghost in self.ghosts:  # Коллизия бомбы с призраками
@@ -68,8 +67,20 @@ class MainScene(Scene):
             self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
             self.score.write_to_file()
 
+    def process_bomberman_collision_bomb_fire(self):
+        if self.bomberman.collides_with(self.bomb.fire_rects[0]):
+                self.respawn_bomberman_after_collision()
+        elif self.bomberman.collides_with(self.bomb.fire_rects[1]):
+                self.respawn_bomberman_after_collision()
+        elif self.bomberman.collides_with(self.bomb.fire_rects[2]):
+                self.respawn_bomberman_after_collision()
+        elif self.bomberman.collides_with(self.bomb.fire_rects[3]):
+                self.respawn_bomberman_after_collision()
 
-
+    def respawn_bomberman_after_collision(self):
+        self.health.sub(1)
+        self.bomberman.rect.x = 400
+        self.bomberman.rect.y = 300
 
 """
     Метод коллизии призраков со стенкой
