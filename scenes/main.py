@@ -35,6 +35,8 @@ class MainScene(Scene):
         for ghost in self.ghosts:  # Коллизия бомбермэна с призраками
             if ghost.collides_with(self.bomberman):
                 self.health.sub(1)
+                self.bomberman.rect.x = 400
+                self.bomberman.rect.y = 300
 
     def process_ghost_collisions_bomb(self):
         for ghost in self.ghosts:  # Коллизия бомбы с призраками

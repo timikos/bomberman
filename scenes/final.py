@@ -18,7 +18,7 @@ class FinalScene(Scene):
 
     def create_objects(self):
         self.text_gameover = Text(self.game, text=self.get_gameover_str(), color=Color.RED, x=310, y=290)
-        self.highscore = HighScoreTable(self.game)
+        self.highscore = HighScoreTable(self.game, 'score.txt')
         self.button_exit = BtnAnim(self.game, (350, 495, 100, 40), Color.WHITE, 'Выход', self.exit)
         self.objects = [self.text_gameover, self.highscore, self.button_exit]
 
