@@ -137,6 +137,7 @@ class HighScoreTable(DrawObject):
             return players[:HighScoreTable.PLAYER_COUNT]
         return []
 
+
     def __init__(self, game, file_path='score.txt'):
         self.file_path = file_path
         self.cells = [self.PLAYER_NUM_WIDTH, self.NAME_WIDTH, self.SCORE_WIDTH]

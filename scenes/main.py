@@ -57,14 +57,14 @@ class MainScene(Scene):
 
     def process_game_lose(self):
         if self.health.count == 0:
-            self.score.write_to_file('score.txt', 'Group 04')
+            self.score.write_to_file()
             self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)  # Добавлено на время
 
     def process_door_collisions(self):
         # Бомбермэн входит в дверь
         if self.door.collides_with(self.bomberman):
             self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
-            self.score.write_to_file('score.txt', 'Группа 04')
+            self.score.write_to_file()
 
 
 
