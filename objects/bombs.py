@@ -22,6 +22,10 @@ class Bomb(DrawObject):
     def create_bomb(self, x, y):
         self.rect.x = x
         self.rect.y = y
+        self.hidden = False
+        self.start_ticks = pygame.time.get_ticks()
+
+    def create_fire(self, x, y):
         self.fire_rects[0].x = x - 40
         self.fire_rects[0].y = y
         self.fire_rects[1].x = x + 40
@@ -30,8 +34,6 @@ class Bomb(DrawObject):
         self.fire_rects[2].y = y - 40
         self.fire_rects[3].x = x
         self.fire_rects[3].y = y + 40
-        self.hidden = False
-        self.start_ticks = pygame.time.get_ticks()
 
     def show_fire(self):
         for i in range(len(self.fire_rects)):
@@ -48,6 +50,7 @@ class Bomb(DrawObject):
         if not self.hidden and seconds <= 2:
             self.game.screen.blit(self.image, self.rect)
         elif 2 < seconds <= 3:
+            self.create_fire(self.rect.x, self.rect.y)
             self.show_fire()
         elif seconds > 3:
             self.hide_bomb()

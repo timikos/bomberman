@@ -49,7 +49,7 @@ class Bomberman(DrawObject):
             if self.rect.x <= self.game.width - 80:
                 self.rect.x += 2
         elif self.current_shift_x == -1:
-            if self.rect.x > 40:
+            if self.rect.x > 80:
                 self.rect.x -= 2
 
 

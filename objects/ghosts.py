@@ -7,14 +7,12 @@ from objects.base import DrawObject
 class Ghost(DrawObject):
     filename = 'images/ghosts/ghostE.png'
 
-    def __init__(self, game, x = 40, y = 40, x_bomber = 400, y_bomber = 300):
+    def __init__(self, game, hidden=False, x = 40, y = 40):
         super().__init__(game)
         self.image = pygame.image.load(Ghost.filename)
+        self.hidden = hidden
         self.x = x
         self.y = y
-        self.x_bomber = x_bomber
-        self.y_bomber = y_bomber
-        self.bomber_rect = pygame.Rect(self.x_bomber,self.y_bomber,30,35)
         self.current_shift_x = 0
         self.current_shift_y = 0
         self.window_width = self.game.width
@@ -68,8 +66,17 @@ class Ghost(DrawObject):
 
 
     def process_draw(self):
-        self.game.screen.blit(self.image, self.rect)
+        if not self.hidden:
+            self.game.screen.blit(self.image, self.rect)
+        if self.hidden:
+            self.rect.x = 0
+            self.rect.y = 0
+            self.current_shift_x = 0
+            self.current_shift_y = 0
 
-    def respawn(self):
-        return self.collides_with(self.bomber_rect)
-
+    # def end_draw(self):
+    #     if self.hidden:
+    #         self.rect.x = 0
+    #         self.rect.y = 0
+    #         self.current_shift_x = 0
+    #         self.current_shift_y = 0

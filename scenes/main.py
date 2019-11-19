@@ -36,16 +36,16 @@ class MainScene(Scene):
     def process_ghost_collisions_bomb(self):
         for ghost in self.ghosts:  # Коллизия бомбы с призраками
             if ghost.collides_with(self.bomb.fire_rects[0]):
-                del ghost
+                ghost.hidden = True
                 self.score.add(1)
             elif ghost.collides_with(self.bomb.fire_rects[1]):
-                del ghost
+                ghost.hidden = True
                 self.score.add(1)
             elif ghost.collides_with(self.bomb.fire_rects[2]):
-                del ghost
+                ghost.hidden = True
                 self.score.add(1)
             elif ghost.collides_with(self.bomb.fire_rects[3]):
-                del ghost
+                ghost.hidden = True
                 self.score.add(1)
 
     def process_show_door(self):
