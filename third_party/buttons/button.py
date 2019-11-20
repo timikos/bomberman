@@ -2,7 +2,7 @@ import pygame as pg
 
 
 class Button(object):
-    """A fairly straight forward button class."""
+    """A fairly straight forward buttons class."""
 
     def __init__(self, rect, color, function, **kwargs):
         self.rect = pg.Rect(rect)
@@ -35,7 +35,7 @@ class Button(object):
         self.__dict__.update(settings)
 
     def render_text(self):
-        """Pre render the button text."""
+        """Pre render the buttons text."""
         if self.text:
             if self.hover_font_color:
                 color = self.hover_font_color
@@ -46,7 +46,7 @@ class Button(object):
             self.text = self.font.render(self.text, True, self.font_color)
 
     def check_event(self, event):
-        """The button needs to be passed events from your program event loop."""
+        """The buttons needs to be passed events from your program event loop."""
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
             self.on_click(event)
         elif event.type == pg.MOUSEBUTTONUP and event.button == 1:

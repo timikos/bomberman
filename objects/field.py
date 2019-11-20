@@ -4,7 +4,7 @@ from objects.base import DrawObject
 
 
 class Field(DrawObject):
-    def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+    def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.field = []
         self.width = width  # Ширина поля в клетках
@@ -21,6 +21,11 @@ class Field(DrawObject):
         for i in self.field:
             for cell in i:
                 cell.process_draw()
+
+    def get_cell_by_pos(self, x, y):
+        n = (x - self.x) // FieldProperties.CELL_LENGTH
+        m = (y - self.y) // FieldProperties.CELL_LENGTH
+        return self.field[n][m]
 
 
 class Cell(DrawObject):

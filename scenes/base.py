@@ -18,6 +18,7 @@ class Scene:
         self.process_all_logic()
         self.process_all_draw()
 
+
     def process_all_events(self, eventlist):
         for event in eventlist:
             self.process_current_event(event)

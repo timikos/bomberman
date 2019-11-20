@@ -35,7 +35,7 @@ class IndestructibleBlock(Block):
 
 class TileMap(DrawObject):
 
-    def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+    def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.x = x
         self.y = y
@@ -74,14 +74,14 @@ class DestroyedBlock(Block):
     def process_draw(self):
         if not self.isDestroyed:
             self.game.screen.blit(self.image, self.rect)
-           # print(self.x)
+        # print(self.x)
 
     def process_event(self, event):
 
         if event.type == pygame.KEYDOWN:
             if chr(event.key) == ' ':  # space bar is pressed
                 DestroyedBlock.explosion_event = pygame.USEREVENT + 1
-                pygame.time.set_timer(DestroyedBlock.explosion_event, 2000) # задержка в две секунды
+                pygame.time.set_timer(DestroyedBlock.explosion_event, 2000)  # задержка в две секунды
 
         if self.readyToBreak:
             if event.type == DestroyedBlock.explosion_event:
@@ -101,7 +101,7 @@ class DestroyableTileMap(DrawObject):
             for y in range(height):
                 if not (x == 0 or x == width - 1 or y == 0 or y == height - 1) \
                         and not ((x + 1) % 2 != 0 and (y + 1) % 2 != 0) and (randint(0, 1)):
-                    self.tiles[-1].append(DestroyedBlock(game, self.x + x, self.y + y))
+                    self.tiles[-1].append(DestroyedBlock(game, self.x + x + 1, self.y + y))
 
     def process_draw(self):
         for x in self.tiles:
