@@ -12,7 +12,7 @@ class Block(DrawObject):
         self.y = y
         self.width = width  # Ширина поля в клетках
         self.height = height  # Высота поля в клетках
-        self.rect = pygame.Rect(self.x, self.y, 0, 0)
+        self.rect = pygame.Rect(self.x, self.y, 35, 30)
         self.isDestructed = False
 
 

@@ -107,10 +107,12 @@ class MainScene(Scene):
             self.bomberman.speed = 5
 
     def process_bomberman_collision_with_blocks(self):
-        pass
-        # for i in range(len(self.tilemap.tiles)):
-        #     if self.bomberman.collides_with(self.tilemap.tiles[i]):
-        #         print("col")
+
+        for row in self.tilemap.tiles:
+            for tile in row:
+                if self.bomberman.collides_with(tile.rect):
+                    self.bomberman.current_shift_x = 0
+                    self.bomberman.current_shift_y = 0
 
 """
     Метод коллизии призраков со стенкой
