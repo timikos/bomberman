@@ -1,5 +1,5 @@
 import pygame
-from constants import FieldProperties, Color
+from constants import FieldProperties
 from objects.base import DrawObject
 
 

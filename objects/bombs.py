@@ -3,7 +3,7 @@ from objects.base import DrawObject
 
 
 class Bomb(DrawObject):
-    pygame.mixer.init()  # Звуки
+    pygame.mixer.init()
     filename = 'images/bombs/bomb.png'
     fire_filename = 'images/bombs/fire.png'
     sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')

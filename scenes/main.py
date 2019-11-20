@@ -29,23 +29,24 @@ class MainScene(Scene):
         self.modifier_effects = {}
 
     def additional_logic(self):
-        self.process_ghost_collisions()
-        self.process_door_collisions()
-        self.process_ghost_collisions_bomb()
-        self.process_modifiers_collisions()
+        self.process_ghost_collisions_with_bomberman()
+        self.process_ghost_collisions_with_bomb()
+        self.process_door_collisions_with_bomberman()
         self.process_show_door()
-        self.process_game_lose()
-        self.process_bomberman_collision_bomb_fire()
+        self.process_bomberman_collision_with_bomb_fire()
+        self.process_bomberman_collision_with_blocks()
         self.process_modifiers_effects()
+        self.process_modifiers_collisions_with_bomberman()
+        self.process_game_lose()
 
 
-    def process_ghost_collisions(self):
+    def process_ghost_collisions_with_bomberman(self):
         for ghost in self.ghosts:  # Коллизия бомбермэна с призраками
             if ghost.collides_with(self.bomberman):
                 self.respawn_bomberman_after_collision()
 
-    def process_ghost_collisions_bomb(self):
-        for ghost in self.ghosts:  # Коллизия бомбы с призраками
+    def process_ghost_collisions_with_bomb(self):
+        for ghost in self.ghosts:
             if ghost.collides_with(self.bomb.fire_rects[0]):
                 ghost.hidden = True
                 self.score.add(1)
@@ -66,16 +67,15 @@ class MainScene(Scene):
     def process_game_lose(self):
         if self.health.count == 0:
             self.score.write_to_file()
-            self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)  # Добавлено на время
-
-    def process_door_collisions(self):
-        # Бомбермэн входит в дверь
-        if self.door.collides_with(self.bomberman):
             self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
+
+    def process_door_collisions_with_bomberman(self):
+        if self.door.collides_with(self.bomberman):
             self.score.write_to_file()
+            self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
 
 
-    def process_bomberman_collision_bomb_fire(self):
+    def process_bomberman_collision_with_bomb_fire(self):
         if self.bomberman.collides_with(self.bomb.fire_rects[0]):
                 self.respawn_bomberman_after_collision()
         elif self.bomberman.collides_with(self.bomb.fire_rects[1]):
@@ -90,15 +90,13 @@ class MainScene(Scene):
         self.bomberman.rect.x = 400
         self.bomberman.rect.y = 300
 
-    def process_modifiers_collisions(self):
+    def process_modifiers_collisions_with_bomberman(self):
         for modifier in self.modifiers:
             if modifier.collides_with(self.bomberman):
                 modifier.hide()
                 self.modifier_effects['speed'] = pygame.time.get_ticks()
 
     def process_modifiers_effects(self):
-        print(self.modifier_effects)
-
         for effect in self.modifier_effects:
             if self.modifier_effects[effect] + 10000 <= pygame.time.get_ticks():
                 self.modifier_effects[effect] = 0
@@ -108,7 +106,11 @@ class MainScene(Scene):
         else:
             self.bomberman.speed = 5
 
-
+    def process_bomberman_collision_with_blocks(self):
+        pass
+        # for i in range(len(self.tilemap.tiles)):
+        #     if self.bomberman.collides_with(self.tilemap.tiles[i]):
+        #         print("col")
 
 """
     Метод коллизии призраков со стенкой
