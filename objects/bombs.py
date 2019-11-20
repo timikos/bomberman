@@ -3,7 +3,7 @@ from objects.base import DrawObject
 
 
 class Bomb(DrawObject):
-    pygame.mixer.init()  # Звуки
+    pygame.mixer.init()
     filename = 'images/bombs/bomb.png'
     fire_filename = 'images/bombs/fire.png'
     sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
@@ -18,10 +18,9 @@ class Bomb(DrawObject):
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
 
-
     def create_bomb(self, x, y):
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = x + 3
+        self.rect.y = y + 3
         self.hidden = False
         self.start_ticks = pygame.time.get_ticks()
 

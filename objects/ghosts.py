@@ -1,6 +1,5 @@
 import pygame
 from random import randint, randrange
-
 from objects.base import DrawObject
 
 
@@ -18,9 +17,10 @@ class Ghost(DrawObject):
         self.window_width = self.game.width
         self.window_height = self.game.height
         self.rect = pygame.Rect(self.x, self.y, 30, 35)
-        self.rect.x = randrange(81, self.window_width - self.rect.width - 200, 400)
-        self.rect.y = randrange(41, self.window_height - self.rect.height - 200, 80)
+        self.rect.x = randrange(80, self.window_width - self.rect.width - 200, 400)
+        self.rect.y = randrange(40, self.window_height - self.rect.height - 200, 80)
         self.start_move()
+
 
     def process_event(self, event):
         pass
@@ -73,3 +73,4 @@ class Ghost(DrawObject):
             self.rect.y = 0
             self.current_shift_x = 0
             self.current_shift_y = 0
+
