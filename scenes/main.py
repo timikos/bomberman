@@ -127,6 +127,7 @@ class MainScene(Scene):
             self.bomberman.speed = 5
 
     def process_bomberman_collision_with_blocks(self):
+
         for row in self.tilemap.tiles:
             for tile in row:
                 if tile.collides_with(self.bomberman.rect):
