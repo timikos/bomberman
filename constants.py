@@ -9,7 +9,7 @@ class Color:
 
 class ScreenProperties:
     WIDTH = 800 # Ширина экрана
-    HEIGHT = 600 # Высота экрана
+    HEIGHT = 670 # Высота экрана
     SCREEN_BORDER_WIDTH = 160  # Граница экрана по ширине
     SCREEN_BORDER_HEIGHT = 150 # Граница экрана по высоте
 

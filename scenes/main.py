@@ -40,7 +40,6 @@ class MainScene(Scene):
         self.process_show_door()
         self.process_bomberman_collision_with_bomb_fire()
         self.process_bomberman_collision_with_blocks()
-        self.process_bomberman_collision_with_d_blocks()
         self.process_modifiers_effects()
         self.process_bomb_detection()
         self.process_modifiers_collisions_with_bomberman()
@@ -127,19 +126,12 @@ class MainScene(Scene):
             self.bomberman.speed = 5
 
     def process_bomberman_collision_with_blocks(self):
-
         for row in self.tilemap.tiles:
             for tile in row:
                 if tile.collides_with(self.bomberman.rect):
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
-    def process_bomberman_collision_with_d_blocks(self):
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                if tile.collides_with(self.bomberman.rect):
-                    self.bomberman.current_shift_x = 0
-                    self.bomberman.current_shift_y = 0
 
     def unneeded_blocks_deletion(self):
         for row in self.dstr_tilemap.tiles:

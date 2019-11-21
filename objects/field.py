@@ -21,7 +21,7 @@ class Field(DrawObject):
             self.field += [[]]
             for x in range(width):
                 self.field[-1].append(Cell(game, x * FieldProperties.CELL_LENGTH + self.x,
-                                           y * FieldProperties.CELL_LENGTH + self.y, 'images/ground.png'))
+                                           y * FieldProperties.CELL_LENGTH + self.y, 'images/levels/ground_1_grass.png'))
 
     def process_draw(self):
         for i in self.field:
