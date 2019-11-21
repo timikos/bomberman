@@ -17,7 +17,7 @@ class Bomberman(DrawObject):
         self.rect = pygame.Rect(self.x, self.y, BombermanProperties.WIDTH, BombermanProperties.HEIGHT)
 
     def process_event(self, event):
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN :
             if chr(event.key) == 'w':
                 self.image = pygame.image.load('images/bomberman/bomberman_up1.png')
                 self.current_shift_y = -1

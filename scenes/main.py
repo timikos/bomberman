@@ -12,6 +12,7 @@ from objects.modifier import SpeedModifier
 
 
 class MainScene(Scene):
+    flag = False
     def create_objects(self):
 
         self.bomberman = Bomberman(self.game)
@@ -24,7 +25,6 @@ class MainScene(Scene):
         self.dstr_tilemap = DestroyableTileMap(self.game)
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
-
         self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
         self.objects = [self.field] + [self.tilemap] + [self.dstr_tilemap] + [self.bomberman] + self.ghosts + [self.score] + [self.health] + \
                        [self.door] + [self.bomb] + self.modifiers
@@ -44,6 +44,7 @@ class MainScene(Scene):
         self.process_bomb_detection()
         self.process_modifiers_collisions_with_bomberman()
         self.process_game_lose()
+        self.process_bomberman_collision_with_d_blocks()
 
     def process_ghost_collisions_with_bomberman(self):
         for ghost in self.ghosts:  # Коллизия бомбермэна с призраками
@@ -131,6 +132,15 @@ class MainScene(Scene):
                 if tile.collides_with(self.bomberman.rect):
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
+
+    def process_bomberman_collision_with_d_blocks(self):
+        for row in self.tilemap.tiles:
+            for tile in row:
+                if tile.collides_with(self.bomberman.rect):
+                    if self.bomberman.current_shift_y == 1:
+                        self.bomberman.rect.y -= 5
+                    if self.bomberman.current_shift_y == -1:
+                        self.bomberman.rect.y += 5
 
 
     def unneeded_blocks_deletion(self):

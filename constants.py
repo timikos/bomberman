@@ -15,7 +15,7 @@ class ScreenProperties:
 
 class FieldProperties:
     CELL_LENGTH = 40  # Длина стороны одной клетки в пикселях
-    WIDTH = 17  # В клетках
+    WIDTH = 31  # В клетках
     HEIGHT = 15  # В клетках
 
 class BombermanProperties:
@@ -23,8 +23,8 @@ class BombermanProperties:
     RESPAWN_Y = 300 # Появление бомбермена на оси y
     DIRECTION_X = 0 # Начальное направление
     DIRECTION_Y = 0 # Начальное направление
-    WIDTH = 30 # Ширина прямоугольника бомбермена
-    HEIGHT = 35 # Высота прямоугольника бомбермена
+    WIDTH = 35 # Ширина прямоугольника бомбермена
+    HEIGHT = 40 # Высота прямоугольника бомбермена
 
 class EnemyProperties:
     WIDTH = 30  # Ширина прямоугольника врагов
