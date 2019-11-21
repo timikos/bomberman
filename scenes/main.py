@@ -130,6 +130,14 @@ class MainScene(Scene):
         for row in self.tilemap.tiles:
             for tile in row:
                 if tile.collides_with(self.bomberman.rect):
+                    if self.bomberman.current_shift_x > 0:
+                        self.bomberman.rect.x -= 5
+                    elif self.bomberman.current_shift_x < 0:
+                        self.bomberman.rect.x += 10
+                    elif self.bomberman.current_shift_y > 0:
+                        self.bomberman.rect.y -= 5
+                    elif self.bomberman.current_shift_y < 0:
+                        self.bomberman.rect.y += 20
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
