@@ -5,16 +5,17 @@ from objects.base import DrawObject
 class Bomb(DrawObject):
     pygame.mixer.init()
     filename = 'images/bombs/bomb.png'
-    fire_filename = 'images/bombs/fire.png'
+    fire_filename = 'images/bombs/fire_center.png'
     sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
-    sound_explosion.set_volume(min(0.2,0.3))
+    sound_explosion.set_volume(min(0.2, 0.3))
 
     def __init__(self, game, hidden=True):
         super().__init__(game)
         self.hidden = hidden
         self.start_ticks = 0
         self.fire_image = pygame.image.load(Bomb.fire_filename)
-        self.fire_rects = [pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30)]
+        self.fire_rects = [pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30),
+                           pygame.Rect(0, 0, 30, 30)]
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
 
@@ -36,7 +37,7 @@ class Bomb(DrawObject):
 
     def show_fire(self):
         for i in range(len(self.fire_rects)):
-            self.sound_explosion.play()
+            # self.sound_explosion.play()
             self.game.screen.blit(self.fire_image, self.fire_rects[i])
 
     def hide_bomb(self):
