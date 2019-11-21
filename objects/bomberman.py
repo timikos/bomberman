@@ -2,6 +2,7 @@ import pygame
 from objects.base import DrawObject
 
 
+
 class Bomberman(DrawObject):
     filename = 'images/bomberman/bomberman.png'
 

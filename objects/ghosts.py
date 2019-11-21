@@ -4,7 +4,7 @@ from objects.base import DrawObject
 
 
 class Ghost(DrawObject):
-    filename = 'images/ghosts/ghostE.png'
+    filename = 'images/ghosts/enemy_1_Main.png'
 
     def __init__(self, game, hidden=False, x = 40, y = 40):
         super().__init__(game)
@@ -27,16 +27,16 @@ class Ghost(DrawObject):
 
     def process_logic(self):
         if self.current_shift_y == 1 and self.rect.y < self.game.height - 150:
-            self.image = pygame.image.load('images/ghosts/ghostEdown.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Main.png')
             self.rect.y += 1
         elif self.current_shift_y == -1 and self.rect.y > 40:
-            self.image = pygame.image.load('images/ghosts/ghostEup.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Main.png')
             self.rect.y -= 1
         elif self.current_shift_x == 1 and self.rect.x < self.game.width - 160:
-            self.image = pygame.image.load('images/ghosts/ghostEright.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Right.png')
             self.rect.x += 1
         elif self.current_shift_x == -1 and self.rect.x > 80:
-            self.image = pygame.image.load('images/ghosts/ghostEleft.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Left.png')
             self.rect.x -= 1
         if self.rect.x == 80 or self.rect.y == 40 or self.rect.y == self.game.height - 150 or self.rect.x == self.game.width - 160:
             if self.rect.x == 80:

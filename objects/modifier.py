@@ -11,7 +11,7 @@ class SpeedModifier(DrawObject):
         self.x = x
         self.y = y
         self.hidden = hidden
-        self.rect = pygame.Rect(self.x, self.y, 30, 35)
+        self.rect = pygame.Rect(self.x, self.y, 35, 35)
 
     def hide(self):
         self.hidden = True

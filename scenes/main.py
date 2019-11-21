@@ -22,7 +22,7 @@ class MainScene(Scene):
         self.tilemap = TileMap(self.game)
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
-        self.modifiers = [SpeedModifier(self.game, 85, 85), SpeedModifier(self.game, 165, 165)]
+        self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
         self.objects = [self.field] + [self.tilemap] + [self.bomberman] + self.ghosts + [self.score] + [self.health] + \
                        [self.door] + [self.bomb] + self.modifiers
 
@@ -113,6 +113,8 @@ class MainScene(Scene):
                 if self.bomberman.collides_with(tile.rect):
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
+
+
 
 """
     Метод коллизии призраков со стенкой

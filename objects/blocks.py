@@ -12,7 +12,7 @@ class Block(DrawObject):
         self.y = y
         self.width = width  # Ширина поля в клетках
         self.height = height  # Высота поля в клетках
-        self.rect = pygame.Rect(self.x, self.y, 35, 30)
+        self.rect = pygame.Rect(self.x, self.y, 35, 25)
         self.isDestructed = False
 
 
@@ -31,6 +31,8 @@ class IndestructibleBlock(Block):
     def process_event(self, event):
         pass
 
+    def collides_with(self, other):
+        return self.rect.colliderect(other)
 
 class TileMap(DrawObject):
 
