@@ -12,7 +12,7 @@ from objects.modifier import SpeedModifier
 
 
 class MainScene(Scene):
-    flag = False
+
     def create_objects(self):
 
         self.bomberman = Bomberman(self.game)
@@ -21,16 +21,18 @@ class MainScene(Scene):
         self.health = Score(self.game, Color.RED, 5, 60, ScorePos.LEFT_BOTTOM, "Health: ", text_after="",
                             border_shift=(10, 10))
         self.field = Field(self.game)
+        self.fields = [Field(self.game) for _ in range(5)]
         self.tilemap = TileMap(self.game)
         self.dstr_tilemap = DestroyableTileMap(self.game)
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
         self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
-        self.objects = [self.field] + [self.tilemap] + [self.dstr_tilemap] + [self.bomberman] + self.ghosts + [self.score] + [self.health] + \
+        self.objects = [self.field] +  [self.tilemap] + [self.dstr_tilemap] + [self.bomberman] + self.ghosts + [self.score] + [self.health] + \
                        [self.door] + [self.bomb] + self.modifiers
 
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
+
 
     def additional_logic(self):
         self.process_ghost_collisions_with_bomberman()
@@ -45,6 +47,7 @@ class MainScene(Scene):
         self.process_modifiers_collisions_with_bomberman()
         self.process_game_lose()
         self.process_bomberman_collision_with_d_blocks()
+
 
     def process_ghost_collisions_with_bomberman(self):
         for ghost in self.ghosts:  # Коллизия бомбермэна с призраками
@@ -80,6 +83,7 @@ class MainScene(Scene):
                     if tile.collides_with(ghost.rect):
                         ghost.current_shift_x *= -1
                         ghost.current_shift_y *= -1
+
 
     def process_show_door(self):
         if self.score.count == 5:
@@ -131,24 +135,48 @@ class MainScene(Scene):
             for tile in row:
                 if tile.collides_with(self.bomberman.rect):
                     if self.bomberman.current_shift_x > 0:
-                        self.bomberman.rect.x -= 5
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.x -= 5
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.x -= 10
                     elif self.bomberman.current_shift_x < 0:
-                        self.bomberman.rect.x += 10
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.x += 10
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.x += 15
                     elif self.bomberman.current_shift_y > 0:
-                        self.bomberman.rect.y -= 5
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.y -= 5
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.y -= 10
                     elif self.bomberman.current_shift_y < 0:
-                        self.bomberman.rect.y += 20
+                        self.bomberman.rect.y += 15
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
     def process_bomberman_collision_with_d_blocks(self):
-        for row in self.tilemap.tiles:
+        for row in self.dstr_tilemap.tiles:
             for tile in row:
                 if tile.collides_with(self.bomberman.rect):
-                    if self.bomberman.current_shift_y == 1:
-                        self.bomberman.rect.y -= 5
-                    if self.bomberman.current_shift_y == -1:
-                        self.bomberman.rect.y += 5
+                    if self.bomberman.current_shift_x > 0:
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.x -= 5
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.x -= 10
+                    elif self.bomberman.current_shift_x < 0:
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.x += 10
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.x += 15
+                    elif self.bomberman.current_shift_y > 0:
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.y -= 5
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.y -= 10
+                    elif self.bomberman.current_shift_y < 0:
+                        self.bomberman.rect.y += 20
+                    self.bomberman.current_shift_x = 0
+                    self.bomberman.current_shift_y = 0
 
 
     def unneeded_blocks_deletion(self):

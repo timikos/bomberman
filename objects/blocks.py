@@ -5,7 +5,6 @@ from objects.base import DrawObject
 
 
 class Block(DrawObject):
-
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.border = []
@@ -13,7 +12,7 @@ class Block(DrawObject):
         self.y = y
         self.width = width  # Ширина поля в клетках
         self.height = height  # Высота поля в клетках
-        self.rect = pygame.Rect(self.x, self.y, 35, 25)
+        self.rect = pygame.Rect(self.x, self.y, 35, 30)
         self.isDestructed = False
 
 
@@ -38,7 +37,6 @@ class IndestructibleBlock(Block):
 
 
 class TileMap(DrawObject):
-
     def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.x = x
@@ -99,7 +97,6 @@ class DestroyedBlock(Block):
 
 
 class DestroyableTileMap(DrawObject):
-
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.x = x

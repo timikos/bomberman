@@ -31,3 +31,7 @@ class EnemyProperties:
     HEIGHT = 35  # Высота прямоугольника врагов
     DIRECTION_X = 0  # Начальное направление
     DIRECTION_Y = 0  # Начальное направление
+
+class BombProperties:
+    WIDTH = 30  # Ширина прямоугольника бомб
+    HEIGHT = 30  # Высота прямоугольника бомб
