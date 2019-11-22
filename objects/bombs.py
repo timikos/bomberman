@@ -15,7 +15,7 @@ class Bomb(DrawObject):
         self.start_ticks = 0
         self.fire_image = pygame.image.load(Bomb.fire_filename)
         self.fire_rects = [pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30),
-                           pygame.Rect(0, 0, 30, 30)]
+                           pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30)]
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
 
@@ -34,6 +34,8 @@ class Bomb(DrawObject):
         self.fire_rects[2].y = y - 40
         self.fire_rects[3].x = x
         self.fire_rects[3].y = y + 40
+        self.fire_rects[4].x = x
+        self.fire_rects[4].y = y
 
     def show_fire(self):
         for i in range(len(self.fire_rects)):
