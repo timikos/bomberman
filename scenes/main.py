@@ -27,7 +27,9 @@ class MainScene(Scene):
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
         self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
-        self.objects = [self.field] +  [self.tilemap] + [self.dstr_tilemap] + [self.bomberman] + self.ghosts + [self.score] + [self.health] + \
+        self.objects = [self.field] +  [self.tilemap] + [self.dstr_tilemap] + \
+                       [self.bomberman] + self.ghosts + \
+                       [self.score] + [self.health] + \
                        [self.door] + [self.bomb] + self.modifiers
 
         self.modifier_effects = {}
