@@ -144,7 +144,7 @@ class MainScene(Scene):
                             self.bomberman.rect.x -= 10
                     elif self.bomberman.current_shift_x < 0:
                         if self.bomberman.speed == 5:
-                            self.bomberman.rect.x += 10
+                            self.bomberman.rect.x += 5
                         elif self.bomberman.speed == 10:
                             self.bomberman.rect.x += 15
                     elif self.bomberman.current_shift_y > 0:
@@ -153,7 +153,10 @@ class MainScene(Scene):
                         elif self.bomberman.speed == 10:
                             self.bomberman.rect.y -= 10
                     elif self.bomberman.current_shift_y < 0:
-                        self.bomberman.rect.y += 15
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.y += 5
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.y += 10
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
@@ -168,7 +171,7 @@ class MainScene(Scene):
                             self.bomberman.rect.x -= 10
                     elif self.bomberman.current_shift_x < 0:
                         if self.bomberman.speed == 5:
-                            self.bomberman.rect.x += 10
+                            self.bomberman.rect.x += 5
                         elif self.bomberman.speed == 10:
                             self.bomberman.rect.x += 15
                     elif self.bomberman.current_shift_y > 0:
@@ -177,7 +180,10 @@ class MainScene(Scene):
                         elif self.bomberman.speed == 10:
                             self.bomberman.rect.y -= 10
                     elif self.bomberman.current_shift_y < 0:
-                        self.bomberman.rect.y += 20
+                        if self.bomberman.speed == 5:
+                            self.bomberman.rect.y += 5
+                        elif self.bomberman.speed == 10:
+                            self.bomberman.rect.y += 10
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
