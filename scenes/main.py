@@ -27,10 +27,10 @@ class MainScene(Scene):
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
         self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
-        self.objects = [self.field] +  [self.tilemap] + [self.dstr_tilemap] + \
+        self.objects = [self.field] + [self.bomb] + [self.dstr_tilemap] + [self.tilemap] + \
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
-                       [self.door] + [self.bomb] + self.modifiers
+                       [self.door] + self.modifiers
 
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
@@ -61,7 +61,8 @@ class MainScene(Scene):
             for tile in row:
                 for bomb in self.bomb.fire_rects:
                     if tile.collides_with(bomb):
-                        tile.isDestroyed = True
+                        tile.start_ticks = pygame.time.get_ticks()
+                        tile.readyToBreak = True
 
     def process_ghost_collisions_with_bomb(self):
         for ghost in self.ghosts:

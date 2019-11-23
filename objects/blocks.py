@@ -5,15 +5,13 @@ from objects.base import DrawObject
 
 
 class Block(DrawObject):
-    def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+    def __init__(self, game, x=0, y=0, cell_length=FieldProperties.CELL_LENGTH):
         super().__init__(game)
         self.border = []
-        self.x = x
-        self.y = y
-        self.width = width  # Ширина поля в клетках
-        self.height = height  # Высота поля в клетках
+        self.x = x * cell_length
+        self.y = y * cell_length
+        self.cell_length = cell_length
         self.rect = pygame.Rect(self.x, self.y, 35, 30)
-        self.isDestructed = False
 
 
 class IndestructibleBlock(Block):
@@ -21,8 +19,8 @@ class IndestructibleBlock(Block):
 
     def __init__(self, game, x, y):
         super().__init__(game, x, y)
-        self.x = x
-        self.y = y
+        self.x = x * self.cell_length
+        self.y = y * self.cell_length
         self.image = pygame.image.load(IndestructibleBlock.filename)
 
     def process_draw(self):
@@ -35,9 +33,8 @@ class IndestructibleBlock(Block):
         return self.rect.colliderect(other)
 
 
-
 class TileMap(DrawObject):
-    def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+    def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.x = x
         self.y = y
@@ -47,8 +44,7 @@ class TileMap(DrawObject):
             for y in range(height):
                 if (x == 0 or x == width - 1 or y == 0 or y == height - 1) \
                         or ((x + 1) % 2 != 0 and (y + 1) % 2 != 0):
-                    self.tiles[-1].append(IndestructibleBlock(game, self.x + FieldProperties.CELL_LENGTH * x,
-                                                              self.y + FieldProperties.CELL_LENGTH * y))
+                    self.tiles[-1].append(IndestructibleBlock(game, self.x + x + 1, self.y + y))
 
     def process_draw(self):
         for x in self.tiles:
@@ -62,29 +58,43 @@ class TileMap(DrawObject):
 
 
 class DestroyedBlock(Block):
-    filename = 'images/blocks/d_block_0.png'
+    dblock_image = []
+    for i in range(6):
+        dblock_image.append('images/blocks/d_block_{}.png'.format(i))
+
     explosion_event = pygame.USEREVENT + 1
 
-    def __init__(self, game, x=3, y=4):
-        super().__init__(game, x * 40, y * 40)
-        self.x = x * 40
-        self.y = y * 40
+    def __init__(self, game, x=0, y=0):
+        super().__init__(game, x, y)
+        self.x = x * self.cell_length
+        self.y = y * self.cell_length
+        self.destruction_time = 5
         self.readyToBreak = False
         self.isDestroyed = False
-        self.image = pygame.image.load(DestroyedBlock.filename)
+        self.image = pygame.image.load(DestroyedBlock.dblock_image[0])
+        self.start_ticks = 0
+
+    def destruction(self):
+        milsec = (pygame.time.get_ticks() - self.start_ticks) // (self.destruction_time * 20) + 1
+        self.image = pygame.image.load(DestroyedBlock.dblock_image[milsec])
+        self.game.screen.blit(self.image, self.rect)
+        return milsec
 
     def process_draw(self):
         if not self.isDestroyed:
             self.game.screen.blit(self.image, self.rect)
+            if self.readyToBreak:
+                if self.destruction() >= self.destruction_time:
+                    self.isDestroyed = True
 
     def process_event(self, event):
         pass
-        #if event.type == pygame.KEYDOWN:
+        # if event.type == pygame.KEYDOWN:
         #    if chr(event.key) == ' ':  # space bar is pressed
         #        DestroyedBlock.explosion_event = pygame.USEREVENT + 1
         #        pygame.time.set_timer(DestroyedBlock.explosion_event, 2000)  # задержка в две секунды
 
-        #if self.readyToBreak:
+        # if self.readyToBreak:
         #    if event.type == DestroyedBlock.explosion_event:
         #        DestroyedBlock.explosion_event = None
         #        self.isDestroyed = True
@@ -106,7 +116,7 @@ class DestroyableTileMap(DrawObject):
             self.tiles += [[]]
             for y in range(height):
                 if not (x == 0 or x == width - 1 or y == 0 or y == height - 1) \
-                        and not ((x + 1) % 2 != 0 and (y + 1) % 2 != 0) and (randint(0, 170)//100):
+                        and not ((x + 1) % 2 != 0 and (y + 1) % 2 != 0) and (randint(0, 170) // 100):
                     self.tiles[-1].append(DestroyedBlock(game, self.x + x + 1, self.y + y))
 
     def process_draw(self):
@@ -118,5 +128,3 @@ class DestroyableTileMap(DrawObject):
         for x in self.tiles:
             for tile in x:
                 tile.process_event(event)
-
-
