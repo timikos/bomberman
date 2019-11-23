@@ -2,7 +2,7 @@ import pygame
 from objects.bomberman import Bomberman
 from objects.field import Field
 from scenes.base import Scene
-from objects.ghosts import Ghost
+from objects.ghosts import Ghost, SpeedGhost
 from objects.blocks import TileMap, DestroyableTileMap
 from objects.score import Score, ScorePos
 from objects.door import Door
@@ -15,7 +15,7 @@ class MainScene(Scene):
     def create_objects(self):
 
         self.bomberman = Bomberman(self.game)
-        self.ghosts = [Ghost(self.game) for _ in range(5)]
+        self.ghosts = [Ghost(self.game) for _ in range(3)] + [SpeedGhost(self.game) for _ in range(2)]
         self.score = Score(self.game)
         self.health = Score(self.game, Color.RED, 5, 60, ScorePos.LEFT_BOTTOM, "Health: ", text_after="",
                             border_shift=(10, 10))
