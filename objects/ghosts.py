@@ -1,10 +1,11 @@
 import pygame
 from random import randint, randrange
 from objects.base import DrawObject
+from constants import EnemyProperties,ScreenProperties,FieldProperties
 
 
 class Ghost(DrawObject):
-    filename = 'images/ghosts/ghostE.png'
+    filename = 'images/ghosts/enemy_1_Main.png'
 
     def __init__(self, game, hidden=False, x = 40, y = 40):
         super().__init__(game)
@@ -12,11 +13,11 @@ class Ghost(DrawObject):
         self.hidden = hidden
         self.x = x
         self.y = y
-        self.current_shift_x = 0
-        self.current_shift_y = 0
+        self.current_shift_x = EnemyProperties.DIRECTION_X
+        self.current_shift_y = EnemyProperties.DIRECTION_Y
         self.window_width = self.game.width
         self.window_height = self.game.height
-        self.rect = pygame.Rect(self.x, self.y, 30, 35)
+        self.rect = pygame.Rect(self.x, self.y, EnemyProperties.WIDTH, EnemyProperties.HEIGHT)
         self.rect.x = randrange(80, self.window_width - self.rect.width - 200, 400)
         self.rect.y = randrange(40, self.window_height - self.rect.height - 200, 80)
         self.start_move()
@@ -27,25 +28,27 @@ class Ghost(DrawObject):
 
     def process_logic(self):
         if self.current_shift_y == 1 and self.rect.y < self.game.height - 150:
-            self.image = pygame.image.load('images/ghosts/ghostEdown.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Main.png')
             self.rect.y += 1
         elif self.current_shift_y == -1 and self.rect.y > 40:
-            self.image = pygame.image.load('images/ghosts/ghostEup.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Main.png')
             self.rect.y -= 1
         elif self.current_shift_x == 1 and self.rect.x < self.game.width - 160:
-            self.image = pygame.image.load('images/ghosts/ghostEright.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Right.png')
             self.rect.x += 1
         elif self.current_shift_x == -1 and self.rect.x > 80:
-            self.image = pygame.image.load('images/ghosts/ghostEleft.png')
+            self.image = pygame.image.load('images/ghosts/enemy_1_Left.png')
             self.rect.x -= 1
-        if self.rect.x == 80 or self.rect.y == 40 or self.rect.y == self.game.height - 150 or self.rect.x == self.game.width - 160:
-            if self.rect.x == 80:
+        if self.rect.x == FieldProperties.CELL_LENGTH * 2 or self.rect.y == FieldProperties.CELL_LENGTH or\
+                self.rect.y == self.game.height - ScreenProperties.HEIGHT or \
+                self.rect.x == self.game.width - ScreenProperties.WIDTH:
+            if self.rect.x == FieldProperties.CELL_LENGTH * 2:
                 self.rect.x += 1
-            if self.rect.x == self.game.width - 160:
+            if self.rect.x == self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
                 self.rect.x -= 1
-            if self.rect.y == 40:
+            if self.rect.y == FieldProperties.CELL_LENGTH:
                 self.rect.y += 1
-            if self.rect.y == self.game.height - 150:
+            if self.rect.y == self.game.height - ScreenProperties.HEIGHT:
                 self.rect.y -= 1
             self.start_move()
 

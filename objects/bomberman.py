@@ -1,22 +1,23 @@
 import pygame
 from objects.base import DrawObject
+from constants import BombermanProperties, ScreenProperties, FieldProperties
 
 
 class Bomberman(DrawObject):
     filename = 'images/bomberman/bomberman.png'
 
-    def __init__(self, game, x=400, y=300, speed=5):
+    def __init__(self, game, x=BombermanProperties.RESPAWN_X, y=BombermanProperties.RESPAWN_Y, speed=5):
         super().__init__(game)
         self.image = pygame.image.load(Bomberman.filename)
-        self.current_shift_x = 0
-        self.current_shift_y = 0
+        self.current_shift_x = BombermanProperties.DIRECTION_X
+        self.current_shift_y = BombermanProperties.DIRECTION_Y
         self.x = x
         self.y = y
         self.speed = speed
-        self.rect = pygame.Rect(self.x, self.y, 30, 35)
+        self.rect = pygame.Rect(self.x, self.y, BombermanProperties.WIDTH, BombermanProperties.HEIGHT)
 
     def process_event(self, event):
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN :
             if chr(event.key) == 'w':
                 self.image = pygame.image.load('images/bomberman/bomberman_up1.png')
                 self.current_shift_y = -1
@@ -45,16 +46,16 @@ class Bomberman(DrawObject):
 
     def process_logic(self):
         if self.current_shift_y == 1:
-            if self.rect.y <= self.game.height - 150:
+            if self.rect.y <= self.game.height - ScreenProperties.SCREEN_BORDER_HEIGHT:
                 self.rect.y += self.speed
         elif self.current_shift_y == -1:
-            if self.rect.y > 40:
+            if self.rect.y > FieldProperties.CELL_LENGTH:
                 self.rect.y -= self.speed
         elif self.current_shift_x == 1:
-            if self.rect.x <= self.game.width - 160:
+            if self.rect.x <= self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
                 self.rect.x += self.speed
         elif self.current_shift_x == -1:
-            if self.rect.x > 80:
+            if self.rect.x > FieldProperties.CELL_LENGTH * 2:
                 self.rect.x -= self.speed
 
     def collides_with(self, other):

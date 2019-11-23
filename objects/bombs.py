@@ -1,20 +1,25 @@
 import pygame
 from objects.base import DrawObject
+from constants import BombProperties, FieldProperties
 
 
 class Bomb(DrawObject):
     pygame.mixer.init()
     filename = 'images/bombs/bomb.png'
-    fire_filename = 'images/bombs/fire.png'
+    fire_filename = 'images/bombs/fire_center.png'
     sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
-    sound_explosion.set_volume(min(0.2,0.3))
+    sound_explosion.set_volume(min(0.2, 0.3))
 
     def __init__(self, game, hidden=True):
         super().__init__(game)
         self.hidden = hidden
         self.start_ticks = 0
         self.fire_image = pygame.image.load(Bomb.fire_filename)
-        self.fire_rects = [pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30), pygame.Rect(0, 0, 30, 30)]
+        self.fire_rects = [pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
+                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
+                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
+                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
+                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT)]
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
 
@@ -25,18 +30,20 @@ class Bomb(DrawObject):
         self.start_ticks = pygame.time.get_ticks()
 
     def create_fire(self, x, y):
-        self.fire_rects[0].x = x - 40
+        self.fire_rects[0].x = x - FieldProperties.CELL_LENGTH
         self.fire_rects[0].y = y
-        self.fire_rects[1].x = x + 40
+        self.fire_rects[1].x = x + FieldProperties.CELL_LENGTH
         self.fire_rects[1].y = y
         self.fire_rects[2].x = x
-        self.fire_rects[2].y = y - 40
+        self.fire_rects[2].y = y - FieldProperties.CELL_LENGTH
         self.fire_rects[3].x = x
-        self.fire_rects[3].y = y + 40
+        self.fire_rects[3].y = y + FieldProperties.CELL_LENGTH
+        self.fire_rects[4].x = x
+        self.fire_rects[4].y = y
 
     def show_fire(self):
         for i in range(len(self.fire_rects)):
-            self.sound_explosion.play()
+            # self.sound_explosion.play()
             self.game.screen.blit(self.fire_image, self.fire_rects[i])
 
     def hide_bomb(self):

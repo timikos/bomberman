@@ -5,6 +5,7 @@ from scenes.final import FinalScene
 from scenes.main import MainScene
 from scenes.menu import MenuScene
 from scenes.info import InfoScene
+from constants import ScreenProperties
 
 
 class Game:
@@ -13,7 +14,7 @@ class Game:
     GAMEOVER_SCENE_INDEX = 2
     INFO_SCENE_INDEX = 3
 
-    def __init__(self, width=800, height=670):
+    def __init__(self, width=ScreenProperties.WIDTH, height=ScreenProperties.HEIGHT):
         self.width = width
         self.height = height
         self.size = self.width, self.height

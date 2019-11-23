@@ -1,6 +1,7 @@
 import pygame
 
 from objects.base import DrawObject
+from constants import FieldProperties
 
 class Door(DrawObject):
     filename = 'images/door/door.png'
@@ -11,23 +12,20 @@ class Door(DrawObject):
         self.hidden = hidden
         self.x = x
         self.y = y
-        self.rect = pygame.Rect(self.x, self.y, 40, 35)
+        self.rect = pygame.Rect(self.x, self.y, FieldProperties.CELL_LENGTH, FieldProperties.CELL_LENGTH - 5)
 
 
     def collides_with(self, bomberman):
-        """Персонаж должен зайти в дверь для завершения уровня"""
         return self.rect.colliderect(bomberman)
 
 
     def show_door(self):
         self.hidden = False
-        self.rect.x = 42
+        self.rect.x = FieldProperties.CELL_LENGTH + 2
 
     def process_logic(self):
         pass
 
     def process_draw(self):
-        """Метод появления двери. Дверь появляется при условии, что все призраки убиты."""
-        # Дверь не должна появляться на месте неразрушаемых блоков
         if not self.hidden:
             self.game.screen.blit(self.image, self.rect)
