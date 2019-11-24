@@ -11,7 +11,7 @@ class Block(DrawObject):
         self.x = x * cell_length
         self.y = y * cell_length
         self.cell_length = cell_length
-        self.rect = pygame.Rect(self.x, self.y, 35, 30)
+        self.rect = pygame.Rect(self.x, self.y, cell_length, 35)
 
 
 class IndestructibleBlock(Block):
@@ -118,6 +118,7 @@ class DestroyableTileMap(DrawObject):
                 if not (x == 0 or x == width - 1 or y == 0 or y == height - 1) \
                         and not ((x + 1) % 2 != 0 and (y + 1) % 2 != 0) and (randint(0, 170) // 100):
                     self.tiles[-1].append(DestroyedBlock(game, self.x + x + 1, self.y + y))
+
 
     def process_draw(self):
         for x in self.tiles:
