@@ -2,7 +2,7 @@ import pygame
 from objects.bomberman import Bomberman
 from objects.field import Field
 from scenes.base import Scene
-from objects.ghosts import Ghost
+from objects.ghosts import Ghost, SpeedGhost, SuperGhost
 from objects.blocks import TileMap, DestroyableTileMap
 from objects.score import Score, ScorePos
 from objects.door import Door
@@ -16,7 +16,8 @@ class MainScene(Scene):
     def create_objects(self):
 
         self.bomberman = Bomberman(self.game)
-        self.ghosts = [Ghost(self.game) for _ in range(5)]
+        self.ghosts = [Ghost(self.game) for _ in range(2)] + [SpeedGhost(self.game) for _ in range(2)] + \
+                      [SuperGhost(self.game)]
         self.score = Score(self.game)
         self.health = Score(self.game, Color.RED, 5, 60, ScorePos.LEFT_BOTTOM, "Health: ", text_after="",
                             border_shift=(10, 10))
@@ -83,7 +84,7 @@ class MainScene(Scene):
         for row in self.dstr_tilemap.tiles:
             for tile in row:
                 for ghost in self.ghosts:
-                    if tile.collides_with(ghost.rect):
+                    if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
                         ghost.current_shift_x *= -1
                         ghost.current_shift_y *= -1
 
