@@ -21,6 +21,10 @@ class FieldProperties:
     HEIGHT = 15  # В клетках
 
 
+class ScoreProperties:
+    HEALTH = 10  # Очков дается за оставшуюся жизнь
+
+
 class BombermanProperties:
     RESPAWN_X = 400  # Появление бомбермена на оси х
     RESPAWN_Y = 300  # Появление бомбермена на оси y
@@ -61,3 +65,12 @@ class TableProperties:
     LINE_WIDTH = 2  # px
     FONT_SIZE = 40  # px
     FONT_SHIFT = 20  # px (отступ текса в ячейке относительно X)
+
+
+class StatisticsProperties:
+    COLOR = Color.ORANGE
+    NUM_SYMBOL_WIDTH = 3  # Определяет количество ведущих нулей у числа
+    NAME_WIDTH = 60  # % относительно таблицы
+    NUM_WIDTH = 20  # % относительно таблицы
+    ADD_SCORE_WIDTH = 20  # % относительно таблицы
+    HEADER = None

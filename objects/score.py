@@ -1,7 +1,7 @@
 import pygame
 from enum import Enum
 from objects.base import DrawObject
-from constants import Color, ScoreTableProperties, TableProperties
+from constants import Color, ScoreTableProperties, TableProperties, StatisticsProperties
 import os
 
 
@@ -86,24 +86,6 @@ class Score(DrawObject):
     def process_draw(self):
         self.game.screen.blit(self.text, self.get_coordinates())
 
-    def write_to_file(self, file_path='score.txt', name='Player'):
-        players = {}
-        if os.path.isfile(file_path):
-            with open(file_path, 'r') as f:
-                for line in f.readlines():
-                    if line != '\n' and line != '':
-                        player, score = line.split('=>')
-                        score = int(score)
-                        if player not in players.keys() or players[player] < score:
-                            players[player] = score
-        if name not in players.keys() or players[name] < self.count:
-            players[name] = self.count
-        players = sorted(players.items(), key=lambda x: x[1], reverse=True)
-        with open(file_path, 'w') as f:
-            for p in players:
-                f.write(p[0] + '=>' + str(p[1]) + '\n')
-        HighScoreTable.need_to_update()
-
 
 class Table(DrawObject):
     def __init__(self, game, color, cells, data, header=None, display_border=True):
@@ -176,6 +158,60 @@ class Table(DrawObject):
         for i in range(len(self.texts)):
             for j in range(len(self.texts[i])):
                 self.set_text_to_cell(i, j, self.texts[i][j])
+
+
+class StatisticsTable(Table):
+    def __init__(self, game, info=None):
+        super().__init__(game, StatisticsProperties.COLOR,
+                         [StatisticsProperties.NAME_WIDTH, StatisticsProperties.NUM_WIDTH], [],
+                         StatisticsProperties.HEADER, False)
+        self.info = info if info is not None else []  # Массив структуры [[name, num] * n]
+        self.set_info(info)
+        self.start_time = pygame.time.get_ticks()
+
+    def set_info(self, info, write_to_file=False):
+        self.info = info
+        self.start_time = pygame.time.get_ticks()
+        if write_to_file:
+            self.write_to_file()
+
+    def write_to_file(self, file_path='score.txt', name='Player'):
+        count = sum([i[2] for i in self.info])
+        players = {}
+        if os.path.isfile(file_path):
+            with open(file_path, 'r') as f:
+                for line in f.readlines():
+                    if line != '\n' and line != '':
+                        player, score = line.split('=>')
+                        score = int(score)
+                        if player not in players.keys() or players[player] < score:
+                            players[player] = score
+        if name not in players.keys() or players[name] < count:
+            players[name] = count
+        players = sorted(players.items(), key=lambda x: x[1], reverse=True)
+        with open(file_path, 'w') as f:
+            for p in players:
+                f.write(p[0] + '=>' + str(p[1]) + '\n')
+        HighScoreTable.need_to_update()
+
+    def process_logic(self):
+        t = (pygame.time.get_ticks() - self.start_time) // 10
+        data = []
+        score = 0
+        format_str = '{0:0>' + str(StatisticsProperties.NUM_SYMBOL_WIDTH) + '}'
+        for i in self.info:
+            if t >= i[2]:
+                data += [[i[0], format_str.format(i[1]), '+' + format_str.format(i[2])]]
+                t -= i[2]
+                score += i[2]
+            elif t != 0:
+                data += [[i[0], format_str.format(i[1]), '+' + format_str.format(t)]]
+                score += t
+                t = 0
+            else:
+                data += [[''] * 3]
+        data += [['Общий счет', '', score]]
+        self.update_data(data)
 
 
 class HighScoreTable(Table):
