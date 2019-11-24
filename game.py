@@ -5,6 +5,7 @@ from scenes.final import FinalScene
 from scenes.main import MainScene
 from scenes.menu import MenuScene
 from scenes.info import InfoScene
+from scenes.statistics import StatisticsScene
 from constants import ScreenProperties
 
 
@@ -13,6 +14,7 @@ class Game:
     MAIN_SCENE_INDEX = 1
     GAMEOVER_SCENE_INDEX = 2
     INFO_SCENE_INDEX = 3
+    STATISTICS_SCENE_INDEX = 4
 
     def __init__(self, width=ScreenProperties.WIDTH, height=ScreenProperties.HEIGHT):
         self.width = width
@@ -22,7 +24,7 @@ class Game:
         self.game_over = False
         self.wall_collision_count = 0
         self.ticks = 0
-        self.scenes = [MenuScene(self), MainScene(self), FinalScene(self) , InfoScene(self)]
+        self.scenes = [MenuScene(self), MainScene(self), FinalScene(self), InfoScene(self), StatisticsScene(self)]
         self.current_scene = 0
 
     def create_window(self):

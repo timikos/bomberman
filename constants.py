@@ -21,6 +21,10 @@ class FieldProperties:
     HEIGHT = 15  # В клетках
 
 
+class ScoreProperties:
+    HEALTH = 10  # Очков дается за оставшуюся жизнь
+
+
 class BombermanProperties:
     RESPAWN_X = 400  # Появление бомбермена на оси х
     RESPAWN_Y = 300  # Появление бомбермена на оси y
@@ -44,16 +48,29 @@ class BombProperties:
 
 class ScoreTableProperties:
     PLAYER_COUNT = 5
-    WIDTH = 80  # %
-    CELL_HEIGHT = 10  # %
     PLAYER_NUM_WIDTH = 10  # % относительно таблицы
     NAME_WIDTH = 70  # % относительно таблицы
     SCORE_WIDTH = 20  # % относительно таблицы
-    Y_SHIFT = 50  # px (отступ сверху)
-    LINE_WIDTH = 2  # px
-    FONT_SIZE = 40  # px
-    FONT_SHIFT = 20  # px (отступ текса в ячейке относительно X)
     DISPLAY_HEADER = True  # Отображать заголовок таблицы
     COLOR = Color.ORANGE
     HEADER = ['N', 'Имя игрока', 'Счет']
 
+
+class TableProperties:
+    BACKGROUND = Color.BLACK
+    FONT_FILE = 'fonts/pixel_font.ttf'
+    CELL_HEIGHT = 10  # %
+    WIDTH = 80  # %
+    Y_SHIFT = 50  # px (отступ сверху)
+    LINE_WIDTH = 2  # px
+    FONT_SIZE = 40  # px
+    FONT_SHIFT = 20  # px (отступ текса в ячейке относительно X)
+
+
+class StatisticsProperties:
+    COLOR = Color.ORANGE
+    NUM_SYMBOL_WIDTH = 3  # Определяет количество ведущих нулей у числа
+    NAME_WIDTH = 60  # % относительно таблицы
+    NUM_WIDTH = 20  # % относительно таблицы
+    ADD_SCORE_WIDTH = 20  # % относительно таблицы
+    HEADER = None
