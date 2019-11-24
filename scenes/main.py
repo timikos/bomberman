@@ -7,7 +7,7 @@ from objects.blocks import TileMap, DestroyableTileMap
 from objects.score import Score, ScorePos
 from objects.door import Door
 from objects.bombs import Bomb
-from constants import Color
+from constants import Color, ScoreProperties
 from objects.modifier import SpeedModifier
 
 
@@ -68,16 +68,16 @@ class MainScene(Scene):
         for ghost in self.ghosts:
             if ghost.collides_with(self.bomb.fire_rects[0]):
                 ghost.hidden = True
-                self.score.add(1)
+                self.score.add(100)
             elif ghost.collides_with(self.bomb.fire_rects[1]):
                 ghost.hidden = True
-                self.score.add(1)
+                self.score.add(100)
             elif ghost.collides_with(self.bomb.fire_rects[2]):
                 ghost.hidden = True
-                self.score.add(1)
+                self.score.add(100)
             elif ghost.collides_with(self.bomb.fire_rects[3]):
                 ghost.hidden = True
-                self.score.add(1)
+                self.score.add(100)
 
     def process_ghost_collisions_with_destroyable_tiles(self):
         for row in self.dstr_tilemap.tiles:
@@ -89,18 +89,28 @@ class MainScene(Scene):
 
 
     def process_show_door(self):
-        if self.score.count == 5:
+        if self.score.count == 500:
             self.door.show_door()
 
     def process_game_lose(self):
         if self.health.count == 0:
-            self.score.write_to_file()
-            self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
+            self.game.scenes[self.game.STATISTICS_SCENE_INDEX].set_info([
+                ['Заработано очков', self.score.count, self.score.count],
+                ['Жизней осталось', self.health.count, self.health.count * ScoreProperties.HEALTH]
+            ])
+            self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
+            # self.score.write_to_file()
+            # self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
 
     def process_door_collisions_with_bomberman(self):
         if self.door.collides_with(self.bomberman):
-            self.score.write_to_file()
-            self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
+            self.game.scenes[self.game.STATISTICS_SCENE_INDEX].set_info([
+                ['Заработано очков', self.score.count, self.score.count],
+                ['Жизней осталось', self.health.count, self.health.count * ScoreProperties.HEALTH]
+            ])
+            self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
+            # self.score.write_to_file()
+            # self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
 
     def process_bomberman_collision_with_bomb_fire(self):
         if self.bomberman.collides_with(self.bomb.fire_rects[0]):
