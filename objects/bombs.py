@@ -1,7 +1,7 @@
 import pygame
 from objects.base import DrawObject
 from constants import BombProperties, FieldProperties
-
+from Global import Globals
 
 class Bomb(DrawObject):
     pygame.mixer.init()
@@ -22,8 +22,10 @@ class Bomb(DrawObject):
                            pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT)]
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, 40, 40)
+        self.x=0
 
     def create_bomb(self, x, y):
+        self.x=x
         self.rect.x = x + 3
         self.rect.y = y + 3
         self.hidden = False
@@ -51,6 +53,7 @@ class Bomb(DrawObject):
         self.start_ticks = 0
 
     def process_draw(self):
+        self.update_x(Globals.FieldPosition)
         seconds = (pygame.time.get_ticks() - self.start_ticks) / 1000
         if not self.hidden and seconds <= 2:
             self.game.screen.blit(self.image, self.rect)
@@ -68,5 +71,9 @@ class Bomb(DrawObject):
             self.fire_rects[3].x = 800
             self.fire_rects[3].y = 0
 
+
     def collides_with(self, other):
         return self.rect.colliderect(other)
+
+    def update_x(self,x):
+            self.rect.x=self.x-x

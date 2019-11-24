@@ -2,6 +2,7 @@ import pygame
 from random import randint
 from constants import FieldProperties
 from objects.base import DrawObject
+from Global import Globals
 
 
 class Block(DrawObject):
@@ -23,6 +24,9 @@ class IndestructibleBlock(Block):
         self.y = y * self.cell_length
         self.image = pygame.image.load(IndestructibleBlock.filename)
 
+    def update_x(self,x):
+        self.rect.x=self.x-x
+
     def process_draw(self):
         self.game.screen.blit(self.image, self.rect)
 
@@ -36,9 +40,15 @@ class IndestructibleBlock(Block):
 class TileMap(DrawObject):
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
+        self.game=game
         self.x = x
         self.y = y
         self.tiles = []
+        self.width=width
+        self.height=height
+        self.make_tilemap(game,width,height)
+
+    def make_tilemap(self,game,width,height):
         for x in range(width):
             self.tiles += [[]]
             for y in range(height):
@@ -49,6 +59,7 @@ class TileMap(DrawObject):
     def process_draw(self):
         for x in self.tiles:
             for tile in x:
+                tile.update_x(Globals.FieldPosition-400)
                 tile.process_draw()
 
     def process_event(self, event):
@@ -98,6 +109,8 @@ class DestroyedBlock(Block):
         #    if event.type == DestroyedBlock.explosion_event:
         #        DestroyedBlock.explosion_event = None
         #        self.isDestroyed = True
+    def update_x(self,x):
+        self.rect.x=self.x-x
 
     def collides_with(self, other):
         if not self.isDestroyed:
@@ -122,6 +135,7 @@ class DestroyableTileMap(DrawObject):
     def process_draw(self):
         for x in self.tiles:
             for tile in x:
+                tile.update_x(Globals.FieldPosition-400)
                 tile.process_draw()
 
     def process_event(self, event):

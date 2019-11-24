@@ -1,5 +1,6 @@
 import pygame
 from objects.base import DrawObject
+from Global import Globals
 
 
 class SpeedModifier(DrawObject):
@@ -21,6 +22,10 @@ class SpeedModifier(DrawObject):
     def collides_with(self, bomberman):
         return self.rect.colliderect(bomberman)
 
+    def update_x(self,x):
+        self.rect.x=self.x-x
+
     def process_draw(self):
+        self.update_x(Globals.FieldPosition - 400)
         if not self.hidden:
             self.game.screen.blit(self.image, self.rect)
