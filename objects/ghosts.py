@@ -14,6 +14,7 @@ class Ghost(DrawObject):
                        'images/ghosts/enemy_1_Right.png',
                        'images/ghosts/enemy_1_Left.png']
         self.hidden = hidden
+        self.pass_throw_destruct_blocks = False  # Возможность передвигаться через разрушаемые блоки
         self.x = x
         self.y = y
         self.current_shift_x = EnemyProperties.DIRECTION_X
@@ -30,13 +31,13 @@ class Ghost(DrawObject):
         pass
 
     def process_logic(self):
-        if self.current_shift_y == 1 and self.rect.y < self.game.height - 150:
+        if self.current_shift_y == 1 and self.rect.y < self.game.height - ScreenProperties.SCREEN_BORDER_HEIGHT:
             self.image = pygame.image.load(self.images[0])
             self.rect.y += self.speed
         elif self.current_shift_y == -1 and self.rect.y > 40:
             self.image = pygame.image.load(self.images[0])
             self.rect.y -= self.speed
-        elif self.current_shift_x == 1 and self.rect.x < self.game.width - 160:
+        elif self.current_shift_x == 1 and self.rect.x < self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
             self.image = pygame.image.load(self.images[1])
             self.rect.x += self.speed
         elif self.current_shift_x == -1 and self.rect.x > 80:
@@ -80,10 +81,23 @@ class Ghost(DrawObject):
 
 
 class SpeedGhost(Ghost):
+    """Монстр с увеличенной скоростью"""
     filename = 'images/ghosts/enemy_2_Main.png'
 
-    def __init__(self, game, speed=3):
+    def __init__(self, game, speed=2):
         super().__init__(game, speed)
         self.images = ['images/ghosts/enemy_2_Main.png',
                        'images/ghosts/enemy_2_Right.png',
                        'images/ghosts/enemy_2_Left.png']
+
+
+class SuperGhost(Ghost):
+    """Монстр с увеличенной скоростью и возможностью передвигаться через разрушаемые блоки"""
+    filename = 'images/ghosts/enemy_3_Main.png'
+
+    def __init__(self, game, speed=2):
+        super().__init__(game, speed)
+        self.images = ['images/ghosts/enemy_3_Main.png',
+                       'images/ghosts/enemy_3_Right.png',
+                       'images/ghosts/enemy_3_Left.png']
+        self.pass_throw_destruct_blocks = True
