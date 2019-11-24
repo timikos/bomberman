@@ -1,12 +1,12 @@
 import pygame
 from objects.base import DrawObject
 from constants import BombermanProperties, ScreenProperties, FieldProperties
-
+from Global import Globals
 
 class Bomberman(DrawObject):
     filename = 'images/bomberman/bomberman.png'
 
-    def __init__(self, game, x=BombermanProperties.RESPAWN_X, y=BombermanProperties.RESPAWN_Y, speed=5):
+    def __init__(self, game, x=BombermanProperties.RESPAWN_X, y=BombermanProperties.RESPAWN_Y, speed=1):
         super().__init__(game)
         self.image = pygame.image.load(Bomberman.filename)
         self.current_shift_x = BombermanProperties.DIRECTION_X
@@ -22,27 +22,40 @@ class Bomberman(DrawObject):
                 self.image = pygame.image.load('images/bomberman/bomberman_up1.png')
                 self.current_shift_y = -1
                 self.current_shift_x = 0
+                Globals.TurnLeft = False
+                Globals.TurnRight = False
             elif chr(event.key) == 's':
                 self.image = pygame.image.load('images/bomberman/bomberman_down1.png')
                 self.current_shift_y = 1
                 self.current_shift_x = 0
+                Globals.TurnLeft = False
+                Globals.TurnRight = False
             elif chr(event.key) == 'a':
                 self.image = pygame.image.load('images/bomberman/bomberman_left1.png')
                 self.current_shift_y = 0
                 self.current_shift_x = -1
+                Globals.IsOnMove = True
+                Globals.TurnLeft = True
             elif chr(event.key) == 'd':
                 self.image = pygame.image.load('images/bomberman/bomberman_right1.png')
                 self.current_shift_y = 0
                 self.current_shift_x = 1
+                Globals.IsOnMove = True
+                Globals.TurnRight = True
             elif event.key == pygame.K_SPACE:
                 cur_cell = self.game.scenes[1].field.get_cell_by_pos(self.rect.x, self.rect.y)
                 self.game.scenes[1].bomb.create_bomb(cur_cell[0], cur_cell[1])
+                Globals.TurnLeft = False
+                Globals.TurnRight = False
 
         elif event.type == pygame.KEYUP:
             if event.key in [97, 100, 115, 119]:
                 self.current_shift_x = 0
                 self.current_shift_y = 0
                 self.image = pygame.image.load('images/bomberman/bomberman.png')
+                Globals.IsOnMove = False
+                Globals.TurnLeft = False
+                Globals.TurnRight = False
 
     def process_logic(self):
         if self.current_shift_y == 1:
@@ -57,6 +70,7 @@ class Bomberman(DrawObject):
         elif self.current_shift_x == -1:
             if self.rect.x > FieldProperties.CELL_LENGTH * 2:
                 self.rect.x -= self.speed
+        Globals.FieldPosition=self.rect.x
 
     def collides_with(self, other):
         return self.rect.colliderect(other)

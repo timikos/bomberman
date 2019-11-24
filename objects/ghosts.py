@@ -1,7 +1,9 @@
 import pygame
 from random import randint, randrange
 from objects.base import DrawObject
-from constants import EnemyProperties, ScreenProperties, FieldProperties
+from constants import EnemyProperties,ScreenProperties,FieldProperties
+from Global import Globals
+
 
 
 class Ghost(DrawObject):
@@ -17,6 +19,7 @@ class Ghost(DrawObject):
         self.pass_throw_destruct_blocks = False  # Возможность передвигаться через разрушаемые блоки
         self.x = x
         self.y = y
+        self.glob=Globals.FieldPosition
         self.current_shift_x = EnemyProperties.DIRECTION_X
         self.current_shift_y = EnemyProperties.DIRECTION_Y
         self.speed = speed
@@ -41,9 +44,16 @@ class Ghost(DrawObject):
             self.image = pygame.image.load(self.images[1])
             self.rect.x += self.speed
         elif self.current_shift_x == -1 and self.rect.x > 80:
-            self.image = pygame.image.load(self.images[2])
             self.rect.x -= self.speed
-        if self.rect.x == FieldProperties.CELL_LENGTH * 2 or self.rect.y == FieldProperties.CELL_LENGTH or \
+            self.image = pygame.image.load(self.images[2])
+            self.rect.x -= 1
+        if Globals.TurnRight == True and self.glob != Globals.FieldPosition:
+            self.rect.x -= 5
+            self.glob = Globals.FieldPosition
+        if Globals.TurnLeft == True and self.glob != Globals.FieldPosition:
+            self.rect.x += 5
+            self.glob = Globals.FieldPosition
+        if self.rect.x == FieldProperties.CELL_LENGTH * 2 or self.rect.y == FieldProperties.CELL_LENGTH or\
                 self.rect.y == self.game.height - ScreenProperties.HEIGHT or \
                 self.rect.x == self.game.width - ScreenProperties.WIDTH:
             if self.rect.x == FieldProperties.CELL_LENGTH * 2:
@@ -80,6 +90,7 @@ class Ghost(DrawObject):
             self.current_shift_y = 0
 
 
+
 class SpeedGhost(Ghost):
     """Монстр с увеличенной скоростью"""
     filename = 'images/ghosts/enemy_2_Main.png'
@@ -101,3 +112,4 @@ class SuperGhost(Ghost):
                        'images/ghosts/enemy_3_Right.png',
                        'images/ghosts/enemy_3_Left.png']
         self.pass_throw_destruct_blocks = True
+

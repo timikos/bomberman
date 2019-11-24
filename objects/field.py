@@ -1,13 +1,15 @@
 import pygame
 from constants import FieldProperties
 from objects.base import DrawObject
+from Global import Globals
 
 
 class Field(DrawObject):
 
     @staticmethod
     def get_cell_by_pos(x, y):
-        cell_x = (x + 10) // 40 * 40
+        cell_x = (x+Globals.FieldPosition)//40*40
+        print(cell_x)
         cell_y = (y + 10) // 40 * 40
         return [cell_x, cell_y]
 
@@ -28,6 +30,7 @@ class Field(DrawObject):
     def process_draw(self):
         for i in self.field:
             for cell in i:
+                cell.update_x(Globals.FieldPosition-400)
                 cell.process_draw()
 
 
@@ -44,3 +47,6 @@ class Cell(DrawObject):
 
     def process_draw(self):
         self.game.screen.blit(self.image, self.rect)
+
+    def update_x(self,x):
+        self.rect.x=self.x-x
