@@ -106,7 +106,7 @@ class Score(DrawObject):
 
 
 class Table(DrawObject):
-    def __init__(self, game, color, cells, data, header=None, display_border=False):
+    def __init__(self, game, color, cells, data, header=None, display_border=True):
         self.color = color
         self.cells = cells  # Представляет собой массив из чисел, где каждое число - ширина клетки в процентах
         self.header = header  # Массив из строк
