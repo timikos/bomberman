@@ -31,7 +31,6 @@ class Field(DrawObject):
                 cell.process_draw()
 
 
-
 class Cell(DrawObject):
     def __init__(self, game, x, y, image):
         super().__init__(game)

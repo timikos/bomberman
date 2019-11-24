@@ -40,3 +40,20 @@ class EnemyProperties:
 class BombProperties:
     WIDTH = 30  # Ширина прямоугольника бомб
     HEIGHT = 30  # Высота прямоугольника бомб
+
+
+class ScoreTableProperties:
+    PLAYER_COUNT = 5
+    WIDTH = 80  # %
+    CELL_HEIGHT = 10  # %
+    PLAYER_NUM_WIDTH = 10  # % относительно таблицы
+    NAME_WIDTH = 70  # % относительно таблицы
+    SCORE_WIDTH = 20  # % относительно таблицы
+    Y_SHIFT = 50  # px (отступ сверху)
+    LINE_WIDTH = 2  # px
+    FONT_SIZE = 40  # px
+    FONT_SHIFT = 20  # px (отступ текса в ячейке относительно X)
+    DISPLAY_HEADER = True  # Отображать заголовок таблицы
+    COLOR = Color.ORANGE
+    HEADER = ['N', 'Имя игрока', 'Счет']
+
