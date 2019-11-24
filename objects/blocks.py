@@ -11,7 +11,7 @@ class Block(DrawObject):
         self.x = x * cell_length
         self.y = y * cell_length
         self.cell_length = cell_length
-        self.rect = pygame.Rect(self.x, self.y, cell_length, cell_length)
+        self.rect = pygame.Rect(self.x, self.y, cell_length, 35)
 
 
 class IndestructibleBlock(Block):
