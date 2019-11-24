@@ -1,7 +1,7 @@
 import pygame
 from enum import Enum
 from objects.base import DrawObject
-from constants import Color, ScoreTableProperties
+from constants import Color, ScoreTableProperties, TableProperties
 import os
 
 
@@ -24,6 +24,7 @@ class Score(DrawObject):
         self.pos = pos
         self.text_before = text_before
         self.text_after = text_after
+        self.font_file = 'fonts/pixel_font.ttf'
         self.font = None
         self.text = None
         self.update()
@@ -56,7 +57,7 @@ class Score(DrawObject):
         self.update()
 
     def update(self):
-        self.font = pygame.font.Font('fonts/pixel_font.ttf', self.size)
+        self.font = pygame.font.Font(self.font_file, self.size)
         self.text = self.font.render(self.get_text(), 1, self.color)
 
     def get_coordinates(self):
@@ -104,13 +105,81 @@ class Score(DrawObject):
         HighScoreTable.need_to_update()
 
 
-class HighScoreTable(DrawObject):
-    info_updated = False
+class Table(DrawObject):
+    def __init__(self, game, color, cells, data, header=None, display_border=False):
+        self.color = color
+        self.cells = cells  # Представляет собой массив из чисел, где каждое число - ширина клетки в процентах
+        self.header = header  # Массив из строк
+        self.data = []  # Двумерный массив
+        self.texts = []
+        self.display_border = display_border
+        self.update_data(data)
+        super().__init__(game)
+
+    def update_data(self, data):
+        self.data = data
+        self.texts = []
+        if self.header is not None:
+            self.texts += [[]]
+            for i in self.header:
+                text = self.str_to_text(i)
+                self.texts[0] += [text]
+        for i in data:
+            self.texts += [[]]
+            for j in i:
+                self.texts[-1] += [self.str_to_text(j)]
+
+    def str_to_text(self, s):
+        return pygame.font.Font(TableProperties.FONT_FILE, TableProperties.FONT_SIZE).render(
+            str(s), 1,
+            self.color)
+
+    def get_width(self):
+        return int(self.game.width * TableProperties.WIDTH / 100)
+
+    def get_x(self):
+        return self.game.width // 2 - self.get_width() // 2
 
     @staticmethod
-    def str_to_text(s, bold=False):
-        return pygame.font.Font(None, ScoreTableProperties.FONT_SIZE, bold=bold).render(str(s), 1,
-                                                                                        ScoreTableProperties.COLOR)
+    def get_y():
+        return TableProperties.Y_SHIFT
+
+    def get_pos(self):
+        return self.get_x(), self.get_y()
+
+    def get_cell_height(self):
+        return int(self.game.height * TableProperties.CELL_HEIGHT / 100)
+
+    def set_text_to_cell(self, n, m, text):
+        x = self.get_x() + self.get_width() * sum(self.cells[:m]) // 100 + TableProperties.FONT_SHIFT
+        y = self.get_y() + n * self.get_cell_height() + (self.get_cell_height() - text.get_height()) // 2
+        self.game.screen.blit(text, (x, y))
+
+    def process_draw(self):
+        x = self.get_x()
+        y = self.get_y()
+        width = self.get_width()
+        height = self.get_cell_height() * (len(self.data) + int(self.header is not None))
+        pygame.draw.rect(self.game.screen, Color.BLACK, pygame.Rect((x, y), (width, height)))
+        for i in range(len(self.data) + 1 + int(self.header is not None)):
+            if self.display_border:
+                pygame.draw.line(self.game.screen, self.color, (x, y + self.get_cell_height() * i),
+                                 (x + self.get_width(), y + self.get_cell_height() * i), TableProperties.LINE_WIDTH)
+        for i in range(4):
+            y1 = y
+            y2 = y + self.get_cell_height() * (len(self.data) +
+                                               int(self.header is not None))
+            x1 = x2 = int(x + width * sum(self.cells[:i]) / 100)
+            if self.display_border:
+                pygame.draw.line(self.game.screen, ScoreTableProperties.COLOR, (x1, y1), (x2, y2),
+                                 TableProperties.LINE_WIDTH)
+        for i in range(len(self.texts)):
+            for j in range(len(self.texts[i])):
+                self.set_text_to_cell(i, j, self.texts[i][j])
+
+
+class HighScoreTable(Table):
+    info_updated = False
 
     @staticmethod
     def parse_file(file_path='score.txt'):
@@ -126,72 +195,27 @@ class HighScoreTable(DrawObject):
             return players[:ScoreTableProperties.PLAYER_COUNT]
         return []
 
+    def get_players_info(self, file_path='score.txt'):
+        players = self.parse_file(file_path)
+        return [(i + 1, players[i]['name'], players[i]['score']) for i in range(len(players))]
+
     @staticmethod
     def need_to_update():
         HighScoreTable.info_updated = False
 
     def __init__(self, game, file_path='score.txt'):
         self.file_path = file_path
-        self.cells = [ScoreTableProperties.PLAYER_NUM_WIDTH,
-                      ScoreTableProperties.NAME_WIDTH,
-                      ScoreTableProperties.SCORE_WIDTH]
         self.texts = []
-        super().__init__(game)
+        super().__init__(game, ScoreTableProperties.COLOR,
+                         [ScoreTableProperties.PLAYER_NUM_WIDTH,
+                          ScoreTableProperties.NAME_WIDTH,
+                          ScoreTableProperties.SCORE_WIDTH], self.get_players_info(self.file_path),
+                         (ScoreTableProperties.HEADER if ScoreTableProperties.DISPLAY_HEADER else None))
 
     def update_info(self):
-        self.texts = []
-        if ScoreTableProperties.DISPLAY_HEADER:
-            self.texts += [[]]
-            for i in ScoreTableProperties.HEADER:
-                text = self.str_to_text(i, bold=False)
-                self.texts[0] += [text]
-        players = self.parse_file(self.file_path)
-        for i in range(len(players)):
-            self.texts += [[]]
-            self.texts[-1] += [self.str_to_text(i + 1)]
-            self.texts[-1] += [self.str_to_text(players[i]['name'])]
-            self.texts[-1] += [self.str_to_text(players[i]['score'])]
-        HighScoreTable.info_updated = True
+        self.update_data(self.get_players_info())
+        self.info_updated = True
 
-    def get_width(self):
-        return int(self.game.width * ScoreTableProperties.WIDTH / 100)
-
-    def get_x(self):
-        return self.game.width // 2 - self.get_width() // 2
-
-    def get_y(self):
-        return ScoreTableProperties.Y_SHIFT
-
-    def get_pos(self):
-        return self.get_x(), self.get_y()
-
-    def get_cell_height(self):
-        return int(self.game.height * ScoreTableProperties.CELL_HEIGHT / 100)
-
-    def set_text_to_cell(self, n, m, text):
-        x = self.get_x() + self.get_width() * sum(self.cells[:m]) // 100 + ScoreTableProperties.FONT_SHIFT
-        y = self.get_y() + n * self.get_cell_height() + (self.get_cell_height() - text.get_height()) // 2
-        self.game.screen.blit(text, (x, y))
-
-    def process_draw(self):
+    def process_logic(self):
         if not self.info_updated:
             self.update_info()
-        x = self.get_x()
-        y = self.get_y()
-        width = self.get_width()
-        height = self.get_cell_height() * (ScoreTableProperties.PLAYER_COUNT + int(ScoreTableProperties.DISPLAY_HEADER))
-        pygame.draw.rect(self.game.screen, Color.BLACK, pygame.Rect((x, y), (width, height)))
-        for i in range(ScoreTableProperties.PLAYER_COUNT + 1 + int(ScoreTableProperties.DISPLAY_HEADER)):
-            pygame.draw.line(self.game.screen, ScoreTableProperties.COLOR, (x, y + self.get_cell_height() * i),
-                             (x + self.get_width(), y + self.get_cell_height() * i), ScoreTableProperties.LINE_WIDTH)
-        for i in range(4):
-            y1 = y
-            y2 = y + self.get_cell_height() * (ScoreTableProperties.PLAYER_COUNT +
-                                               int(ScoreTableProperties.DISPLAY_HEADER))
-            x1 = x2 = int(x + width * sum(self.cells[:i]) / 100)
-            pygame.draw.line(self.game.screen, ScoreTableProperties.COLOR, (x1, y1), (x2, y2),
-                             ScoreTableProperties.LINE_WIDTH)
-        for i in range(len(self.texts)):
-            for j in range(len(self.texts[i])):
-                self.set_text_to_cell(i, j, self.texts[i][j])
-
