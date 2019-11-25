@@ -1,5 +1,5 @@
 class Globals:
-    FieldPosition=0
+    FieldPosition=400
     IsOnMove=False
     TurnLeft=False
     TurnRight=False

@@ -9,6 +9,7 @@ from objects.door import Door
 from objects.bombs import Bomb
 from constants import Color, ScoreProperties
 from objects.modifier import SpeedModifier
+from Global import Globals
 
 
 class MainScene(Scene):
@@ -85,8 +86,7 @@ class MainScene(Scene):
             for tile in row:
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
-                        ghost.current_shift_x *= -1
-                        ghost.current_shift_y *= -1
+                        ghost.start_move()
 
 
     def process_show_door(self):
@@ -150,10 +150,13 @@ class MainScene(Scene):
                 if tile.collides_with(self.bomberman.rect):
                     if self.bomberman.current_shift_x > 0:
                         while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x -= 1
+                            Globals.FieldPosition -= self.bomberman.speed
+                            self.process_all_draw()
+                            print(Globals.FieldPosition)
                     elif self.bomberman.current_shift_x < 0:
                         while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x += 1
+                            Globals.FieldPosition += self.bomberman.speed
+                            self.process_all_draw()
                     elif self.bomberman.current_shift_y > 0:
                         while tile.collides_with(self.bomberman.rect):
                             self.bomberman.rect.y -= 1
@@ -168,15 +171,13 @@ class MainScene(Scene):
             for tile in row:
                 if tile.collides_with(self.bomberman.rect):
                     if self.bomberman.current_shift_x > 0:
-                        if self.bomberman.speed == 5:
-                            self.bomberman.rect.x -= 5
-                        elif self.bomberman.speed == 10:
-                            self.bomberman.rect.x -= 10
+                        while tile.collides_with(self.bomberman.rect):
+                            Globals.FieldPosition -= self.bomberman.speed
+                            self.process_all_draw()
                     elif self.bomberman.current_shift_x < 0:
-                        if self.bomberman.speed == 5:
-                            self.bomberman.rect.x += 5
-                        elif self.bomberman.speed == 10:
-                            self.bomberman.rect.x += 15
+                        while tile.collides_with(self.bomberman.rect):
+                            Globals.FieldPosition += self.bomberman.speed
+                            self.process_all_draw()
                     elif self.bomberman.current_shift_y > 0:
                         if self.bomberman.speed == 5:
                             self.bomberman.rect.y -= 5
@@ -206,13 +207,11 @@ class MainScene(Scene):
                     if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
                         tile.isDestroyed = True
 
-
-
-"""
-    Метод коллизии призраков со стенкой
-
     def process_ghost_collisions_with_wall(self):
         for ghost in self.ghosts:
-            if ghost.collides_with(<стенка>):
+            if ghost.collides_with(self.tilemap.tiles):
                 ghost.start_move()
-"""
+'''
+    Метод коллизии призраков со стенкой
+'''
+

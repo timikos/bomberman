@@ -47,11 +47,11 @@ class Ghost(DrawObject):
             self.rect.x -= self.speed
             self.image = pygame.image.load(self.images[2])
             self.rect.x -= 1
-        if Globals.TurnRight == True and self.glob != Globals.FieldPosition:
-            self.rect.x -= 5
+        if Globals.TurnRight == True:
+            self.rect.x -= (Globals.FieldPosition-self.glob)
             self.glob = Globals.FieldPosition
-        if Globals.TurnLeft == True and self.glob != Globals.FieldPosition:
-            self.rect.x += 5
+        if Globals.TurnLeft == True:
+            self.rect.x += (self.glob-Globals.FieldPosition)
             self.glob = Globals.FieldPosition
         if self.rect.x == FieldProperties.CELL_LENGTH * 2 or self.rect.y == FieldProperties.CELL_LENGTH or\
                 self.rect.y == self.game.height - ScreenProperties.HEIGHT or \

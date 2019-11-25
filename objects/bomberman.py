@@ -65,12 +65,12 @@ class Bomberman(DrawObject):
             if self.rect.y > FieldProperties.CELL_LENGTH:
                 self.rect.y -= self.speed
         elif self.current_shift_x == 1:
-            if self.rect.x <= self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
-                self.rect.x += self.speed
+            if self.rect.x <= self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH+10000:
+                Globals.FieldPosition += self.speed
         elif self.current_shift_x == -1:
             if self.rect.x > FieldProperties.CELL_LENGTH * 2:
-                self.rect.x -= self.speed
-        Globals.FieldPosition=self.rect.x
+                Globals.FieldPosition -= self.speed
+
 
     def collides_with(self, other):
         return self.rect.colliderect(other)
