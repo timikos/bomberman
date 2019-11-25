@@ -1,16 +1,19 @@
 from constants import Color
 from objects.balls import LinearMovingBall
 from objects.text import Text
+from objects.timer import Timer
 from scenes.base import Scene
 
 
 class MainScene(Scene):
     MAX_COLLISIONS = 15
 
+
     def create_objects(self):
         self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
         self.balls = [LinearMovingBall(self.game) for _ in range(5)]
-        self.objects = self.balls + [self.text_count]
+        self.timer = Timer(self.game)
+        self.objects = self.balls + [self.text_count, self.timer]
 
     def additional_logic(self):
         self.process_ball_collisions()
