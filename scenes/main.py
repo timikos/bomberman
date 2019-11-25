@@ -12,7 +12,7 @@ class MainScene(Scene):
     def create_objects(self):
         self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
         self.balls = [LinearMovingBall(self.game) for _ in range(5)]
-        self.timer = Timer(self.game)
+        self.timer = Timer(self.game).time_over()
         self.objects = self.balls + [self.text_count]
 
     def additional_logic(self):

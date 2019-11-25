@@ -17,9 +17,6 @@ class Timer(Scene):
     def get_timer_text(self):
         return self.TIMER_GAMEOVER.format(self.seconds)
 
-    # def create_objects(self):
-    #     self.text_timer = Text(self.game, text=self.get_timer_text(), color=Color.WHITE, x=self.POS_X, y=self.POS_Y)
-    #     self.objects = [self.text_timer]
 
     def timer_update(self):
         font_timer = pygame.font.Font(None, 36)
@@ -27,8 +24,9 @@ class Timer(Scene):
         self.game.screen.blit(text_timer, (self.POS_X, self.POS_X))
 
     def time_over(self):
-        seconds = self.MAX_TIME_SECONDS// 100 - self.game.ticks // 100
-        if seconds < self.seconds_left:
+        seconds = self.MAX_TIME_SECONDS // 100 - self.game.ticks // 100
+        print(seconds)
+        if seconds < self.seconds:
             self.seconds = seconds
             self.text_timer.update_text(self.get_timer_text())
         if self.seconds == 0:
