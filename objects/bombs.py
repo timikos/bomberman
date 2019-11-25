@@ -14,12 +14,12 @@ class BombFire:
         # на сколько клеток расширим базовый огонь
         self.update_power = update_power
         self.fire_rects = []
+
+    def create_fire(self, x, y):
         # если создавать массив не через цикл,
         # то скорее всего все элементы массива будут ссылками на один экземпляр pygame.Rect
         for i in range(self.count_fire_sides * self.update_power):
             self.fire_rects.append(pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT))
-
-    def create_fire(self, x, y):
         for i in range(self.update_power):
             self.fire_rects[i].x = x - FieldProperties.CELL_LENGTH
             self.fire_rects[i].y = y
@@ -36,6 +36,9 @@ class BombFire:
         for fire_rect in self.fire_rects:
             # self.sound_explosion.play()
             self.game.screen.blit(self.fire_image, fire_rect)
+
+    def delete_fire(self):
+        self.fire_rects.clear()
 
 
 class Bomb(DrawObject):
@@ -73,6 +76,7 @@ class Bomb(DrawObject):
             self.bomb_fire.create_fire(self.rect.x, self.rect.y)
             self.bomb_fire.show_fire()
         elif not self.hidden and seconds > 3:
+            self.bomb_fire.delete_fire()
             self.hide_bomb()
 
     def collides_with(self, other):
