@@ -1,18 +1,19 @@
 import pygame
 
 from constants import Color
-from objects.text import Text
-from scenes.base import Scene
+from objects.base import DrawObject
 
-class Timer(Scene):
-    MAX_TIME_SECONDS = 120
+class Timer(DrawObject):
+    MAX_TIME_SECONDS = 12000
     TIMER_GAMEOVER = 'Time: {}'
     POS_X = 10
     POS_Y = 10
 
     def __init__(self, game):
-        self.seconds = self.MAX_TIME_SECONDS // 100
         super().__init__(game)
+        self.start_ticks = 0
+        self.seconds = self.MAX_TIME_SECONDS // 100
+        print(self.seconds)
 
     def get_timer_text(self):
         return self.TIMER_GAMEOVER.format(self.seconds)
@@ -23,12 +24,13 @@ class Timer(Scene):
         text_timer = font_timer.render(self.get_timer_text(), 1, Color.RED)
         self.game.screen.blit(text_timer, (self.POS_X, self.POS_X))
 
-    def time_over(self):
+    def process_logic(self):
+        self.game.ticks += 1
         seconds = self.MAX_TIME_SECONDS // 100 - self.game.ticks // 100
-        print(seconds)
-        if seconds < self.seconds:
+        if seconds > 0:
+            print(self.seconds)
             self.seconds = seconds
-            self.text_timer.update_text(self.get_timer_text())
-        if self.seconds == 0:
+            self.timer_update()
+        else:
             self.game.game_over = True
 
