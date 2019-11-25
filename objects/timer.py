@@ -12,7 +12,6 @@ class Timer(Scene):
 
     def __init__(self, game):
         self.seconds = self.MAX_TIME_SECONDS // 100
-        # self.timer_update()
         super().__init__(game)
 
     def get_timer_text(self):
