@@ -61,25 +61,17 @@ class MainScene(Scene):
     def process_bomb_detection(self):
         for row in self.dstr_tilemap.tiles:
             for tile in row:
-                for bomb in self.bomb.fire_rects:
-                    if tile.collides_with(bomb):
+                for fire_rect in self.bomb.bomb_fire.fire_rects:
+                    if tile.collides_with(fire_rect):
                         tile.start_ticks = pygame.time.get_ticks()
                         tile.readyToBreak = True
 
     def process_ghost_collisions_with_bomb(self):
         for ghost in self.ghosts:
-            if ghost.collides_with(self.bomb.fire_rects[0]):
-                ghost.hidden = True
-                self.score.add(100)
-            elif ghost.collides_with(self.bomb.fire_rects[1]):
-                ghost.hidden = True
-                self.score.add(100)
-            elif ghost.collides_with(self.bomb.fire_rects[2]):
-                ghost.hidden = True
-                self.score.add(100)
-            elif ghost.collides_with(self.bomb.fire_rects[3]):
-                ghost.hidden = True
-                self.score.add(100)
+            for fire_rect in self.bomb.bomb_fire.fire_rects:
+                if ghost.collides_with(fire_rect):
+                    ghost.hidden = True
+                    self.score.add(100)
 
     def process_ghost_collisions_with_destroyable_tiles(self):
         for row in self.dstr_tilemap.tiles:
@@ -114,14 +106,9 @@ class MainScene(Scene):
             # self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
 
     def process_bomberman_collision_with_bomb_fire(self):
-        if self.bomberman.collides_with(self.bomb.fire_rects[0]):
-            self.respawn_bomberman_after_collision()
-        elif self.bomberman.collides_with(self.bomb.fire_rects[1]):
-            self.respawn_bomberman_after_collision()
-        elif self.bomberman.collides_with(self.bomb.fire_rects[2]):
-            self.respawn_bomberman_after_collision()
-        elif self.bomberman.collides_with(self.bomb.fire_rects[3]):
-            self.respawn_bomberman_after_collision()
+        for fire_rect in self.bomb.bomb_fire.fire_rects:
+            if self.bomberman.collides_with(fire_rect):
+                self.respawn_bomberman_after_collision()
 
     def respawn_bomberman_after_collision(self):
         self.health.sub(1)

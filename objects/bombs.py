@@ -3,10 +3,44 @@ from objects.base import DrawObject
 from constants import BombProperties, FieldProperties
 from Global import Globals
 
+
+class BombFire:
+    fire_filename = 'images/bombs/fire_center.png'
+
+    def __init__(self, game, update_power=1):
+        self.game = game
+        self.fire_image = pygame.image.load(BombFire.fire_filename)
+        self.count_fire_sides = 4
+        # на сколько клеток расширим базовый огонь
+        self.update_power = update_power
+        self.fire_rects = []
+        # если создавать массив не через цикл,
+        # то скорее всего все элементы массива будут ссылками на один экземпляр pygame.Rect
+        for i in range(self.count_fire_sides * self.update_power):
+            self.fire_rects.append(pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT))
+
+    def create_fire(self, x, y):
+        for i in range(self.update_power):
+            self.fire_rects[i].x = x - FieldProperties.CELL_LENGTH
+            self.fire_rects[i].y = y
+            self.fire_rects[i+1].x = x + FieldProperties.CELL_LENGTH
+            self.fire_rects[i+1].y = y
+            self.fire_rects[i+2].x = x
+            self.fire_rects[i+2].y = y - FieldProperties.CELL_LENGTH
+            self.fire_rects[i+3].x = x
+            self.fire_rects[i+3].y = y + FieldProperties.CELL_LENGTH
+        # центральный огонь
+        self.fire_rects.append(pygame.Rect(x, y, BombProperties.WIDTH, BombProperties.HEIGHT))
+
+    def show_fire(self):
+        for fire_rect in self.fire_rects:
+            # self.sound_explosion.play()
+            self.game.screen.blit(self.fire_image, fire_rect)
+
+
 class Bomb(DrawObject):
     pygame.mixer.init()
     filename = 'images/bombs/bomb.png'
-    fire_filename = 'images/bombs/fire_center.png'
     sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
     sound_explosion.set_volume(min(0.2, 0.3))
 
@@ -14,14 +48,9 @@ class Bomb(DrawObject):
         super().__init__(game)
         self.hidden = hidden
         self.start_ticks = 0
-        self.fire_image = pygame.image.load(Bomb.fire_filename)
-        self.fire_rects = [pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
-                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
-                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
-                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT),
-                           pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT)]
+        self.bomb_fire = BombFire(self.game)
         self.image = pygame.image.load(Bomb.filename)
-        self.rect = pygame.Rect(0, 0, 40, 40)
+        self.rect = pygame.Rect(0, 0, FieldProperties.CELL_LENGTH, FieldProperties.CELL_LENGTH)
         self.x=0
 
     def create_bomb(self, x, y):
@@ -30,23 +59,6 @@ class Bomb(DrawObject):
         self.rect.y = y + 3
         self.hidden = False
         self.start_ticks = pygame.time.get_ticks()
-
-    def create_fire(self, x, y):
-        self.fire_rects[0].x = x - FieldProperties.CELL_LENGTH
-        self.fire_rects[0].y = y
-        self.fire_rects[1].x = x + FieldProperties.CELL_LENGTH
-        self.fire_rects[1].y = y
-        self.fire_rects[2].x = x
-        self.fire_rects[2].y = y - FieldProperties.CELL_LENGTH
-        self.fire_rects[3].x = x
-        self.fire_rects[3].y = y + FieldProperties.CELL_LENGTH
-        self.fire_rects[4].x = x
-        self.fire_rects[4].y = y
-
-    def show_fire(self):
-        for i in range(len(self.fire_rects)):
-            # self.sound_explosion.play()
-            self.game.screen.blit(self.fire_image, self.fire_rects[i])
 
     def hide_bomb(self):
         self.hidden = True
@@ -58,19 +70,10 @@ class Bomb(DrawObject):
         if not self.hidden and seconds <= 2:
             self.game.screen.blit(self.image, self.rect)
         elif not self.hidden and 2 < seconds <= 3:
-            self.create_fire(self.rect.x, self.rect.y)
-            self.show_fire()
+            self.bomb_fire.create_fire(self.rect.x, self.rect.y)
+            self.bomb_fire.show_fire()
         elif not self.hidden and seconds > 3:
             self.hide_bomb()
-            self.fire_rects[0].x = 800
-            self.fire_rects[0].y = 0
-            self.fire_rects[1].x = 800
-            self.fire_rects[1].y = 0
-            self.fire_rects[2].x = 800
-            self.fire_rects[2].y = 0
-            self.fire_rects[3].x = 800
-            self.fire_rects[3].y = 0
-
 
     def collides_with(self, other):
         return self.rect.colliderect(other)
