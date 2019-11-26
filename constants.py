@@ -49,8 +49,8 @@ class BombProperties:
 class ScoreTableProperties:
     PLAYER_COUNT = 5
     PLAYER_NUM_WIDTH = 10  # % относительно таблицы
-    NAME_WIDTH = 70  # % относительно таблицы
-    SCORE_WIDTH = 20  # % относительно таблицы
+    NAME_WIDTH = 60  # % относительно таблицы
+    SCORE_WIDTH = 30  # % относительно таблицы
     DISPLAY_HEADER = True  # Отображать заголовок таблицы
     COLOR = Color.ORANGE
     HEADER = ['N', 'Имя игрока', 'Счет']
