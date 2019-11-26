@@ -15,6 +15,7 @@ class Bomberman(DrawObject):
         self.y = y
         self.speed = speed
         self.rect = pygame.Rect(self.x, self.y, BombermanProperties.WIDTH, BombermanProperties.HEIGHT)
+        self.start_ticks = 0
 
     def process_event(self, event):
         if event.type == pygame.KEYDOWN :
@@ -75,6 +76,13 @@ class Bomberman(DrawObject):
     def collides_with(self, other):
         return self.rect.colliderect(other)
 
+    def is_invulnerable(self):
+        """Проверяет, неуязвим ли персонаж"""
+        seconds = (pygame.time.get_ticks() - self.start_ticks) / 1000
+        if seconds <= 3:
+            print("Я неуязвим")
+            return True
+        return False
 
     def process_draw(self):
         self.game.screen.blit(self.image, self.rect)
