@@ -74,3 +74,4 @@ class StatisticsProperties:
     NUM_WIDTH = 20  # % относительно таблицы
     ADD_SCORE_WIDTH = 20  # % относительно таблицы
     HEADER = None
+    TIME_TO_SHOW = 500  # Время, которое выделяется для отображения одной строки
