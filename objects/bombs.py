@@ -16,19 +16,12 @@ class BombFire:
         self.fire_rects = []
 
     def create_fire(self, x, y):
-        # если создавать массив не через цикл,
-        # то скорее всего все элементы массива будут ссылками на один экземпляр pygame.Rect
-        for i in range(self.count_fire_sides * self.update_power):
-            self.fire_rects.append(pygame.Rect(0, 0, BombProperties.WIDTH, BombProperties.HEIGHT))
+        self.delete_fire()
         for i in range(self.update_power):
-            self.fire_rects[i].x = x - FieldProperties.CELL_LENGTH
-            self.fire_rects[i].y = y
-            self.fire_rects[i+1].x = x + FieldProperties.CELL_LENGTH
-            self.fire_rects[i+1].y = y
-            self.fire_rects[i+2].x = x
-            self.fire_rects[i+2].y = y - FieldProperties.CELL_LENGTH
-            self.fire_rects[i+3].x = x
-            self.fire_rects[i+3].y = y + FieldProperties.CELL_LENGTH
+            self.fire_rects.append(pygame.Rect(x - FieldProperties.CELL_LENGTH * (i + 1), y, BombProperties.WIDTH, BombProperties.HEIGHT))
+            self.fire_rects.append(pygame.Rect(x + FieldProperties.CELL_LENGTH * (i + 1), y, BombProperties.WIDTH, BombProperties.HEIGHT))
+            self.fire_rects.append(pygame.Rect(x, y - FieldProperties.CELL_LENGTH * (i + 1), BombProperties.WIDTH, BombProperties.HEIGHT))
+            self.fire_rects.append(pygame.Rect(x, y + FieldProperties.CELL_LENGTH * (i + 1), BombProperties.WIDTH, BombProperties.HEIGHT))
         # центральный огонь
         self.fire_rects.append(pygame.Rect(x, y, BombProperties.WIDTH, BombProperties.HEIGHT))
 
@@ -47,14 +40,17 @@ class Bomb(DrawObject):
     sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
     sound_explosion.set_volume(min(0.2, 0.3))
 
-    def __init__(self, game, hidden=True):
+    def __init__(self, game, x, y, bomb_power, hidden=True):
         super().__init__(game)
         self.hidden = hidden
         self.start_ticks = 0
-        self.bomb_fire = BombFire(self.game)
+        self.bomb_power = bomb_power
+        self.bomb_fire = BombFire(self.game, self.bomb_power)
         self.image = pygame.image.load(Bomb.filename)
         self.rect = pygame.Rect(0, 0, FieldProperties.CELL_LENGTH, FieldProperties.CELL_LENGTH)
         self.x=0
+        self.destroy = False
+        self.create_bomb(x, y)
 
     def create_bomb(self, x, y):
         self.x=x
@@ -66,6 +62,7 @@ class Bomb(DrawObject):
     def hide_bomb(self):
         self.hidden = True
         self.start_ticks = 0
+        self.destroy = True
 
     def process_draw(self):
         self.update_x(Globals.FieldPosition)
@@ -84,3 +81,19 @@ class Bomb(DrawObject):
 
     def update_x(self,x):
             self.rect.x=self.x-x
+
+
+class BombsList(DrawObject):
+
+    def __init__(self, game):
+        super().__init__(game)
+        self.bombs = []
+
+    def add_bomb(self, x, y, bomb_power=1):
+        self.bombs.append(Bomb(self.game, x, y, bomb_power))
+
+    def process_draw(self):
+        for bomb in self.bombs:
+            bomb.process_draw()
+            if bomb.destroy:
+                self.bombs.remove(bomb)
