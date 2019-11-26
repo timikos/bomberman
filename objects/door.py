@@ -2,6 +2,7 @@ import pygame
 
 from objects.base import DrawObject
 from constants import FieldProperties
+from Global import Globals
 
 class Door(DrawObject):
     filename = 'images/door/door.png'
@@ -18,6 +19,8 @@ class Door(DrawObject):
     def collides_with(self, bomberman):
         return self.rect.colliderect(bomberman)
 
+    def update_x(self,x):
+        self.rect.x=self.x-x
 
     def show_door(self):
         self.hidden = False
@@ -27,5 +30,6 @@ class Door(DrawObject):
         pass
 
     def process_draw(self):
+        self.update_x(Globals.FieldPosition-860)
         if not self.hidden:
             self.game.screen.blit(self.image, self.rect)
