@@ -152,11 +152,16 @@ class MainScene(Scene):
                         while tile.collides_with(self.bomberman.rect):
                             Globals.FieldPosition -= self.bomberman.speed
                             self.process_all_draw()
-                            print(Globals.FieldPosition)
+                            for ghost in self.ghosts:
+                                ghost.process_logic()
+                                ghost.process_draw()
                     elif self.bomberman.current_shift_x < 0:
                         while tile.collides_with(self.bomberman.rect):
                             Globals.FieldPosition += self.bomberman.speed
                             self.process_all_draw()
+                            for ghost in self.ghosts:
+                                ghost.process_logic()
+                                ghost.process_draw()
                     elif self.bomberman.current_shift_y > 0:
                         while tile.collides_with(self.bomberman.rect):
                             self.bomberman.rect.y -= 1
