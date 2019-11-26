@@ -33,7 +33,6 @@ class Timer(DrawObject):
         self.game.ticks += 1
         seconds = self.MAX_TIME_SECONDS // 100 - self.game.ticks // 100
         if seconds > 0:
-            print(self.seconds)
             self.seconds = seconds
             self.timer_update()
         else:
