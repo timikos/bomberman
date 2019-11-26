@@ -2,6 +2,7 @@ import pygame
 from objects.base import DrawObject
 from constants import BombProperties, FieldProperties
 from Global import Globals
+from objects.music import Music_class
 
 
 class BombFire:
@@ -42,10 +43,10 @@ class BombFire:
 
 
 class Bomb(DrawObject):
-    pygame.mixer.init()
+    #pygame.mixer.init()
     filename = 'images/bombs/bomb.png'
-    sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
-    sound_explosion.set_volume(min(0.2, 0.3))
+    #sound_explosion = pygame.mixer.Sound('sounds/explosion.wav')
+    #sound_explosion.set_volume(min(0.2, 0.3))
 
     def __init__(self, game, hidden=True):
         super().__init__(game)
@@ -75,6 +76,7 @@ class Bomb(DrawObject):
         elif not self.hidden and 2 < seconds <= 3:
             self.bomb_fire.create_fire(self.rect.x, self.rect.y)
             self.bomb_fire.show_fire()
+            Music_class.explosion.play(0)
         elif not self.hidden and seconds > 3:
             self.bomb_fire.delete_fire()
             self.hide_bomb()
