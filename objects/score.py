@@ -1,7 +1,7 @@
 import pygame
 from enum import Enum
 from objects.base import DrawObject
-from constants import Color, ScoreTableProperties, TableProperties, StatisticsProperties
+from constants import Color, ScoreTableProperties, TableProperties, StatisticsProperties, InterfaceProperties
 import os
 
 
@@ -15,7 +15,8 @@ class ScorePos(Enum):
 
 
 class Score(DrawObject):
-    def __init__(self, game, color=Color.ORANGE, count=0, size=60, pos=ScorePos.RIGHT_BOTTOM, text_before="SCORE: ",
+    def __init__(self, game, color=Color.ORANGE, count=0, size=InterfaceProperties.FONT_SIZE,
+                 pos=ScorePos.RIGHT_BOTTOM, text_before="SCORE: ",
                  text_after="", border_shift=(10, 10)):
         self.color = color
         self.border_shift = border_shift  # Сдвиг надписи от края
@@ -24,7 +25,6 @@ class Score(DrawObject):
         self.pos = pos
         self.text_before = text_before
         self.text_after = text_after
-        self.font_file = 'fonts/pixel_font.ttf'
         self.font = None
         self.text = None
         self.update()
@@ -57,7 +57,7 @@ class Score(DrawObject):
         self.update()
 
     def update(self):
-        self.font = pygame.font.Font(self.font_file, self.size)
+        self.font = pygame.font.Font(InterfaceProperties.TEXT_FONT, InterfaceProperties.FONT_SIZE)
         self.text = self.font.render(self.get_text(), 1, self.color)
 
     def get_coordinates(self):

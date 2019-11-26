@@ -27,7 +27,7 @@ class ScoreProperties:
 
 class BombermanProperties:
     RESPAWN_X = 400  # Появление бомбермена на оси х
-    RESPAWN_Y = 300  # Появление бомбермена на оси y
+    RESPAWN_Y = 320  # Появление бомбермена на оси y
     DIRECTION_X = 0  # Начальное направление
     DIRECTION_Y = 0  # Начальное направление
     WIDTH = 35  # Ширина прямоугольника бомбермена
@@ -74,3 +74,7 @@ class StatisticsProperties:
     NUM_WIDTH = 20  # % относительно таблицы
     ADD_SCORE_WIDTH = 20  # % относительно таблицы
     HEADER = None
+
+class InterfaceProperties:
+    TEXT_FONT = 'fonts/pixel_font.ttf'  # Шрифт
+    FONT_SIZE = 40  # Размер шрифта

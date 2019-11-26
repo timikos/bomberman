@@ -1,6 +1,8 @@
 import pygame
 from objects.bomberman import Bomberman
 from objects.field import Field
+from objects.text import Text
+from objects.timer import Timer
 from scenes.base import Scene
 from objects.ghosts import Ghost, SpeedGhost, SuperGhost
 from objects.blocks import TileMap, DestroyableTileMap
@@ -13,6 +15,7 @@ from Global import Globals
 
 
 class MainScene(Scene):
+
 
     def create_objects(self):
 
@@ -28,15 +31,17 @@ class MainScene(Scene):
         self.dstr_tilemap = DestroyableTileMap(self.game)
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
+        self.timer = Timer(self.game)
         self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
         self.objects = [self.field] + [self.bomb] + [self.dstr_tilemap] + [self.tilemap] + \
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
-                       [self.door] + self.modifiers
+                       [self.door] + self.modifiers + [self.timer]
 
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
 
+        self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
 
     def additional_logic(self):
         self.process_ghost_collisions_with_bomberman()
