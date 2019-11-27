@@ -14,6 +14,7 @@ class Bomberman(DrawObject):
         self.x = x
         self.y = y
         self.speed = speed
+        self.bomb_power = 1
         self.rect = pygame.Rect(self.x, self.y, BombermanProperties.WIDTH, BombermanProperties.HEIGHT)
         self.start_ticks = 0
 
@@ -45,7 +46,7 @@ class Bomberman(DrawObject):
                 Globals.TurnRight = True
             elif event.key == pygame.K_SPACE:
                 cur_cell = self.game.scenes[1].field.get_cell_by_pos(self.rect.x, self.rect.y)
-                self.game.scenes[1].bomb.create_bomb(cur_cell[0], cur_cell[1])
+                self.game.scenes[1].bomb_list.add_bomb(cur_cell[0], cur_cell[1], self.bomb_power)
                 Globals.TurnLeft = False
                 Globals.TurnRight = False
 

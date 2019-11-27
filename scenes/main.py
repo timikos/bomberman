@@ -8,9 +8,9 @@ from objects.ghosts import Ghost, SpeedGhost, SuperGhost
 from objects.blocks import TileMap, DestroyableTileMap
 from objects.score import Score, ScorePos
 from objects.door import Door
-from objects.bombs import Bomb
+from objects.bombs import BombsList
 from constants import Color, ScoreProperties
-from objects.modifier import SpeedModifier
+from objects.modifier import SpeedModifier, BombPowerModifier, AddLifeModifier
 from Global import Globals
 
 
@@ -30,11 +30,16 @@ class MainScene(Scene):
         self.tilemap = TileMap(self.game)
         self.dstr_tilemap = DestroyableTileMap(self.game)
         self.door = Door(self.game)
-        self.bomb = Bomb(self.game)
+        self.bomb_list = BombsList(self.game)
         self.timer = Timer(self.game)
         self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
-        self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
-        self.objects = [self.field] + [self.bomb] + [self.dstr_tilemap] + [self.tilemap] + \
+        self.modifiers = [SpeedModifier(self.game, 82, 82),
+                          SpeedModifier(self.game, 162, 162),
+                          BombPowerModifier(self.game, 350, 350),
+                          BombPowerModifier(self.game, 450, 450),
+                          AddLifeModifier(self.game, 250, 250),
+                          AddLifeModifier(self.game, 500, 300)]
+        self.objects = [self.field] + [self.bomb_list] + [self.dstr_tilemap] + [self.tilemap] + \
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
                        [self.door] + self.modifiers + [self.timer]
@@ -66,17 +71,19 @@ class MainScene(Scene):
     def process_bomb_detection(self):
         for row in self.dstr_tilemap.tiles:
             for tile in row:
-                for fire_rect in self.bomb.bomb_fire.fire_rects:
-                    if tile.collides_with(fire_rect):
-                        tile.start_ticks = pygame.time.get_ticks()
-                        tile.readyToBreak = True
+                for bomb in self.bomb_list.bombs:
+                    for fire_rect in bomb.bomb_fire.fire_rects:
+                        if tile.collides_with(fire_rect):
+                            tile.start_ticks = pygame.time.get_ticks()
+                            tile.readyToBreak = True
 
     def process_ghost_collisions_with_bomb(self):
         for ghost in self.ghosts:
-            for fire_rect in self.bomb.bomb_fire.fire_rects:
-                if ghost.collides_with(fire_rect):
-                    ghost.hidden = True
-                    self.score.add(100)
+            for bomb in self.bomb_list.bombs:
+                for fire_rect in bomb.bomb_fire.fire_rects:
+                    if ghost.collides_with(fire_rect):
+                        ghost.hidden = True
+                        self.score.add(100)
 
     def process_ghost_collisions_with_destroyable_tiles(self):
         for row in self.dstr_tilemap.tiles:
@@ -110,9 +117,11 @@ class MainScene(Scene):
             # self.set_next_scene(self.game.GAMEOVER_SCENE_INDEX)
 
     def process_bomberman_collision_with_bomb_fire(self):
-        for fire_rect in self.bomb.bomb_fire.fire_rects:
-            if self.bomberman.collides_with(fire_rect) and not self.bomberman.is_invulnerable():
-                self.respawn_bomberman_after_collision()
+        for bomb in self.bomb_list.bombs:
+            for fire_rect in bomb.bomb_fire.fire_rects:
+                if self.bomberman.collides_with(fire_rect):
+                    self.respawn_bomberman_after_collision()
+
 
     def respawn_bomberman_after_collision(self):
         self.health.sub(1)
@@ -124,17 +133,24 @@ class MainScene(Scene):
         for modifier in self.modifiers:
             if modifier.collides_with(self.bomberman):
                 modifier.hide()
-                self.modifier_effects['speed'] = pygame.time.get_ticks()
+                self.modifier_effects[modifier.name] = pygame.time.get_ticks()
 
     def process_modifiers_effects(self):
         for effect in self.modifier_effects:
             if self.modifier_effects[effect] + 10000 <= pygame.time.get_ticks():
                 self.modifier_effects[effect] = 0
-
+        print('modifier_effects: ', self.modifier_effects)
         if self.modifier_effects.get('speed', 0):
             self.bomberman.speed = 10
         else:
             self.bomberman.speed = 5
+        if self.modifier_effects.get('bomb_power', 0):
+            self.bomberman.bomb_power = 2
+        else:
+            self.bomberman.bomb_power = 1
+        if self.modifier_effects.get('add_life', 0):
+            self.health.add(1)
+            self.modifier_effects['add_life'] = 0
 
     def process_bomberman_collision_with_blocks(self):
         for row in self.tilemap.tiles:
