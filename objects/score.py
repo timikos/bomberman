@@ -195,21 +195,28 @@ class StatisticsTable(Table):
         HighScoreTable.need_to_update()
 
     def process_logic(self):
-        t = (pygame.time.get_ticks() - self.start_time) // 10
+        t = (pygame.time.get_ticks() - self.start_time)
         data = []
         score = 0
         format_str = '{0:0>' + str(StatisticsProperties.NUM_SYMBOL_WIDTH) + '}'
-        for i in self.info:
-            if t >= i[2]:
+        for ind in range(len(self.info)):
+            i = self.info[ind]
+            to_add = i[2] // StatisticsProperties.TIME_TO_SHOW
+            if to_add == 0:
+                to_add = 1
+            print(to_add)
+            print('t =', t)
+            if t * to_add >= i[2]:
                 data += [[i[0], format_str.format(i[1]), '+' + format_str.format(i[2])]]
-                t -= i[2]
                 score += i[2]
             elif t != 0:
-                data += [[i[0], format_str.format(i[1]), '+' + format_str.format(t)]]
-                score += t
-                t = 0
+                data += [[i[0], format_str.format(i[1]), '+' + format_str.format(t * to_add)]]
+                score += t * to_add
             else:
                 data += [[''] * 3]
+            t -= StatisticsProperties.TIME_TO_SHOW
+            if t < 0:
+                t = 0
         data += [['Общий счет', '', score]]
         self.update_data(data)
 
