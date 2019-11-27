@@ -32,6 +32,7 @@ class MainScene(Scene):
         self.door = Door(self.game)
         self.bomb = Bomb(self.game)
         self.timer = Timer(self.game)
+        self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
         self.modifiers = [SpeedModifier(self.game, 82, 82), SpeedModifier(self.game, 162, 162)]
         self.objects = [self.field] + [self.bomb] + [self.dstr_tilemap] + [self.tilemap] + \
                        [self.bomberman] + self.ghosts + \
@@ -41,7 +42,7 @@ class MainScene(Scene):
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
 
-        self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
+
 
     def additional_logic(self):
         self.process_ghost_collisions_with_bomberman()
@@ -57,10 +58,9 @@ class MainScene(Scene):
         self.process_game_lose()
         self.process_bomberman_collision_with_d_blocks()
 
-
     def process_ghost_collisions_with_bomberman(self):
         for ghost in self.ghosts:  # Коллизия бомбермэна с призраками
-            if ghost.collides_with(self.bomberman):
+            if ghost.collides_with(self.bomberman) and not self.bomberman.is_invulnerable():
                 self.respawn_bomberman_after_collision()
 
     def process_bomb_detection(self):
@@ -84,7 +84,6 @@ class MainScene(Scene):
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
                         ghost.start_move()
-
 
     def process_show_door(self):
         if self.score.count == 500:
@@ -112,13 +111,14 @@ class MainScene(Scene):
 
     def process_bomberman_collision_with_bomb_fire(self):
         for fire_rect in self.bomb.bomb_fire.fire_rects:
-            if self.bomberman.collides_with(fire_rect):
+            if self.bomberman.collides_with(fire_rect) and not self.bomberman.is_invulnerable():
                 self.respawn_bomberman_after_collision()
 
     def respawn_bomberman_after_collision(self):
         self.health.sub(1)
         self.bomberman.rect.x = 400
         self.bomberman.rect.y = 300
+        self.bomberman.start_ticks = pygame.time.get_ticks()  # Запускает счеткик (персонаж неузвим 3 секунды)
 
     def process_modifiers_collisions_with_bomberman(self):
         for modifier in self.modifiers:
@@ -183,7 +183,6 @@ class MainScene(Scene):
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
-
     def unneeded_blocks_deletion(self):
         for row in self.dstr_tilemap.tiles:
             for tile in row:
@@ -203,7 +202,8 @@ class MainScene(Scene):
         for ghost in self.ghosts:
             if ghost.collides_with(self.tilemap.tiles):
                 ghost.start_move()
+
+
 '''
     Метод коллизии призраков со стенкой
 '''
-
