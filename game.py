@@ -7,6 +7,7 @@ from scenes.menu import MenuScene
 from scenes.info import InfoScene
 from scenes.statistics import StatisticsScene
 from constants import ScreenProperties
+from objects.music import Music_class
 
 
 class Game:
@@ -29,9 +30,13 @@ class Game:
 
     def create_window(self):
         pygame.init()
-        pygame.mixer.music.load('sounds/game_music.mp3')
-        pygame.mixer.music.set_volume(0.1)
-        pygame.mixer.music.play()
+
+        Music_class.music.play(-1)
+        # .play(loops, maxtime, fade_ms)
+        # loop=-1  -> infinite playing / other values = count of repeating
+        # maxtime  -> time of playing sound
+        # fade_ms  -> changing sound volume with time
+
         self.screen = pygame.display.set_mode(self.size, pygame.RESIZABLE)
 
     def main_loop(self):
