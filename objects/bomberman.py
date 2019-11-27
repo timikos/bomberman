@@ -87,6 +87,7 @@ class Bomberman(DrawObject):
         """Проверяет, неуязвим ли персонаж"""
         seconds = (pygame.time.get_ticks() - self.start_ticks) / 1000
         if seconds <= 3:
+            self.image = pygame.image.load('images/bomberman/bomberman_died.png')
             print("Я неуязвим")
             return True
         return False

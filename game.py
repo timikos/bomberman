@@ -33,6 +33,8 @@ class Game:
         pygame.display.set_caption("Bomberman")
         pygame.display.set_icon(pygame.image.load("images/icon.png"))
         Music_class.music.play(-1)
+        Music_class.music.set_volume(0.1)
+        Music_class.explosion.set_volume(0.3)
         # .play(loops, maxtime, fade_ms)
         # loop=-1  -> infinite playing / other values = count of repeating
         # maxtime  -> time of playing sound

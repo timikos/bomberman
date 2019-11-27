@@ -23,7 +23,8 @@ class Modifier(DrawObject):
         return self.rect.colliderect(bomberman)
 
     def update_x(self, x):
-        self.rect.x = self.x - x
+        self.rect.x = self.x - x + 2
+        self.rect.y = self.y + 2
 
     def process_draw(self):
         self.update_x(Globals.FieldPosition - 400)
@@ -50,7 +51,7 @@ class BombPowerModifier(Modifier):
 
 
 class AddLifeModifier(Modifier):
-    filename = 'images/modifiers/2.png'
+    filename = 'images/modifiers/4.png'
     name = 'add_life'
 
     def __init__(self, game, x=0, y=0, hidden=False):

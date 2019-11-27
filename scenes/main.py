@@ -128,8 +128,8 @@ class MainScene(Scene):
 
     def respawn_bomberman_after_collision(self):
         self.health.sub(1)
-        self.bomberman.rect.x = 400
-        self.bomberman.rect.y = 360
+        self.bomberman.rect.x = self.bomberman.rect.x
+        self.bomberman.rect.y = self.bomberman.rect.y
         self.bomberman.start_ticks = pygame.time.get_ticks()  # Запускает счеткик (персонаж неузвим 3 секунды)
 
     def process_modifiers_collisions_with_bomberman(self):
