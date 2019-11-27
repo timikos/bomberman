@@ -77,6 +77,12 @@ class Bomberman(DrawObject):
     def collides_with(self, other):
         return self.rect.colliderect(other)
 
+
+
+    # def collides_with_list(self,list):
+        # print(self.rect.collidelist(list))
+        # return self.rect.collidelist(list)
+
     def is_invulnerable(self):
         """Проверяет, неуязвим ли персонаж"""
         seconds = (pygame.time.get_ticks() - self.start_ticks) / 1000

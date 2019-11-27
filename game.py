@@ -30,7 +30,8 @@ class Game:
 
     def create_window(self):
         pygame.init()
-
+        pygame.display.set_caption("Bomberman")
+        pygame.display.set_icon(pygame.image.load("images/icon.png"))
         Music_class.music.play(-1)
         # .play(loops, maxtime, fade_ms)
         # loop=-1  -> infinite playing / other values = count of repeating

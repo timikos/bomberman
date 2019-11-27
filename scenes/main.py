@@ -12,6 +12,7 @@ from objects.bombs import BombsList
 from constants import Color, ScoreProperties
 from objects.modifier import SpeedModifier, BombPowerModifier, AddLifeModifier
 from Global import Globals
+from objects.respawn import RespawnPoint
 
 
 class MainScene(Scene):
@@ -22,6 +23,7 @@ class MainScene(Scene):
         self.bomberman = Bomberman(self.game)
         self.ghosts = [Ghost(self.game) for _ in range(2)] + [SpeedGhost(self.game) for _ in range(2)] + \
                       [SuperGhost(self.game)]
+        self.respawn = RespawnPoint(self.game)
         self.score = Score(self.game)
         self.health = Score(self.game, Color.RED, 5, 60, ScorePos.LEFT_BOTTOM, "Health: ", text_after="",
                             border_shift=(10, 10))
@@ -42,7 +44,7 @@ class MainScene(Scene):
         self.objects = [self.field] + [self.bomb_list] + [self.dstr_tilemap] + [self.tilemap] + \
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
-                       [self.door] + self.modifiers + [self.timer]
+                       [self.door] + self.modifiers + [self.timer] + [self.respawn]
 
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
@@ -123,10 +125,11 @@ class MainScene(Scene):
                     self.respawn_bomberman_after_collision()
 
 
+
     def respawn_bomberman_after_collision(self):
         self.health.sub(1)
         self.bomberman.rect.x = 400
-        self.bomberman.rect.y = 300
+        self.bomberman.rect.y = 360
         self.bomberman.start_ticks = pygame.time.get_ticks()  # Запускает счеткик (персонаж неузвим 3 секунды)
 
     def process_modifiers_collisions_with_bomberman(self):
@@ -139,7 +142,7 @@ class MainScene(Scene):
         for effect in self.modifier_effects:
             if self.modifier_effects[effect] + 10000 <= pygame.time.get_ticks():
                 self.modifier_effects[effect] = 0
-        print('modifier_effects: ', self.modifier_effects)
+
         if self.modifier_effects.get('speed', 0):
             self.bomberman.speed = 10
         else:
