@@ -9,12 +9,23 @@ from Global import Globals
 class Ghost(DrawObject):
     filename = 'images/ghosts/enemy_1_Main.png'
 
+    img_filenames = [
+        'images/ghosts/enemy_1_Main.png',
+        'images/ghosts/enemy_1_Right.png',
+        'images/ghosts/enemy_1_Left.png'
+    ]
+    images = None
+
+
     def __init__(self, game, speed=1, hidden=False, x=40, y=40):
         super().__init__(game)
         self.image = pygame.image.load(Ghost.filename)
-        self.images = ['images/ghosts/enemy_1_Main.png',
-                       'images/ghosts/enemy_1_Right.png',
-                       'images/ghosts/enemy_1_Left.png']
+
+        if Ghost.images is None:
+            Ghost.images = []
+            for name in Ghost.img_filenames:
+                Ghost.images.append(pygame.image.load(name))
+
         self.hidden = hidden
         self.pass_throw_destruct_blocks = False  # Возможность передвигаться через разрушаемые блоки
         self.x = x
@@ -34,23 +45,24 @@ class Ghost(DrawObject):
         pass
 
     def process_logic(self):
+        # Движение вниз и проверка границ
         if self.current_shift_y == 1 and self.rect.y < self.game.height - ScreenProperties.SCREEN_BORDER_HEIGHT:
-            self.image = pygame.image.load(self.images[0])
+            self.image = Ghost.images[0]
             self.rect.y += self.speed
         elif self.current_shift_y == -1 and self.rect.y > 40:
-            self.image = pygame.image.load(self.images[0])
+            self.image = Ghost.images[0]
             self.rect.y -= self.speed
         elif self.current_shift_x == 1 and self.rect.x < self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
-            self.image = pygame.image.load(self.images[1])
+            self.image = Ghost.images[1]
             self.rect.x += self.speed
         elif self.current_shift_x == -1 and self.rect.x > 80:
             self.rect.x -= self.speed
-            self.image = pygame.image.load(self.images[2])
+            self.image = Ghost.images[2]
             self.rect.x -= 1
-        if Globals.TurnRight == True:
+        if Globals.TurnRight:
             self.rect.x -= (Globals.FieldPosition-self.glob)
             self.glob = Globals.FieldPosition
-        if Globals.TurnLeft == True:
+        if Globals.TurnLeft:
             self.rect.x += (self.glob-Globals.FieldPosition)
             self.glob = Globals.FieldPosition
         if self.rect.x == FieldProperties.CELL_LENGTH * 2 or self.rect.y == FieldProperties.CELL_LENGTH or\
