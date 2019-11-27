@@ -119,7 +119,7 @@ class MainScene(Scene):
     def process_bomberman_collision_with_bomb_fire(self):
         for bomb in self.bomb_list.bombs:
             for fire_rect in bomb.bomb_fire.fire_rects:
-                if self.bomberman.collides_with(fire_rect):
+                if self.bomberman.collides_with(fire_rect) and not self.bomberman.is_invulnerable():
                     self.respawn_bomberman_after_collision()
 
 
