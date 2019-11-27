@@ -32,6 +32,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption("Bomberman")
         pygame.display.set_icon(pygame.image.load("images/icon.png"))
+        self.music = Music_class()
         Music_class.music.play(-1)
         Music_class.music.set_volume(0.1)
         Music_class.explosion.set_volume(0.3)
