@@ -1,28 +1,28 @@
+"""
+Классы Field, Cell
+
+Описание: данные классы реализуют заполнение полем экран игры
+"""
 import pygame
 from constants import FieldProperties
 from objects.base import DrawObject
 from Global import Globals
 
 
+"""Поле"""
 class Field(DrawObject):
+    filename = 'images/levels/ground_1_grass.png'
 
-    @staticmethod
-    def get_cell_by_pos(x, y):
-        cell_x = (x+Globals.FieldPosition)//40*40
-        print(cell_x)
-        cell_y = (y + 10) // 40 * 40
-        return [cell_x, cell_y]
-
-    def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT, filename='images/levels/ground_1_grass.png'):
+    def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.field = []
-        self.filename = filename
-        self.width = width  # Ширина поля в клетках
-        self.height = height  # Высота поля в клетках
+        self.filename = Field.filename
+        self.width = width
+        self.height = height
         self.x = x
         self.y = y
         for y in range(height):
-            self.field += [[]]
+            self.field += [[]]  # Двумерный массив поля
             for x in range(width):
                 self.field[-1].append(Cell(game, x * FieldProperties.CELL_LENGTH + self.x,
                                            y * FieldProperties.CELL_LENGTH + self.y, self.filename))
@@ -33,7 +33,16 @@ class Field(DrawObject):
                 cell.update_x(Globals.FieldPosition-400)
                 cell.process_draw()
 
+    @staticmethod
+    def get_cell_by_pos(x, y):
+        """Получение центра координат клетки"""
+        cell_x = (x + Globals.FieldPosition) // 40 * 40
+        print(cell_x)
+        cell_y = (y + 10) // 40 * 40
+        return [cell_x, cell_y]
 
+
+"""Клетка на поле"""
 class Cell(DrawObject):
     def __init__(self, game, x, y, image):
         super().__init__(game)
@@ -49,4 +58,5 @@ class Cell(DrawObject):
         self.game.screen.blit(self.image, self.rect)
 
     def update_x(self,x):
+        """Обновление позиции"""
         self.rect.x=self.x-x

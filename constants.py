@@ -1,3 +1,8 @@
+"""
+Константы
+"""
+from enum import Enum
+
 class Color:
     RED = (255, 0, 0)
     BLUE = (0, 0, 255)
@@ -7,6 +12,13 @@ class Color:
     ORANGE = (255, 180, 0)
     YELLOW = (255, 179, 0)
 
+class ScorePosition(Enum):
+    LEFT_TOP = 0
+    CENTER_TOP = 1
+    RIGHT_TOP = 2
+    LEFT_BOTTOM = 3
+    CENTER_BOTTOM = 4
+    RIGHT_BOTTOM = 5
 
 class ScreenProperties:
     WIDTH = 800  # Ширина экрана
@@ -81,4 +93,16 @@ class InterfaceProperties:
     TEXT_FONT = 'fonts/pixel_font.ttf'  # Шрифт
     FONT_SIZE = 40  # Размер шрифта
 
+
+class TimerProperties:
+    MAX_TIME_SECONDS = 12000
+
+class ButtonProperties:
+    BUTTON_STYLE = {
+        "hover_color": Color.BLUE,
+        "font_color": Color.YELLOW,
+        "clicked_color": Color.GREEN,
+        "clicked_font_color": Color.BLACK,
+        "hover_font_color": Color.ORANGE
+    }
 

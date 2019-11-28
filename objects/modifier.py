@@ -1,28 +1,35 @@
+"""
+Классы Modifier, SpeedModifier, BombPowerModifier, AddLifeModifier
+
+Описание: данные классы реализуют модификаторы различных видов
+"""
 import pygame
 from objects.base import DrawObject
 from Global import Globals
 from objects.field import Field
 
 
+"""Базовый класс модификаторов"""
 class Modifier(DrawObject):
     def __init__(self, game, image, x=0, y=0, hidden=False):
         super().__init__(game)
         self.x, self.y = Field.get_cell_by_pos(x, y)
-        # self.x = x
-        # self.y = y
         self.hidden = hidden
         self.rect = pygame.Rect(self.x, self.y, 35, 35)
         self.image = image
 
     def hide(self):
+        """Скрытие после коллизии"""
         self.hidden = True
         self.rect.x = 0
         self.rect.y = 0
 
-    def collides_with(self, bomberman):
-        return self.rect.colliderect(bomberman)
+    def collides_with(self, other):
+        """Коллизия с объектами"""
+        return self.rect.colliderect(other)
 
     def update_x(self, x):
+        """Обновление позиции"""
         self.rect.x = self.x - x + 2
         self.rect.y = self.y + 2
 
@@ -32,6 +39,7 @@ class Modifier(DrawObject):
             self.game.screen.blit(self.image, self.rect)
 
 
+"""Модификатор увеличения скорости"""
 class SpeedModifier(Modifier):
     filename = 'images/modifiers/speed.png'
     name = 'speed'
@@ -41,6 +49,7 @@ class SpeedModifier(Modifier):
         super().__init__(game, self.image, x, y, hidden)
 
 
+"""Модификатор увеличения линии огня"""
 class BombPowerModifier(Modifier):
     filename = 'images/modifiers/5.png'
     name = 'bomb_power'
@@ -50,6 +59,7 @@ class BombPowerModifier(Modifier):
         super().__init__(game, self.image, x, y, hidden)
 
 
+"""Модификатор увеличения жизней"""
 class AddLifeModifier(Modifier):
     filename = 'images/modifiers/4.png'
     name = 'add_life'

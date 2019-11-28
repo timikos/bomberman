@@ -1,20 +1,24 @@
+"""
+Класс Sound
+
+Описание: данный класс позволяет редактировать звуковое обеспечение
+"""
+
 import pygame
 
 
-class Music_class:
-    path_music = 'sounds/game_music.wav'
+"""Звуки"""
+class Sound:
+    path_music = 'sounds/game_music.ogg'
     path_explosion = 'sounds/explosion.wav'
     music = None
     explosion = None
 
     def __init__(self):
-        if not Music_class.music and not Music_class.explosion:
+        if not Sound.music and not Sound.explosion:
             pygame.mixer.init()
-            Music_class.music = pygame.mixer.Sound(Music_class.path_music)  # для возможности ссылки на объект
-            Music_class.explosion = pygame.mixer.Sound(Music_class.path_explosion)  # для возможности ссылки на объект
-            pygame.mixer.music.set_volume(0.001)
-
-    # .play(loops, maxtime, fade_ms)
-    # loop=-1  -> infinite playing / other values = count of repeating
-    # maxtime  -> time of playing sound
-    # fade_ms  -> changing sound volume with time
+            Sound.music = pygame.mixer.Sound(Sound.path_music)  # Музыка на фоне
+            Sound.explosion = pygame.mixer.Sound(Sound.path_explosion)  #Звук взрыва бомбы
+            Sound.music.play(-1)
+            Sound.music.set_volume(0.1)  # Громкость музыки
+            Sound.explosion.set_volume(0.3)  # Громкость взрыва

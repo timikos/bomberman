@@ -1,3 +1,9 @@
+"""
+Классы Ghost, SpeedGhost, SuperGhost
+
+Описание: данные классы реализуют врагов разнличных видов
+"""
+
 import pygame
 from random import randint, randrange
 from objects.base import DrawObject
@@ -9,6 +15,7 @@ from Global import Globals
 class Ghost(DrawObject):
     filename = 'images/ghosts/enemy_1_Main.png'
 
+    """Список картинок состояния"""
     img_filenames = [
         'images/ghosts/enemy_1_Main.png',
         'images/ghosts/enemy_1_Right.png',
@@ -16,18 +23,18 @@ class Ghost(DrawObject):
     ]
     images = None
 
-
     def __init__(self, game, speed=1, hidden=False, x=40, y=40):
         super().__init__(game)
-        self.image = pygame.image.load(Ghost.filename)
+        self.image = pygame.image.load(self.filename)
 
+        """Загрузка картинок в список"""
         if Ghost.images is None:
             Ghost.images = []
             for name in Ghost.img_filenames:
                 Ghost.images.append(pygame.image.load(name))
 
         self.hidden = hidden
-        self.pass_throw_destruct_blocks = False  # Возможность передвигаться через разрушаемые блоки
+        self.pass_throw_destruct_blocks = False  # Возможность передвигаться сквозь блоки
         self.x = x
         self.y = y
         self.glob=Globals.FieldPosition
@@ -40,24 +47,30 @@ class Ghost(DrawObject):
         self.rect.x = randrange(80, self.window_width - self.rect.width - 200, 400)
         self.rect.y = randrange(40, self.window_height - self.rect.height - 200, 80)
         self.start_move()
+        self.data = self.images
 
     def process_event(self, event):
         pass
 
+
     def process_logic(self):
+        """Логика движения призраков"""
         # Движение вниз и проверка границ
         if self.current_shift_y == 1 and self.rect.y < self.game.height - ScreenProperties.SCREEN_BORDER_HEIGHT:
-            self.image = Ghost.images[0]
+            self.image = self.images[0]
             self.rect.y += self.speed
+        # Движение вверх и проверка границ
         elif self.current_shift_y == -1 and self.rect.y > 40:
-            self.image = Ghost.images[0]
+            self.image = self.images[0]
             self.rect.y -= self.speed
+        # Движение вправо и проверка границ
         elif self.current_shift_x == 1 and self.rect.x < self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
-            self.image = Ghost.images[1]
+            self.image = self.images[1]
             self.rect.x += self.speed
+        # Движение влево и проверка границ
         elif self.current_shift_x == -1 and self.rect.x > 80:
             self.rect.x -= self.speed
-            self.image = Ghost.images[2]
+            self.image = self.images[2]
             self.rect.x -= 1
         if Globals.TurnRight:
             self.rect.x -= (Globals.FieldPosition-self.glob)
@@ -79,6 +92,7 @@ class Ghost(DrawObject):
             self.start_move()
 
     def start_move(self):
+        """Начало движения"""
         direction_move = randint(0, 3)
         if direction_move == 0:
             self.current_shift_x = -1
@@ -90,6 +104,7 @@ class Ghost(DrawObject):
             self.current_shift_y = -1
 
     def collides_with(self, other):
+        """Коллизия с объектами"""
         return self.rect.colliderect(other)
 
     def process_draw(self):
@@ -102,26 +117,45 @@ class Ghost(DrawObject):
             self.current_shift_y = 0
 
 
-
+"""Монстр с увеличенной скоростью"""
 class SpeedGhost(Ghost):
-    """Монстр с увеличенной скоростью"""
     filename = 'images/ghosts/enemy_2_Main.png'
 
+    """Список изображений состояния"""
+    img_filenames = ['images/ghosts/enemy_2_Main.png',
+                     'images/ghosts/enemy_2_Right.png',
+                     'images/ghosts/enemy_2_Left.png']
+    images = None
+
     def __init__(self, game, speed=2):
         super().__init__(game, speed)
-        self.images = ['images/ghosts/enemy_2_Main.png',
-                       'images/ghosts/enemy_2_Right.png',
-                       'images/ghosts/enemy_2_Left.png']
+        self.image = pygame.image.load(SpeedGhost.filename)
+
+        """Загрузка картинок в список"""
+        if SpeedGhost.images is None:
+            SpeedGhost.images = []
+            for name in SpeedGhost.img_filenames:
+                SpeedGhost.images.append(pygame.image.load(name))
 
 
+"""Монстр с увеличенной скоростью и возможностью передвигаться через разрушаемые блоки"""
 class SuperGhost(Ghost):
-    """Монстр с увеличенной скоростью и возможностью передвигаться через разрушаемые блоки"""
     filename = 'images/ghosts/enemy_3_Main.png'
 
+    """Список изображений состояния"""
+    img_filenames = ['images/ghosts/enemy_3_Main.png',
+                     'images/ghosts/enemy_3_Right.png',
+                     'images/ghosts/enemy_3_Left.png']
+    images = None
+
     def __init__(self, game, speed=2):
         super().__init__(game, speed)
-        self.images = ['images/ghosts/enemy_3_Main.png',
-                       'images/ghosts/enemy_3_Right.png',
-                       'images/ghosts/enemy_3_Left.png']
-        self.pass_throw_destruct_blocks = True
+
+        """Загрузка картинок в список"""
+        if SuperGhost.images is None:
+            SuperGhost.images = []
+            for name in SuperGhost.img_filenames:
+                SuperGhost.images.append(pygame.image.load(name))
+
+        self.pass_throw_destruct_blocks = True # Возможность передвигаться сквозь блоки
 
