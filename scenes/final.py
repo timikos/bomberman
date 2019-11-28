@@ -1,11 +1,18 @@
+"""
+Сцена <Лучший счёт>
+Класс FinalScene
+
+Описание: данный класс реализует сцену с лучшим счётом
+"""
 from constants import Color
 from objects.score import HighScoreTable
 from scenes.base import Scene
-from objects.button_animated import BtnAnim
+from objects.buttons import ButtonAnimation
 
 
 class FinalScene(Scene):
     MAX_TICKS = 300
+    filename = 'score.txt'
 
     def __init__(self, game):
         self.seconds_left = self.MAX_TICKS // 100
@@ -13,11 +20,15 @@ class FinalScene(Scene):
 
 
     def create_objects(self):
-        self.highscore = HighScoreTable(self.game, 'score.txt')
-        self.button_exit = BtnAnim(self.game, (350, 495, 100, 40), Color.WHITE, 'Выход', self.exit)
+        """Создание объектов"""
+        self.highscore = HighScoreTable(self.game, self.filename)
+        self.button_exit = ButtonAnimation(self.game, (350, 495, 100, 40), Color.WHITE, 'Выход', self.exit)
+
+        """Список объектов"""
         self.objects = [self.highscore, self.button_exit]
 
 
     def exit(self):
+        """Выход"""
         self.game.game_over = True
 
