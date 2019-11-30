@@ -1,3 +1,8 @@
+"""
+Классы Block, IndestructibleBlock, IndestructibleBlockMap, DestroyedBlock, DestroyableBlockMap
+
+Описание: данные классы реализуют заполнение поля блоками различных видов
+"""
 import pygame
 from random import randint
 from constants import FieldProperties
@@ -5,6 +10,7 @@ from objects.base import DrawObject
 from Global import Globals
 
 
+"""Базовый класс блоков"""
 class Block(DrawObject):
     def __init__(self, game, x=0, y=0, cell_length=FieldProperties.CELL_LENGTH):
         super().__init__(game)
@@ -15,6 +21,7 @@ class Block(DrawObject):
         self.rect = pygame.Rect(self.x, self.y, cell_length, 35)
 
 
+"""Неразрушаемый блок"""
 class IndestructibleBlock(Block):
     filename = 'images/blocks/block.png'
 
@@ -24,8 +31,9 @@ class IndestructibleBlock(Block):
         self.y = y * self.cell_length
         self.image = pygame.image.load(IndestructibleBlock.filename)
 
-    def update_x(self,x):
-        self.rect.x=self.x-x
+    def update_x(self, x):
+        """Обновление позиции"""
+        self.rect.x = self.x - x
 
     def process_draw(self):
         self.game.screen.blit(self.image, self.rect)
@@ -34,23 +42,26 @@ class IndestructibleBlock(Block):
         pass
 
     def collides_with(self, other):
+        """Коллизия с объектами"""
         return self.rect.colliderect(other)
 
 
-class TileMap(DrawObject):
+"""Сетка неразрушаемых блоков"""
+class IndestructibleBlockMap(DrawObject):
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
-        self.game=game
+        self.game = game
         self.x = x
         self.y = y
         self.tiles = []
-        self.width=width
-        self.height=height
-        self.make_tilemap(game,width,height)
+        self.width = width
+        self.height = height
+        self.make_tilemap(game, width, height)
 
-    def make_tilemap(self,game,width,height):
+    def make_tilemap(self, game, width, height):
+        """Создание сетки с блокми"""
         for x in range(width):
-            self.tiles += [[]]
+            self.tiles += [[]]  # Двумерный массив с блоками
             for y in range(height):
                 if (x == 0 or x == width - 1 or y == 0 or y == height - 1) \
                         or ((x + 1) % 2 != 0 and (y + 1) % 2 != 0):
@@ -59,7 +70,7 @@ class TileMap(DrawObject):
     def process_draw(self):
         for x in self.tiles:
             for tile in x:
-                tile.update_x(Globals.FieldPosition-400)
+                tile.update_x(Globals.FieldPosition - 400)
                 tile.process_draw()
 
     def process_event(self, event):
@@ -68,10 +79,16 @@ class TileMap(DrawObject):
                 tile.process_event(event)
 
 
+"""Разрушаемый блок"""
 class DestroyedBlock(Block):
-    dblock_image = []
-    for i in range(6):
-        dblock_image.append('images/blocks/d_block_{}.png'.format(i))
+    """Список картинок состояния"""
+    images = ['images/blocks/d_block_0.png',
+              'images/blocks/d_block_1.png',
+              'images/blocks/d_block_2.png',
+              'images/blocks/d_block_3.png',
+              'images/blocks/d_block_4.png',
+              'images/blocks/d_block_5.png',
+              'images/blocks/d_block_6.png']
 
     explosion_event = pygame.USEREVENT + 1
 
@@ -82,14 +99,15 @@ class DestroyedBlock(Block):
         self.destruction_time = 5
         self.readyToBreak = False
         self.isDestroyed = False
-        self.image = pygame.image.load(DestroyedBlock.dblock_image[0])
+        self.image = pygame.image.load(DestroyedBlock.images[0])
         self.start_ticks = 0
 
     def destruction(self):
-        milsec = (pygame.time.get_ticks() - self.start_ticks) // (self.destruction_time * 20) + 1
-        self.image = pygame.image.load(DestroyedBlock.dblock_image[milsec])
+        """Анимация разрушения блока"""
+        mil_sec = (pygame.time.get_ticks() - self.start_ticks) // (self.destruction_time * 20) + 1
+        self.image = pygame.image.load(DestroyedBlock.images[mil_sec])
         self.game.screen.blit(self.image, self.rect)
-        return milsec
+        return mil_sec
 
     def process_draw(self):
         if not self.isDestroyed:
@@ -100,43 +118,37 @@ class DestroyedBlock(Block):
 
     def process_event(self, event):
         pass
-        # if event.type == pygame.KEYDOWN:
-        #    if chr(event.key) == ' ':  # space bar is pressed
-        #        DestroyedBlock.explosion_event = pygame.USEREVENT + 1
-        #        pygame.time.set_timer(DestroyedBlock.explosion_event, 2000)  # задержка в две секунды
 
-        # if self.readyToBreak:
-        #    if event.type == DestroyedBlock.explosion_event:
-        #        DestroyedBlock.explosion_event = None
-        #        self.isDestroyed = True
-    def update_x(self,x):
-        self.rect.x=self.x-x
+    def update_x(self, x):
+        """Обновление позиции"""
+        self.rect.x = self.x - x
 
     def collides_with(self, other):
+        """Коллизия с объектом"""
         if not self.isDestroyed:
             return self.rect.colliderect(other)
         else:
             return False
 
 
-class DestroyableTileMap(DrawObject):
+"""Сетка разрушаемых блоков"""
+class DestroyedBlockMap(DrawObject):
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.x = x
         self.y = y
         self.tiles = []
         for x in range(width):
-            self.tiles += [[]]
+            self.tiles += [[]]  # Двумерный массив блоков
             for y in range(height):
                 if not (x == 0 or x == width - 1 or y == 0 or y == height - 1) \
                         and not ((x + 1) % 2 != 0 and (y + 1) % 2 != 0) and (randint(0, 170) // 100):
                     self.tiles[-1].append(DestroyedBlock(game, self.x + x + 1, self.y + y))
 
-
     def process_draw(self):
         for x in self.tiles:
             for tile in x:
-                tile.update_x(Globals.FieldPosition-400)
+                tile.update_x(Globals.FieldPosition - 400)
                 tile.process_draw()
 
     def process_event(self, event):

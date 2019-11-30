@@ -1,30 +1,35 @@
-import pygame as pg
+"""
+Класс ButtonAnimation
+
+Описание: данный класс реализует анимированную кнопку
+"""
+import pygame
+from constants import ButtonProperties, InterfaceProperties
+from objects.base import DrawObject
 
 
-class ButtonAnim(object):
-    """A fairly straight forward buttons class."""
-
+"""Базовый класс кнопок"""
+class BaseButtonAnim(object):
     def __init__(self, game, rect, color, function, **kwargs):
         self.game = game
-        self.rect = pg.Rect(rect)
+        self.rect = pygame.Rect(rect)
         self.color = color
         self.function = function
         self.clicked = False
         self.hovered = False
         self.hover_text = None
         self.clicked_text = None
-        self.basic_font = 20 #Минимальный размер текста кнопки
+        self.basic_font = 20  # Минимальный размер текста кнопки
         self.animation = self.basic_font
         self.process_kwargs(kwargs)
         self.render_text()
         self.animation_step = 1
-        self.fonts = pg.font.Font('fonts/pixel_font.ttf', self.animation)
-
+        self.fonts = pygame.font.Font(InterfaceProperties.TEXT_FONT, self.animation)
 
     def process_kwargs(self, kwargs):
-        """Various optional customization you can change by passing kwargs."""
+        """Опции"""
         settings = {"text": None,
-                    "font": pg.font.Font(None, self.basic_font),
+                    "font": pygame.font.Font(None, self.basic_font),
                     "call_on_release": True,
                     "hover_color": None,
                     "clicked_color": None,
@@ -52,10 +57,10 @@ class ButtonAnim(object):
             self.text = self.fonts.render(self.text, True, self.font_color)
 
     def check_event(self, event):
-        """The buttons needs to be passed events from your program event loop."""
-        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+        """Обработка событий"""
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             self.on_click(event)
-        elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self.on_release(event)
 
     def on_click(self, event):
@@ -70,7 +75,7 @@ class ButtonAnim(object):
         self.clicked = False
 
     def check_hover(self):
-        if self.rect.collidepoint(pg.mouse.get_pos()):
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
             if not self.hovered:
                 self.hovered = True
                 if self.hover_sound:
@@ -79,7 +84,7 @@ class ButtonAnim(object):
             self.hovered = False
 
     def update(self, surface):
-        """Update needs to be called every frame in the main loop."""
+        """Обновление кнопки"""
         color = self.color
         text = self.text
         self.check_hover()
@@ -89,16 +94,43 @@ class ButtonAnim(object):
                 text = self.clicked_text
         elif self.hovered and self.hover_color:
             color = self.hover_color
-            if self.animation>self.basic_font+20:
-                self.animation_step=-1
-            elif self.animation<=self.basic_font:
-                self.animation_step=1
-            self.animation=self.animation+self.animation_step
+            if self.animation > self.basic_font + 20:
+                self.animation_step = -1
+            elif self.animation <= self.basic_font:
+                self.animation_step = 1
+            self.animation = self.animation + self.animation_step
             if self.hover_font_color:
                 text = self.hover_text
-        elif self.hovered==False:
-            self.animation=self.basic_font
-        self.fonts = pg.font.Font('fonts/pixel_font.ttf', self.animation)
+        elif self.hovered == False:
+            self.animation = self.basic_font
+        self.fonts = pygame.font.Font(InterfaceProperties.TEXT_FONT, self.animation)
         if self.text:
             text_rect = text.get_rect(center=self.rect.center)
             surface.blit(text, text_rect)
+
+
+"""Анимированные кнопки"""
+class ButtonAnimation(DrawObject):
+
+    def __init__(self, game, rect=(10, 10, 100, 40), color=(0, 0, 0), text='Test', function=None):
+        super().__init__(game)
+        self.rect = rect
+        self.color = color
+        self.text = text
+        self.function = function if function else ButtonAnimation.no_action
+        self.internal_button = BaseButtonAnim(game, self.rect, self.color, self.function,
+                                              **ButtonProperties.BUTTON_STYLE)
+        self.internal_button.text = text
+        self.internal_button.render_text()
+
+    @staticmethod
+    def no_action(self):
+        pass
+
+    def process_event(self, event):
+        self.internal_button.check_event(event)
+
+    def process_draw(self):
+        self.internal_button.text = self.text
+        self.internal_button.render_text()
+        self.internal_button.update(self.game.screen)
