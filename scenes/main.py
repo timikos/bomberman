@@ -15,7 +15,6 @@ from Global import Globals
 class MainScene(Scene):
 
     def create_objects(self):
-
         self.bomberman = Bomberman(self.game)
         self.ghosts = [Ghost(self.game) for _ in range(2)] + [SpeedGhost(self.game) for _ in range(2)] + \
                       [SuperGhost(self.game)]
@@ -33,7 +32,7 @@ class MainScene(Scene):
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
                        [self.door] + self.modifiers
-
+        self.bomberman.objects=[self.tilemap,self.dstr_tilemap]
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
 
@@ -150,18 +149,10 @@ class MainScene(Scene):
                 if tile.collides_with(self.bomberman.rect):
                     if self.bomberman.current_shift_x > 0:
                         while tile.collides_with(self.bomberman.rect):
-                            Globals.FieldPosition -= self.bomberman.speed
-                            self.process_all_draw()
-                            for ghost in self.ghosts:
-                                ghost.process_logic()
-                                ghost.process_draw()
+                            self.bomberman.rect.x -= 1
                     elif self.bomberman.current_shift_x < 0:
                         while tile.collides_with(self.bomberman.rect):
-                            Globals.FieldPosition += self.bomberman.speed
-                            self.process_all_draw()
-                            for ghost in self.ghosts:
-                                ghost.process_logic()
-                                ghost.process_draw()
+                            self.bomberman.rect.x += 1
                     elif self.bomberman.current_shift_y > 0:
                         while tile.collides_with(self.bomberman.rect):
                             self.bomberman.rect.y -= 1
@@ -177,18 +168,10 @@ class MainScene(Scene):
                 if tile.collides_with(self.bomberman.rect):
                     if self.bomberman.current_shift_x > 0:
                         while tile.collides_with(self.bomberman.rect):
-                            Globals.FieldPosition -= self.bomberman.speed
-                            self.process_all_draw()
-                            for ghost in self.ghosts:
-                                ghost.process_logic()
-                                ghost.process_draw()
+                            self.bomberman.rect.x -= self.bomberman.speed
                     elif self.bomberman.current_shift_x < 0:
                         while tile.collides_with(self.bomberman.rect):
-                            Globals.FieldPosition += self.bomberman.speed
-                            self.process_all_draw()
-                            for ghost in self.ghosts:
-                                ghost.process_logic()
-                                ghost.process_draw()
+                            self.bomberman.rect.x += self.bomberman.speed
                     elif self.bomberman.current_shift_y > 0:
                         if self.bomberman.speed == 5:
                             self.bomberman.rect.y -= 5
