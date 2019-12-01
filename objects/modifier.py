@@ -61,9 +61,19 @@ class BombPowerModifier(Modifier):
 
 """Модификатор увеличения жизней"""
 class AddLifeModifier(Modifier):
-    filename = 'images/modifiers/4.png'
+    filename = 'images/modifiers/2.png'
     name = 'add_life'
 
     def __init__(self, game, x=0, y=0, hidden=False):
         self.image = pygame.image.load(AddLifeModifier.filename)
+        super().__init__(game, self.image, x, y, hidden)
+
+
+"""Модификатор увеличения количества бомб"""
+class MultiBombModifier(Modifier):
+    filename = 'images/modifiers/4.png'
+    name = 'multi_bomb'
+
+    def __init__(self, game, x=0, y=0, hidden=False):
+        self.image = pygame.image.load(MultiBombModifier.filename)
         super().__init__(game, self.image, x, y, hidden)
