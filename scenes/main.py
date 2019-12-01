@@ -81,8 +81,8 @@ class MainScene(Scene):
         for row in self.dstr_tilemap.tiles:
             for tile in row:
                 for bomb in self.bomb_list.bombs:
-                    for fire_rect in bomb.bomb_fire.fire_rects:
-                        if tile.collides_with(fire_rect):
+                    for fire in bomb.bomb_fire.fire_rects:
+                        if tile.collides_with(fire.fire_rect) and fire.active:
                             tile.start_ticks = pygame.time.get_ticks()
                             tile.readyToBreak = True
 
@@ -90,8 +90,8 @@ class MainScene(Scene):
         """Коллизия врагов с огнём бомбы"""
         for ghost in self.ghosts:
             for bomb in self.bomb_list.bombs:
-                for fire_rect in bomb.bomb_fire.fire_rects:
-                    if ghost.collides_with(fire_rect):
+                for fire in bomb.bomb_fire.fire_rects:
+                    if ghost.collides_with(fire.fire_rect) and fire.active:
                         ghost.hidden = True
                         self.score.add_count(100)
 
@@ -123,8 +123,8 @@ class MainScene(Scene):
     def process_bomberman_collision_with_bomb_fire(self):
         """Коллизия главного героя с огнём от бомбы"""
         for bomb in self.bomb_list.bombs:
-            for fire_rect in bomb.bomb_fire.fire_rects:
-                if self.bomberman.collides_with(fire_rect) and not self.bomberman.is_invulnerable():
+            for fire in bomb.bomb_fire.fire_rects:
+                if self.bomberman.collides_with(fire.fire_rect) and fire.active and not self.bomberman.is_invulnerable():
                     self.respawn_bomberman_after_collision()
 
     def process_bomberman_collision_with_modifiers(self):
@@ -143,7 +143,7 @@ class MainScene(Scene):
                         while tile.collides_with(self.bomberman.rect):
                             Globals.FieldPosition -= self.bomberman.speed
                             self.process_all_draw()
-                            print(Globals.FieldPosition)
+                            # print(Globals.FieldPosition)
                     elif self.bomberman.current_shift_x < 0:
                         while tile.collides_with(self.bomberman.rect):
                             Globals.FieldPosition += self.bomberman.speed
