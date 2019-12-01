@@ -17,7 +17,7 @@ from objects.score import Score, ScorePosition
 from objects.door import Door
 from objects.bombs import BombsList
 from constants import Color, ScoreProperties
-from objects.modifier import SpeedModifier, BombPowerModifier, AddLifeModifier
+from objects.modifier import SpeedModifier, BombPowerModifier, AddLifeModifier, MultiBombModifier
 from Global import Globals
 
 
@@ -43,7 +43,9 @@ class MainScene(Scene):
                           BombPowerModifier(self.game, 350, 350),
                           BombPowerModifier(self.game, 450, 450),
                           AddLifeModifier(self.game, 250, 250),
-                          AddLifeModifier(self.game, 500, 300)]
+                          AddLifeModifier(self.game, 500, 300),
+                          MultiBombModifier(self.game, 200, 200),
+                          MultiBombModifier(self.game, 400, 400)]
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
 
@@ -209,6 +211,10 @@ class MainScene(Scene):
         if self.modifier_effects.get('add_life', 0):
             self.health.add_count(1)
             self.modifier_effects['add_life'] = 0
+        if self.modifier_effects.get('multi_bomb', 0):
+            self.bomberman.multi_bomb = True
+        else:
+            self.bomberman.multi_bomb = False
 
 
     def process_show_door(self):
