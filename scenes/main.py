@@ -124,6 +124,7 @@ class MainScene(Scene):
 
     def respawn_bomberman_after_collision(self):
         self.health.sub(1)
+        Globals.FieldPosition=400
         self.bomberman.rect.x = 400
         self.bomberman.rect.y = 300
 

@@ -80,6 +80,7 @@ class Bomberman(DrawObject):
                 else:
                     Globals.FieldPosition -= self.speed
                 print(self.rect.x)
+                print(Globals.FieldPosition)
 
     def collides_with(self, other):
         return self.rect.colliderect(other)
