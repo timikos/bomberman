@@ -11,12 +11,11 @@ from Global import Globals
 
 """Поле"""
 class Field(DrawObject):
-    filename = 'images/levels/ground_1_grass.png'
-
-    def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
+    def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT,
+                 ground_texture='images/levels/ground_1_grass.png'):
         super().__init__(game)
         self.field = []
-        self.filename = Field.filename
+        self.filename = ground_texture
         self.width = width
         self.height = height
         self.x = x

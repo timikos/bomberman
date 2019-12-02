@@ -1,0 +1,52 @@
+{
+  "ground_texture": "images/levels/ground_3_snow.png",
+  "objects": [
+    {
+      "type": "block",
+      "pos": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 1,
+        "y": 2
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 1,
+        "y": 3
+      },
+      "data": {
+        "type": "speed"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 1,
+        "y": 4
+      },
+      "data": {
+        "type": "bomb_power"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 1,
+        "y": 5
+      },
+      "data": {
+        "type": "add_life"
+      }
+    }
+  ]
+}
