@@ -97,6 +97,7 @@ class InterfaceProperties:
 class TimerProperties:
     MAX_TIME_SECONDS = 12000
 
+
 class ButtonProperties:
     BUTTON_STYLE = {
         "hover_color": Color.BLUE,
@@ -105,5 +106,4 @@ class ButtonProperties:
         "clicked_font_color": Color.BLACK,
         "hover_font_color": Color.ORANGE
     }
-
 

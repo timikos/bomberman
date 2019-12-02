@@ -44,8 +44,8 @@ class Ghost(DrawObject):
         self.window_width = self.game.width
         self.window_height = self.game.height
         self.rect = pygame.Rect(self.x, self.y, EnemyProperties.WIDTH, EnemyProperties.HEIGHT)
-        self.rect.x = randrange(80, self.window_width - self.rect.width - 200, 400)
-        self.rect.y = randrange(40, self.window_height - self.rect.height - 200, 80)
+        self.rect.x = self.x
+        self.rect.y = self.y
         self.start_move()
         self.data = self.images
 
@@ -127,8 +127,8 @@ class SpeedGhost(Ghost):
                      'images/ghosts/enemy_2_Left.png']
     images = None
 
-    def __init__(self, game, speed=2):
-        super().__init__(game, speed)
+    def __init__(self, game, speed=2, x=0, y=0):
+        super().__init__(game, speed, x=x, y=y)
         self.image = pygame.image.load(SpeedGhost.filename)
 
         """Загрузка картинок в список"""
@@ -148,8 +148,8 @@ class SuperGhost(Ghost):
                      'images/ghosts/enemy_3_Left.png']
     images = None
 
-    def __init__(self, game, speed=2):
-        super().__init__(game, speed)
+    def __init__(self, game, speed=2, x=0, y=0):
+        super().__init__(game, speed, x=x, y=y)
 
         """Загрузка картинок в список"""
         if SuperGhost.images is None:

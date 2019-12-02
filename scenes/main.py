@@ -16,29 +16,33 @@ from objects.blocks import IndestructibleBlockMap, DestroyedBlockMap
 from objects.score import Score, ScorePosition
 from objects.door import Door
 from objects.bombs import BombsList
-from constants import Color, ScoreProperties
 from objects.modifier import SpeedModifier, BombPowerModifier, AddLifeModifier, MultiBombModifier
+from constants import Color, ScoreProperties, FieldProperties
+
 from Global import Globals
+import json
 
 
 class MainScene(Scene):
 
+    def __init__(self, game, level_num=0):
+        file_name = 'levels/level' + str(level_num) + '.json'
+        with open(file_name, 'r') as f:
+            data = json.load(f)
+            self.level_data = data
+        super().__init__(game)
+
+
     def create_objects(self):
         """Создание объектов"""
         self.bomberman = Bomberman(self.game)
-        self.ghosts = [Ghost(self.game) for _ in range(2)] + [SpeedGhost(self.game) for _ in range(2)] + \
-                      [SuperGhost(self.game)]
         self.score = Score(self.game)
         self.health = Score(self.game, Color.RED, 5, 60, ScorePosition.LEFT_BOTTOM, "Health: ", text_after="",
                             border_shift=(10, 10))
-        self.field = Field(self.game)
-        self.fields = [Field(self.game) for _ in range(5)]
-        self.tilemap = IndestructibleBlockMap(self.game)
-        self.dstr_tilemap = DestroyedBlockMap(self.game)
-        self.door = Door(self.game)
-        self.bomb_list = BombsList(self.game)
-        self.timer = Timer(self.game)
-        self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
+        self.field = Field(self.game, ground_texture=self.level_data['ground_texture'])
+        self.ghosts = []
+        self.modifiers = []
+
         self.modifiers = [SpeedModifier(self.game, 82, 82),
                           SpeedModifier(self.game, 162, 162),
                           BombPowerModifier(self.game, 350, 350),
@@ -46,7 +50,40 @@ class MainScene(Scene):
                           AddLifeModifier(self.game, 250, 250),
                           AddLifeModifier(self.game, 500, 300),
                           MultiBombModifier(self.game, 200, 200),
-                          MultiBombModifier(self.game, 400, 400)]
+                          MultiBombModifier(self.game, 400, 400),
+                          AddLifeModifier(self.game, 500, 300)]
+
+        for obj in self.level_data['objects']:
+            x, y = self.field.x + int(obj['pos']['x']) * FieldProperties.CELL_LENGTH, \
+                   self.field.y + int(obj['pos']['y']) * FieldProperties.CELL_LENGTH
+            if obj['type'] == 'ghost':
+                t = obj['data']['type']
+                c = None
+                if t == 'usual':
+                    c = Ghost
+                elif t == 'speed':
+                    c = SpeedGhost
+                elif t == 'super':
+                    c = SuperGhost
+                self.ghosts += [c(game=self.game, x=x, y=y)]
+            elif obj['type'] == 'modifier':
+                t = obj['data']['type']
+                c = None
+                if t == 'speed':
+                    c = SpeedModifier
+                elif t == 'bomb_power':
+                    c = BombPowerModifier
+                elif t == 'add_life':
+                    c = AddLifeModifier
+                self.modifiers += [c(game=self.game, x=x, y=y)]
+
+        self.tilemap = IndestructibleBlockMap(self.game)
+        self.dstr_tilemap = DestroyedBlockMap(self.game)
+        self.door = Door(self.game)
+        self.bomb_list = BombsList(self.game)
+        self.timer = Timer(self.game)
+        self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
+
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
         """Список объектов"""
