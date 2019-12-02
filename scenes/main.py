@@ -177,12 +177,7 @@ class MainScene(Scene):
             if modifier.collides_with(self.bomberman):
                 modifier.hide()
                 self.modifier_effects[modifier.name] = pygame.time.get_ticks()
-
-    def process_modifiers_collisions_with_bomberman(self):
-        for modifier in self.modifiers:
-            if modifier.collides_with(self.bomberman):
-                modifier.hide()
-                self.modifier_effects[modifier.name] = pygame.time.get_ticks()
+                self.modifiers.remove(modifier)
 
     def process_bomberman_collision_with_blocks(self):
         """Коллизия главного героя с неразрушаемыми блоками"""
