@@ -71,7 +71,6 @@ class Ghost(DrawObject):
         elif self.current_shift_x == -1 and self.rect.x > 80:
             self.rect.x -= self.speed
             self.image = self.images[2]
-            self.rect.x -= 1
         if Globals.TurnRight:
             self.rect.x -= (Globals.FieldPosition-self.glob)
             self.glob = Globals.FieldPosition
