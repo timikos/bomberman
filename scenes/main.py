@@ -42,17 +42,6 @@ class MainScene(Scene):
         self.field = Field(self.game, ground_texture=self.level_data['ground_texture'])
         self.ghosts = []
         self.modifiers = []
-
-        self.modifiers = [SpeedModifier(self.game, 82, 82),
-                          SpeedModifier(self.game, 162, 162),
-                          BombPowerModifier(self.game, 350, 350),
-                          BombPowerModifier(self.game, 450, 450),
-                          AddLifeModifier(self.game, 250, 250),
-                          AddLifeModifier(self.game, 500, 300),
-                          MultiBombModifier(self.game, 200, 200),
-                          MultiBombModifier(self.game, 400, 400),
-                          AddLifeModifier(self.game, 500, 300)]
-
         for obj in self.level_data['objects']:
             x, y = self.field.x + int(obj['pos']['x']) * FieldProperties.CELL_LENGTH, \
                    self.field.y + int(obj['pos']['y']) * FieldProperties.CELL_LENGTH
@@ -75,6 +64,8 @@ class MainScene(Scene):
                     c = BombPowerModifier
                 elif t == 'add_life':
                     c = AddLifeModifier
+                elif t == 'multi_bomb':
+                    c = MultiBombModifier
                 self.modifiers += [c(game=self.game, x=x, y=y)]
 
         self.tilemap = IndestructibleBlockMap(self.game)
