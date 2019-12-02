@@ -1,12 +1,17 @@
+"""
+Класс Game
+
+Описание: данный класс соединяет в себе все сцены, все найстройки
+"""
 import sys
 import pygame
-
 from scenes.final import FinalScene
 from scenes.main import MainScene
 from scenes.menu import MenuScene
 from scenes.info import InfoScene
 from scenes.statistics import StatisticsScene
 from constants import ScreenProperties
+from objects.music import Sound
 
 
 class Game:
@@ -24,21 +29,27 @@ class Game:
         self.game_over = False
         self.wall_collision_count = 0
         self.ticks = 0
-        self.scenes = [MenuScene(self), MainScene(self), FinalScene(self), InfoScene(self), StatisticsScene(self)]
         self.current_scene = 0
 
+        """Список сцен"""
+        self.scenes = [MenuScene(self), MainScene(self), FinalScene(self), InfoScene(self), StatisticsScene(self)]
+
+
     def create_window(self):
-        pygame.init()
-        pygame.mixer.music.load('sounds/game_music.mp3')
-        pygame.mixer.music.set_volume(0.1)
-        pygame.mixer.music.play()
+        pygame.init()  # Инициализация pygame
+        pygame.display.set_caption("Bomberman")  # Название игры в шапке
+        pygame.display.set_icon(pygame.image.load("images/icon.png"))  # Иконка в шапке
+        self.music = Sound()  # Звуковое обеспечение
+
+        # Экран камеры
         self.screen = pygame.display.set_mode(self.size, pygame.RESIZABLE)
 
     def main_loop(self):
+        """Главный цикл игры"""
         while not self.game_over:
-            eventlist = pygame.event.get()
+            eventlist = pygame.event.get()  # Получение события
             for event in eventlist:
                 if event.type == pygame.QUIT:
                     self.game_over = True
-            self.scenes[self.current_scene].process_frame(eventlist)
+            self.scenes[self.current_scene].process_frame(eventlist)  # Обработка текущей сцены
         sys.exit(0)

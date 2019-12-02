@@ -1,9 +1,15 @@
-import pygame
+"""
+Класс Door
 
+Описание: данный класс позволяет реализовать дверь для прохождения уровня
+"""
+import pygame
 from objects.base import DrawObject
 from constants import FieldProperties
 from Global import Globals
 
+
+"""Дверь"""
 class Door(DrawObject):
     filename = 'images/door/door.png'
 
@@ -16,13 +22,15 @@ class Door(DrawObject):
         self.rect = pygame.Rect(self.x, self.y, FieldProperties.CELL_LENGTH, FieldProperties.CELL_LENGTH - 5)
 
 
-    def collides_with(self, bomberman):
-        return self.rect.colliderect(bomberman)
+    def collides_with(self, other):
+        """Коллизия с объектом"""
+        return self.rect.colliderect(other)
 
     def update_x(self,x):
         self.rect.x=self.x-x
 
     def show_door(self):
+        """Открытие двери"""
         self.hidden = False
         self.rect.x = FieldProperties.CELL_LENGTH + 2
 

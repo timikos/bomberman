@@ -1,3 +1,8 @@
+"""
+Константы
+"""
+from enum import Enum
+
 class Color:
     RED = (255, 0, 0)
     BLUE = (0, 0, 255)
@@ -7,6 +12,13 @@ class Color:
     ORANGE = (255, 180, 0)
     YELLOW = (255, 179, 0)
 
+class ScorePosition(Enum):
+    LEFT_TOP = 0
+    CENTER_TOP = 1
+    RIGHT_TOP = 2
+    LEFT_BOTTOM = 3
+    CENTER_BOTTOM = 4
+    RIGHT_BOTTOM = 5
 
 class ScreenProperties:
     WIDTH = 800  # Ширина экрана
@@ -27,7 +39,7 @@ class ScoreProperties:
 
 class BombermanProperties:
     RESPAWN_X = 400  # Появление бомбермена на оси х
-    RESPAWN_Y = 300  # Появление бомбермена на оси y
+    RESPAWN_Y = 320  # Появление бомбермена на оси y
     DIRECTION_X = 0  # Начальное направление
     DIRECTION_Y = 0  # Начальное направление
     WIDTH = 35  # Ширина прямоугольника бомбермена
@@ -49,8 +61,8 @@ class BombProperties:
 class ScoreTableProperties:
     PLAYER_COUNT = 5
     PLAYER_NUM_WIDTH = 10  # % относительно таблицы
-    NAME_WIDTH = 70  # % относительно таблицы
-    SCORE_WIDTH = 20  # % относительно таблицы
+    NAME_WIDTH = 60  # % относительно таблицы
+    SCORE_WIDTH = 30  # % относительно таблицы
     DISPLAY_HEADER = True  # Отображать заголовок таблицы
     COLOR = Color.ORANGE
     HEADER = ['N', 'Имя игрока', 'Счет']
@@ -74,3 +86,24 @@ class StatisticsProperties:
     NUM_WIDTH = 20  # % относительно таблицы
     ADD_SCORE_WIDTH = 20  # % относительно таблицы
     HEADER = None
+    TIME_TO_SHOW = 500  # Время, которое выделяется для отображения одной строки
+
+
+class InterfaceProperties:
+    TEXT_FONT = 'fonts/pixel_font.ttf'  # Шрифт
+    FONT_SIZE = 40  # Размер шрифта
+
+
+class TimerProperties:
+    MAX_TIME_SECONDS = 12000
+
+class ButtonProperties:
+    BUTTON_STYLE = {
+        "hover_color": Color.BLUE,
+        "font_color": Color.YELLOW,
+        "clicked_color": Color.GREEN,
+        "clicked_font_color": Color.BLACK,
+        "hover_font_color": Color.ORANGE
+    }
+
+

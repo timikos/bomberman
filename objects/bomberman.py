@@ -14,7 +14,8 @@ class Bomberman(DrawObject):
         self.x = x
         self.y = y
         self.speed = speed
-        self.collide=False
+        self.bomb_power = 1
+        self.multi_bomb = False
         self.rect = pygame.Rect(self.x, self.y, BombermanProperties.WIDTH, BombermanProperties.HEIGHT)
 
     def process_event(self, event):
@@ -48,7 +49,6 @@ class Bomberman(DrawObject):
                 self.game.scenes[1].bomb.create_bomb(cur_cell[0], cur_cell[1])
                 Globals.TurnLeft = False
                 Globals.TurnRight = False
-                Globals.IsOnMove = False
 
         elif event.type == pygame.KEYUP:
             if event.key in [97, 100, 115, 119]:
@@ -60,7 +60,7 @@ class Bomberman(DrawObject):
                 Globals.TurnRight = False
 
     def process_logic(self):
-        self.collide = False
+        """Логика бомбермена"""
         if self.current_shift_y == 1:
             if self.rect.y <= self.game.height - ScreenProperties.SCREEN_BORDER_HEIGHT:
                 self.rect.y += self.speed
@@ -69,18 +69,11 @@ class Bomberman(DrawObject):
                 self.rect.y -= self.speed
         elif self.current_shift_x == 1:
             if self.rect.x <= self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH+10000:
-               if self.rect.x < 600:
-                   self.rect.x += self.speed
-               else:
-                   Globals.FieldPosition += self.speed
+                Globals.FieldPosition += self.speed
         elif self.current_shift_x == -1:
             if self.rect.x > FieldProperties.CELL_LENGTH * 2:
-                if self.rect.x > 200:
-                    self.rect.x -= self.speed
-                else:
-                    Globals.FieldPosition -= self.speed
-                print(self.rect.x)
-                print(Globals.FieldPosition)
+                Globals.FieldPosition -= self.speed
+
 
     def collides_with(self, other):
         return self.rect.colliderect(other)
