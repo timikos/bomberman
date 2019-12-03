@@ -96,7 +96,7 @@ class MainScene(Scene):
         self.process_ghost_collisions_with_bomberman()
         self.process_ghost_collisions_with_fire_bomb()
         self.process_ghost_collisions_with_destroyable_tiles()
-        # self.process_ghost_collision_with_indestructible_tiles()
+        self.process_ghost_collision_with_indestructible_tiles()
         self.process_bomberman_collision_with_door()
         self.process_bomberman_collision_with_bomb_fire()
         self.process_bomberman_collision_with_blocks()
@@ -145,22 +145,21 @@ class MainScene(Scene):
                             ghost.current_shift_y *= -1
 
     """
-    !! Коллизия призраков с неразрушаемыми блоками - не работает.
-    Реализовано через изменение движения монстров при достижении границ (стенок) - см. ghosts.py
-    Реализация костыльная - так как не учитвает столкновение монстра с неразрушаемвит блоками внутри поля.
+    !! Не работает коллизия призраков со стенками.
+    Костьль - реализовано через изменение движения монстров при достижении стенок - см. ghosts.py
     """
-    # def process_ghost_collision_with_indestructible_tiles(self):
-    #     """Коллизия призраков с неразрушаемыми блоками"""
-    #     for row in self.tilemap.tiles:
-    #         for tile in row:
-    #             for ghost in self.ghosts:
-    #                 if tile.collides_with(ghost.rect):
-    #                     # Если монстр сталкивается с блоком при движении по горизонтали
-    #                     if ghost.current_shift_x:
-    #                         ghost.current_shift_x *= -1
-    #                     # Если монстр сталкивается с блоком при движении по вертикали
-    #                     else:
-    #                         ghost.current_shift_y *= -1
+    def process_ghost_collision_with_indestructible_tiles(self):
+        """Коллизия призраков с неразрушаемыми блоками"""
+        for row in self.tilemap.tiles:
+            for tile in row:
+                for ghost in self.ghosts:
+                    if tile.collides_with(ghost.rect):
+                        # Если монстр сталкивается с блоком при движении по горизонтали
+                        if ghost.current_shift_x:
+                            ghost.current_shift_x *= -1
+                        # Если монстр сталкивается с блоком при движении по вертикали
+                        else:
+                            ghost.current_shift_y *= -1
 
     def process_bomberman_collision_with_door(self):
         """Коллизия бомбермена с дверью"""

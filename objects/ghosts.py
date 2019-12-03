@@ -43,8 +43,8 @@ class Ghost(DrawObject):
         self.window_width = self.game.width
         self.window_height = self.game.height
         self.rect = pygame.Rect(self.x, self.y, EnemyProperties.WIDTH, EnemyProperties.HEIGHT)
-        self.rect.x = 160  # !!Зашил, изменить (не работало self.rect.x = self.x)
-        self.rect.y = 120  # !!Зашил, изменить (не работало self.rect.y = self.y)
+        self.rect.x = self.x
+        self.rect.y = 120 # ! 120 - Для проверки движения по горизонтали. Заменить на self.rect.y = self.y
         self.start_move()
         self.data = self.images
 
