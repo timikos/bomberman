@@ -47,8 +47,8 @@ class BombermanProperties:
 
 
 class EnemyProperties:
-    WIDTH = 30  # Ширина прямоугольника врагов
-    HEIGHT = 35  # Высота прямоугольника врагов
+    WIDTH = 40  # Ширина прямоугольника врагов
+    HEIGHT = 40  # Высота прямоугольника врагов
     DIRECTION_X = 0  # Начальное направление
     DIRECTION_Y = 0  # Начальное направление
 
