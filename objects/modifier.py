@@ -9,8 +9,8 @@ from Global import Globals
 from objects.field import Field
 
 
-"""Базовый класс модификаторов"""
 class Modifier(DrawObject):
+    """Базовый класс модификаторов"""
     def __init__(self, game, image, x=0, y=0, hidden=False):
         super().__init__(game)
         self.x, self.y = Field.get_cell_by_pos(x, y)
@@ -40,6 +40,8 @@ class Modifier(DrawObject):
 
 
 """Модификатор увеличения скорости"""
+
+
 class SpeedModifier(Modifier):
     filename = 'images/modifiers/speed.png'
     name = 'speed'
@@ -50,6 +52,8 @@ class SpeedModifier(Modifier):
 
 
 """Модификатор увеличения линии огня"""
+
+
 class BombPowerModifier(Modifier):
     filename = 'images/modifiers/5.png'
     name = 'bomb_power'
@@ -60,6 +64,8 @@ class BombPowerModifier(Modifier):
 
 
 """Модификатор увеличения жизней"""
+
+
 class AddLifeModifier(Modifier):
     filename = 'images/modifiers/2.png'
     name = 'add_life'
@@ -70,6 +76,8 @@ class AddLifeModifier(Modifier):
 
 
 """Модификатор увеличения количества бомб"""
+
+
 class MultiBombModifier(Modifier):
     filename = 'images/modifiers/4.png'
     name = 'multi_bomb'

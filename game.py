@@ -31,9 +31,13 @@ class Game:
         self.ticks = 0
         self.current_scene = 0
 
-        """Список сцен"""
-        self.scenes = [MenuScene(self), MainScene(self), FinalScene(self), InfoScene(self), StatisticsScene(self)]
-
+        self.scenes = [  # Список сцен
+            MenuScene(self),
+            MainScene(self),
+            FinalScene(self),
+            InfoScene(self),
+            StatisticsScene(self)
+        ]
 
     def create_window(self):
         pygame.init()  # Инициализация pygame

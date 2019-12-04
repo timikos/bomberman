@@ -8,8 +8,8 @@ from constants import ButtonProperties, InterfaceProperties
 from objects.base import DrawObject
 
 
-"""Базовый класс кнопок"""
 class BaseButtonAnim(object):
+    """Базовый класс кнопок"""
     def __init__(self, game, rect, color, function, **kwargs):
         self.game = game
         self.rect = pygame.Rect(rect)
@@ -110,6 +110,8 @@ class BaseButtonAnim(object):
 
 
 """Анимированные кнопки"""
+
+
 class ButtonAnimation(DrawObject):
 
     def __init__(self, game, rect=(10, 10, 100, 40), color=(0, 0, 0), text='Test', function=None):

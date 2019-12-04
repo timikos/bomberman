@@ -10,11 +10,14 @@ from objects.buttons import ButtonAnimation
 from scenes.base import Scene
 from objects.text import Text
 
+
 class InfoScene(Scene):
     def create_objects(self):
         """Создание объектов"""
-        self.Text1 = Text(self.game, 280, 225, 'Управление', 55, (255, 255, 255), font_name=InterfaceProperties.TEXT_FONT)
-        self.Text2 = Text(self.game, 280, 275, 'W - движение вверх', 25, (255, 255, 255), font_name=InterfaceProperties.TEXT_FONT)
+        self.Text1 = Text(self.game, 280, 225, 'Управление', 55, (255, 255, 255),
+                          font_name=InterfaceProperties.TEXT_FONT)
+        self.Text2 = Text(self.game, 280, 275, 'W - движение вверх', 25, (255, 255, 255),
+                          font_name=InterfaceProperties.TEXT_FONT)
         self.Text3 = Text(self.game, 280, 295, 'S - движение вниз', 25, (255, 255, 255))
         self.Text4 = Text(self.game, 280, 315, 'A - движение влево', 25, (255, 255, 255))
         self.Text5 = Text(self.game, 280, 335, 'D - движение вправо', 25, (255, 255, 255))

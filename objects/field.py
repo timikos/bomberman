@@ -9,8 +9,8 @@ from objects.base import DrawObject
 from Global import Globals
 
 
-"""Поле"""
 class Field(DrawObject):
+    """Поле"""
     def __init__(self, game, x=40, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT,
                  ground_texture='images/levels/ground_1_grass.png'):
         super().__init__(game)

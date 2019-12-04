@@ -9,8 +9,8 @@ from constants import FieldProperties
 from Global import Globals
 
 
-"""Дверь"""
 class Door(DrawObject):
+    """Дверь"""
     filename = 'images/door/door.png'
 
     def __init__(self, game, hidden=True, x=20, y=80):
@@ -21,13 +21,12 @@ class Door(DrawObject):
         self.y = y
         self.rect = pygame.Rect(self.x, self.y, FieldProperties.CELL_LENGTH, FieldProperties.CELL_LENGTH - 5)
 
-
     def collides_with(self, other):
         """Коллизия с объектом"""
         return self.rect.colliderect(other)
 
-    def update_x(self,x):
-        self.rect.x=self.x-x
+    def update_x(self, x):
+        self.rect.x = self.x - x
 
     def show_door(self):
         """Открытие двери"""
@@ -38,6 +37,6 @@ class Door(DrawObject):
         pass
 
     def process_draw(self):
-        self.update_x(Globals.FieldPosition-860)
+        self.update_x(Globals.FieldPosition - 860)
         if not self.hidden:
             self.game.screen.blit(self.image, self.rect)

@@ -9,6 +9,7 @@ from objects.base import DrawObject
 from constants import BombermanProperties, ScreenProperties, FieldProperties
 from Global import Globals
 
+
 class Bomberman(DrawObject):
     filename = 'images/bomberman/bomberman.png'
 
@@ -44,7 +45,7 @@ class Bomberman(DrawObject):
 
     def process_event(self, event):
         """События нажатия кнопок"""
-        if event.type == pygame.KEYDOWN :
+        if event.type == pygame.KEYDOWN:
             if chr(event.key) == 'w':
                 self.image = Bomberman.images[1]
                 self.current_shift_y = -1
@@ -95,8 +96,8 @@ class Bomberman(DrawObject):
             if self.rect.y > FieldProperties.CELL_LENGTH:
                 self.rect.y -= self.speed
         elif self.current_shift_x == 1:
-            if self.rect.x <= self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH+10000:
-                if self.rect.x <=600:
+            if self.rect.x <= self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH + 10000:
+                if self.rect.x <= 600:
                     self.rect.x += self.speed
                 else:
                     Globals.FieldPosition += self.speed
@@ -107,17 +108,15 @@ class Bomberman(DrawObject):
                 else:
                     Globals.FieldPosition -= self.speed
 
-
     def collides_with(self, other):
         """Коллизия с объектом"""
         return self.rect.colliderect(other)
 
-
-
     # def collides_with_list(self,list):
     """Коллизия со списком объектов"""
-        # print(self.rect.collidelist(list))
-        # return self.rect.collidelist(list)
+
+    # print(self.rect.collidelist(list))
+    # return self.rect.collidelist(list)
 
     def is_invulnerable(self):
         """Проверяет, неуязвим ли персонаж"""

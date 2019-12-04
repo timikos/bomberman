@@ -18,7 +18,6 @@ class FinalScene(Scene):
         self.seconds_left = self.MAX_TICKS // 100
         super().__init__(game)
 
-
     def create_objects(self):
         """Создание объектов"""
         self.highscore = HighScoreTable(self.game, self.filename)
@@ -27,8 +26,6 @@ class FinalScene(Scene):
         """Список объектов"""
         self.objects = [self.highscore, self.button_exit]
 
-
     def exit(self):
         """Выход"""
         self.game.game_over = True
-

@@ -10,8 +10,9 @@ from objects.base import DrawObject
 from constants import Color, ScoreTableProperties, TableProperties, StatisticsProperties, InterfaceProperties, ScorePosition
 import os
 
-"""Счёт во время игры"""
+
 class Score(DrawObject):
+    """Счёт во время игры"""
     def __init__(self, game, color=Color.ORANGE, count=0, size=InterfaceProperties.FONT_SIZE,
                  pos=ScorePosition.RIGHT_BOTTOM, text_before="SCORE: ",
                  text_after="", border_shift=(10, 10)):

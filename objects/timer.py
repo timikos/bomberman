@@ -8,8 +8,9 @@ from constants import Color, InterfaceProperties, TimerProperties
 from objects.base import DrawObject
 
 
-"""Таймер"""
 class Timer(DrawObject):
+    """Таймер"""
+
     def __init__(self, game, max_time_seconds=TimerProperties.MAX_TIME_SECONDS, text='Time: {}'):
         super().__init__(game)
         self.max_time_seconds = max_time_seconds
@@ -21,7 +22,6 @@ class Timer(DrawObject):
     def get_timer_text(self):
         """Добавление в текст счётчика"""
         return self.text.format(self.seconds)
-
 
     def timer_update(self):
         """Обновление таймера"""
@@ -49,4 +49,3 @@ class Timer(DrawObject):
     def process_draw(self):
         self.game.screen.blit(self.text_timer, (self.game.width // 2 - self.get_width() // 2,
                                                 self.game.height - self.get_height() - 10))
-

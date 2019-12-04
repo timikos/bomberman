@@ -9,8 +9,9 @@ from constants import FieldProperties
 from objects.base import DrawObject
 from Global import Globals
 
-
 """Базовый класс блоков"""
+
+
 class Block(DrawObject):
     def __init__(self, game, x=0, y=0, cell_length=FieldProperties.CELL_LENGTH):
         super().__init__(game)
@@ -22,6 +23,8 @@ class Block(DrawObject):
 
 
 """Неразрушаемый блок"""
+
+
 class IndestructibleBlock(Block):
     filename = 'images/blocks/block.png'
 
@@ -47,6 +50,8 @@ class IndestructibleBlock(Block):
 
 
 """Сетка неразрушаемых блоков"""
+
+
 class IndestructibleBlockMap(DrawObject):
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
@@ -80,6 +85,8 @@ class IndestructibleBlockMap(DrawObject):
 
 
 """Разрушаемый блок"""
+
+
 class DestroyedBlock(Block):
     """Список картинок состояния"""
     images = ['images/blocks/d_block_0.png',
@@ -132,6 +139,8 @@ class DestroyedBlock(Block):
 
 
 """Сетка разрушаемых блоков"""
+
+
 class DestroyedBlockMap(DrawObject):
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
