@@ -32,7 +32,6 @@ class MainScene(Scene):
             self.level_data = data
         super().__init__(game)
 
-
     def create_objects(self):
         """Создание объектов"""
         self.bomberman = Bomberman(self.game)
@@ -92,13 +91,12 @@ class MainScene(Scene):
                        [self.score] + [self.health] + \
                        [self.door] + self.modifiers + [self.timer]
 
-
-
     def additional_logic(self):
         """Все процессы"""
         self.process_ghost_collisions_with_bomberman()
         self.process_ghost_collisions_with_fire_bomb()
         self.process_ghost_collisions_with_destroyable_tiles()
+        self.process_ghost_collision_with_indestructible_tiles()
         self.process_bomberman_collision_with_door()
         self.process_bomberman_collision_with_bomb_fire()
         self.process_bomberman_collision_with_blocks()
@@ -139,14 +137,29 @@ class MainScene(Scene):
             for tile in row:
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
-                        ghost.start_move()
+                        # Если монстр сталкивается с блоком при движении по горизонтали
+                        if ghost.current_shift_x:
+                            ghost.current_shift_x *= -1
+                        # Если монстр сталкивается с блоком при движении по вертикали
+                        else:
+                            ghost.current_shift_y *= -1
 
-    def process_ghost_collision_with_wall(self):
-        """Коллизия призраков с блоком"""
-        for ghost in self.ghosts:
-            if ghost.collides_with(self.tilemap.tiles):
-                ghost.start_move()
-
+    """
+    !! Не работает коллизия призраков со стенками.
+    Костьль - реализовано через изменение движения монстров при достижении стенок - см. ghosts.py
+    """
+    def process_ghost_collision_with_indestructible_tiles(self):
+        """Коллизия призраков с неразрушаемыми блоками"""
+        for row in self.tilemap.tiles:
+            for tile in row:
+                for ghost in self.ghosts:
+                    if tile.collides_with(ghost.rect):
+                        # Если монстр сталкивается с блоком при движении по горизонтали
+                        if ghost.current_shift_x:
+                            ghost.current_shift_x *= -1
+                        # Если монстр сталкивается с блоком при движении по вертикали
+                        else:
+                            ghost.current_shift_y *= -1
 
     def process_bomberman_collision_with_door(self):
         """Коллизия бомбермена с дверью"""
@@ -157,12 +170,12 @@ class MainScene(Scene):
             ])
             self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
 
-
     def process_bomberman_collision_with_bomb_fire(self):
         """Коллизия главного героя с огнём от бомбы"""
         for bomb in self.bomb_list.bombs:
             for fire in bomb.bomb_fire.fire_rects:
-                if self.bomberman.collides_with(fire.fire_rect) and fire.active and not self.bomberman.is_invulnerable():
+                if self.bomberman.collides_with(
+                        fire.fire_rect) and fire.active and not self.bomberman.is_invulnerable():
                     self.respawn_bomberman_after_collision()
 
     def respawn_bomberman_after_collision(self):
@@ -184,18 +197,20 @@ class MainScene(Scene):
         for row in self.tilemap.tiles:
             for tile in row:
                 if tile.collides_with(self.bomberman.rect):
-                    if self.bomberman.current_shift_x > 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x -= 1
-                    elif self.bomberman.current_shift_x < 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x += 1
-                    elif self.bomberman.current_shift_y > 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.y -= 1
-                    elif self.bomberman.current_shift_y < 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.y += 1
+
+                    if tile.collides_with(self.bomberman.rect):
+                        if self.bomberman.current_shift_x > 0:
+                            while tile.collides_with(self.bomberman.rect):
+                                self.bomberman.rect.x -= 1
+                        elif self.bomberman.current_shift_x < 0:
+                            while tile.collides_with(self.bomberman.rect):
+                                self.bomberman.rect.x += 1
+                        elif self.bomberman.current_shift_y > 0:
+                            while tile.collides_with(self.bomberman.rect):
+                                self.bomberman.rect.y -= 1
+                        elif self.bomberman.current_shift_y < 0:
+                            while tile.collides_with(self.bomberman.rect):
+                                self.bomberman.rect.y += 1
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
@@ -222,14 +237,12 @@ class MainScene(Scene):
                     self.bomberman.current_shift_x = 0
                     self.bomberman.current_shift_y = 0
 
-
     def respawn_bomberman_after_collision(self):
         """Респавн главного героя"""
         self.health.sub_count(1)
         self.bomberman.rect.x = self.bomberman.rect.x
         self.bomberman.rect.y = self.bomberman.rect.y
         self.bomberman.start_ticks = pygame.time.get_ticks()  # Запускает счеткик (персонаж неузвим 3 секунды)
-
 
     def process_modifiers_effects(self):
         """Эффекты модификаторов"""
@@ -252,7 +265,6 @@ class MainScene(Scene):
             self.bomberman.multi_bomb = True
         else:
             self.bomberman.multi_bomb = False
-
 
     def process_show_door(self):
         """Условие открытие двери"""
@@ -282,12 +294,3 @@ class MainScene(Scene):
                     delta_y = abs(((ghost.rect.y - ghost.rect.height // 2) // 40) - ((tile.y - 40) // 40))
                     if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
                         tile.isDestroyed = True
-
-    def process_ghost_collisions_with_wall(self):
-        for ghost in self.ghosts:
-            if ghost.collides_with(self.tilemap.tiles):
-                ghost.start_move()
-'''
-    Метод коллизии призраков со стенкой
-'''
-
