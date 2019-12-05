@@ -71,7 +71,7 @@ class Bomberman(DrawObject):
                 Globals.IsOnMove = True
                 Globals.TurnRight = True
             elif event.key == pygame.K_SPACE:
-                cur_cell = self.game.scenes[1].field.get_cell_by_pos(self.rect.x, self.rect.y)
+                cur_cell = self.game.scenes[1].field.get_cell_by_pos(self.rect.centerx, self.rect.centery)
                 if len(self.game.scenes[1].bomb_list.bombs) == 0 or self.multi_bomb:
                     self.game.scenes[1].bomb_list.add_bomb(cur_cell[0], cur_cell[1], self.bomb_power)
                 Globals.TurnLeft = False
