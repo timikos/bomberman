@@ -12,7 +12,7 @@ from objects.text import Text
 from objects.timer import Timer
 from scenes.base import Scene
 from objects.ghosts import Ghost, SpeedGhost, SuperGhost
-from objects.blocks import IndestructibleBlockMap, DestroyedBlockMap
+from objects.blocks import IndestructibleBlockMap, DestroyedBlock
 from objects.score import Score, ScorePosition
 from objects.door import Door
 from objects.bombs import BombsList
@@ -42,6 +42,7 @@ class MainScene(Scene):
         self.field = Field(self.game, ground_texture=self.level_data['ground_texture'])
         self.ghosts = []
         self.modifiers = []
+        self.blocks = []
         for obj in self.level_data['objects']:
             x, y = self.field.x + int(obj['pos']['x']) * FieldProperties.CELL_LENGTH, \
                    self.field.y + int(obj['pos']['y']) * FieldProperties.CELL_LENGTH
@@ -67,9 +68,11 @@ class MainScene(Scene):
                 elif t == 'multi_bomb':
                     c = MultiBombModifier
                 self.modifiers += [c(game=self.game, x=x, y=y)]
+            elif obj['type'] == 'block':
+                c = DestroyedBlock
+                self.blocks += [c(game=self.game, x=x, y=y)]
 
         self.tilemap = IndestructibleBlockMap(self.game)
-        self.dstr_tilemap = DestroyedBlockMap(self.game)
         self.door = Door(self.game)
         self.bomb_list = BombsList(self.game)
         self.timer = Timer(self.game)
@@ -78,7 +81,7 @@ class MainScene(Scene):
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
         """Список объектов"""
-        self.objects = [self.field] + [self.bomb_list] + [self.dstr_tilemap] + [self.tilemap] + \
+        self.objects = [self.field] + [self.bomb_list] + self.blocks + [self.tilemap] + \
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
                        [self.door] + self.modifiers + [self.timer]
@@ -107,13 +110,12 @@ class MainScene(Scene):
                 self.respawn_bomberman_after_collision()
 
     def process_bomb_detection(self):
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                for bomb in self.bomb_list.bombs:
-                    for fire in bomb.bomb_fire.fire_rects:
-                        if tile.collides_with(fire.fire_rect) and fire.active:
-                            tile.start_ticks = pygame.time.get_ticks()
-                            tile.readyToBreak = True
+        for tile in self.blocks:
+            for bomb in self.bomb_list.bombs:
+                for fire in bomb.bomb_fire.fire_rects:
+                    if tile.collides_with(fire.fire_rect) and fire.active:
+                        tile.start_ticks = pygame.time.get_ticks()
+                        tile.readyToBreak = True
 
     def process_ghost_collisions_with_fire_bomb(self):
         """Коллизия врагов с огнём бомбы"""
@@ -126,11 +128,10 @@ class MainScene(Scene):
 
     def process_ghost_collisions_with_destroyable_tiles(self):
         """Коллизия врагов с разрушаемыми блоками"""
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                for ghost in self.ghosts:
-                    if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
-                        ghost.start_move()
+        for tile in self.blocks:
+            for ghost in self.ghosts:
+                if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
+                    ghost.start_move()
 
     def process_ghost_collision_with_wall(self):
         """Коллизия призраков с блоком"""
@@ -191,27 +192,26 @@ class MainScene(Scene):
                     self.bomberman.current_shift_y = 0
 
     def process_bomberman_collision_with_d_blocks(self):
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                if tile.collides_with(self.bomberman.rect):
-                    if self.bomberman.current_shift_x > 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x -= 1
-                    elif self.bomberman.current_shift_x < 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x += 1
-                    elif self.bomberman.current_shift_y > 0:
-                        if self.bomberman.speed == 5:
-                            self.bomberman.rect.y -= 5
-                        elif self.bomberman.speed == 10:
-                            self.bomberman.rect.y -= 10
-                    elif self.bomberman.current_shift_y < 0:
-                        if self.bomberman.speed == 5:
-                            self.bomberman.rect.y += 5
-                        elif self.bomberman.speed == 10:
-                            self.bomberman.rect.y += 10
-                    self.bomberman.current_shift_x = 0
-                    self.bomberman.current_shift_y = 0
+        for tile in self.blocks:
+            if tile.collides_with(self.bomberman.rect):
+                if self.bomberman.current_shift_x > 0:
+                    while tile.collides_with(self.bomberman.rect):
+                        self.bomberman.rect.x -= 1
+                elif self.bomberman.current_shift_x < 0:
+                    while tile.collides_with(self.bomberman.rect):
+                        self.bomberman.rect.x += 1
+                elif self.bomberman.current_shift_y > 0:
+                    if self.bomberman.speed == 5:
+                        self.bomberman.rect.y -= 5
+                    elif self.bomberman.speed == 10:
+                        self.bomberman.rect.y -= 10
+                elif self.bomberman.current_shift_y < 0:
+                    if self.bomberman.speed == 5:
+                        self.bomberman.rect.y += 5
+                    elif self.bomberman.speed == 10:
+                        self.bomberman.rect.y += 10
+                self.bomberman.current_shift_x = 0
+                self.bomberman.current_shift_y = 0
 
 
     def respawn_bomberman_after_collision(self):
@@ -260,19 +260,17 @@ class MainScene(Scene):
             self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
 
     def unneeded_blocks_deletion(self):
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                delta_x = abs(((self.bomberman.rect.x + self.bomberman.rect.width // 2) // 40) - (tile.x // 40))
-                delta_y = abs(((self.bomberman.rect.y - self.bomberman.rect.height // 2) // 40) - ((tile.y - 40) // 40))
+        for tile in self.blocks:
+            delta_x = abs(((self.bomberman.rect.x + self.bomberman.rect.width // 2) // 40) - (tile.x // 40))
+            delta_y = abs(((self.bomberman.rect.y - self.bomberman.rect.height // 2) // 40) - ((tile.y - 40) // 40))
+            if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
+                tile.isDestroyed = True
+        for tile in self.blocks:
+            for ghost in self.ghosts:
+                delta_x = abs(((ghost.rect.x + ghost.rect.width // 2) // 40) - (tile.x // 40))
+                delta_y = abs(((ghost.rect.y - ghost.rect.height // 2) // 40) - ((tile.y - 40) // 40))
                 if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
                     tile.isDestroyed = True
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                for ghost in self.ghosts:
-                    delta_x = abs(((ghost.rect.x + ghost.rect.width // 2) // 40) - (tile.x // 40))
-                    delta_y = abs(((ghost.rect.y - ghost.rect.height // 2) // 40) - ((tile.y - 40) // 40))
-                    if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
-                        tile.isDestroyed = True
 
     def process_ghost_collisions_with_wall(self):
         for ghost in self.ghosts:
