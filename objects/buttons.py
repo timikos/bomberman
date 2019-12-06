@@ -10,7 +10,7 @@ from objects.base import DrawObject
 
 class BaseButtonAnim(object):
     """Базовый класс кнопок"""
-    def __init__(self, game, rect, color, function, **kwargs):
+    def __init__(self, game, rect, color, function, max_anim=20, **kwargs):
         self.game = game
         self.rect = pygame.Rect(rect)
         self.color = color
@@ -22,6 +22,7 @@ class BaseButtonAnim(object):
         self.basic_font = 20  # Минимальный размер текста кнопки
         self.animation = self.basic_font
         self.process_kwargs(kwargs)
+        self.max_anim=max_anim
         self.render_text()
         self.animation_step = 1
         self.fonts = pygame.font.Font(InterfaceProperties.TEXT_FONT, self.animation)
@@ -51,9 +52,9 @@ class BaseButtonAnim(object):
             if self.hover_font_color:
                 color = self.hover_font_color
                 self.hover_text = self.fonts.render(self.text, True, color)
-            if self.clicked_font_color:
+            if self.clicked:
                 color = self.clicked_font_color
-                self.clicked_text = self.fonts.render(self.text, True, color)
+                self.clicked_text = self.fonts.render(self.text, True, (255, 179, 0))
             self.text = self.fonts.render(self.text, True, self.font_color)
 
     def check_event(self, event):
@@ -92,9 +93,9 @@ class BaseButtonAnim(object):
             color = self.clicked_color
             if self.clicked_font_color:
                 text = self.clicked_text
-        elif self.hovered and self.hover_color:
+        elif self.hovered and self.hover_color and self.max_anim!=0:
             color = self.hover_color
-            if self.animation > self.basic_font + 20:
+            if self.animation > self.basic_font + self.max_anim:
                 self.animation_step = -1
             elif self.animation <= self.basic_font:
                 self.animation_step = 1
@@ -114,13 +115,13 @@ class BaseButtonAnim(object):
 
 class ButtonAnimation(DrawObject):
 
-    def __init__(self, game, rect=(10, 10, 100, 40), color=(0, 0, 0), text='Test', function=None):
+    def __init__(self, game, rect=(10, 10, 100, 40), color=(0, 0, 0), text='Test', function=None , max_anim=20):
         super().__init__(game)
         self.rect = rect
         self.color = color
         self.text = text
         self.function = function if function else ButtonAnimation.no_action
-        self.internal_button = BaseButtonAnim(game, self.rect, self.color, self.function,
+        self.internal_button = BaseButtonAnim(game, self.rect, self.color, self.function, max_anim,
                                               **ButtonProperties.BUTTON_STYLE)
         self.internal_button.text = text
         self.internal_button.render_text()

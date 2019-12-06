@@ -171,7 +171,4 @@ class DestroyedBlockMap(DrawObject):
             for tile in x:
                 if tile.readyToBreak is True and tile.isDestroyed is False:
                     arr.append(tile.rect)
-                if tile.isDestroyed is True:
-                    x.remove(tile)
-                    Globals.UpdateNext = True
         return arr
