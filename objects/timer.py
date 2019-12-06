@@ -18,6 +18,7 @@ class Timer(DrawObject):
         self.start_ticks = 0
         self.seconds = self.max_time_seconds // 100
         self.text_timer = None
+        self.timer_update()
 
     def get_timer_text(self):
         """Добавление в текст счётчика"""

@@ -23,6 +23,7 @@ class Modifier(DrawObject):
         self.hidden = True
         self.rect.x = 0
         self.rect.y = 0
+        Globals.UpdateNext = True
 
     def collides_with(self, other):
         """Коллизия с объектами"""

@@ -62,13 +62,11 @@ class Bomberman(DrawObject):
                 self.image = Bomberman.images[3]
                 self.current_shift_y = 0
                 self.current_shift_x = -1
-                Globals.IsOnMove = True
                 Globals.TurnLeft = True
             elif chr(event.key) == 'd':
                 self.image = Bomberman.images[4]
                 self.current_shift_y = 0
                 self.current_shift_x = 1
-                Globals.IsOnMove = True
                 Globals.TurnRight = True
             elif event.key == pygame.K_SPACE:
                 cur_cell = self.game.scenes[1].field.get_cell_by_pos(self.rect.centerx, self.rect.centery)
@@ -83,7 +81,6 @@ class Bomberman(DrawObject):
                 self.current_shift_x = 0
                 self.current_shift_y = 0
                 self.image = Bomberman.images[0]
-                Globals.IsOnMove = False
                 Globals.TurnLeft = False
                 Globals.TurnRight = False
 
@@ -99,14 +96,20 @@ class Bomberman(DrawObject):
             if self.rect.x <= self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH + 10000:
                 if self.rect.x <= 600:
                     self.rect.x += self.speed
+                    Globals.UpdateDisplay = False
                 else:
                     Globals.FieldPosition += self.speed
+                    Globals.UpdateDisplay = True
         elif self.current_shift_x == -1:
             if self.rect.x > FieldProperties.CELL_LENGTH * 2:
                 if self.rect.x >= 200:
                     self.rect.x -= self.speed
+                    Globals.UpdateDisplay = False
                 else:
                     Globals.FieldPosition -= self.speed
+                    Globals.UpdateDisplay = True
+        else:
+            Globals.UpdateDisplay = False
 
     def collides_with(self, other):
         """Коллизия с объектом"""

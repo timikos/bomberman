@@ -15,7 +15,7 @@ class MenuScene(Scene):
         """Создание объектов"""
         self.button_start = ButtonAnimation(self.game, (350, 425, 100, 40), Color.WHITE, "Запуск игры", self.set_main_scene)
         self.button_info = ButtonAnimation(self.game, (350, 475, 100, 40), Color.WHITE, "Управление", self.set_info_scene)
-        self.Background=Background(self.game, (0, 0))
+        self.Background = Background(self.game, (0, 0))
         self.button_exit = ButtonAnimation(self.game, (350, 525, 100, 40), Color.WHITE, 'Выход', self.exit)
 
         """Список объектов"""

@@ -164,3 +164,14 @@ class DestroyedBlockMap(DrawObject):
         for x in self.tiles:
             for tile in x:
                 tile.process_event(event)
+
+    def get_ready_to_break_blocks(self):
+        arr = []
+        for x in self.tiles:
+            for tile in x:
+                if tile.readyToBreak is True and tile.isDestroyed is False:
+                    arr.append(tile.rect)
+                if tile.isDestroyed is True:
+                    x.remove(tile)
+                    Globals.UpdateNext = True
+        return arr

@@ -30,6 +30,7 @@ class Game:
         self.wall_collision_count = 0
         self.ticks = 0
         self.current_scene = 0
+        self.previus_scene = self.current_scene
 
         self.scenes = [  # Список сцен
             MenuScene(self),
@@ -55,5 +56,8 @@ class Game:
             for event in eventlist:
                 if event.type == pygame.QUIT:
                     self.game_over = True
+            if self.current_scene != self.previus_scene and self.current_scene==1:
+                self.scenes[self.current_scene].process_all_draw('all')
+                self.previus_scene = self.current_scene
             self.scenes[self.current_scene].process_frame(eventlist)  # Обработка текущей сцены
         sys.exit(0)
