@@ -99,9 +99,9 @@ class MainScene(Scene):
         self.process_ghost_collision_with_indestructible_tiles()
         self.process_bomberman_collision_with_door()
         self.process_bomberman_collision_with_bomb_fire()
-        self.process_bomberman_collision_with_blocks()
-        self.process_bomberman_collision_with_modifiers()
         self.process_bomberman_collision_with_d_blocks()
+        self.process_bomberman_collision_with_modifiers()
+        self.process_bomberman_collision_with_blocks()
         self.process_modifiers_effects()
         self.process_bomb_detection()
         self.process_show_door()
@@ -191,28 +191,59 @@ class MainScene(Scene):
                 modifier.hide()
                 self.modifier_effects[modifier.name] = pygame.time.get_ticks()
                 self.modifiers.remove(modifier)
+                print(self.bomberman.speed)
 
     def process_bomberman_collision_with_blocks(self):
         """Коллизия главного героя с неразрушаемыми блоками"""
         for row in self.tilemap.tiles:
             for tile in row:
-                if tile.collides_with(self.bomberman.rect):
 
+                if tile.rect.collidepoint(self.bomberman.rect.topleft) and not tile.rect.collidepoint(
+                        self.bomberman.rect.topright) and self.bomberman.current_shift_y < 0:
+                    self.bomberman.rect.x += 5
+                elif tile.rect.collidepoint(self.bomberman.rect.topright) and not tile.rect.collidepoint(
+                        self.bomberman.rect.topleft) and self.bomberman.current_shift_y < 0:
+                    self.bomberman.rect.x -= 5
+                elif tile.rect.collidepoint(self.bomberman.rect.bottomright) and not tile.rect.collidepoint(
+                        self.bomberman.rect.bottomleft) and self.bomberman.current_shift_y > 0:
+                    self.bomberman.rect.x -= 5
+                elif tile.rect.collidepoint(self.bomberman.rect.bottomleft) and not tile.rect.collidepoint(
+                        self.bomberman.rect.bottomright) and self.bomberman.current_shift_y > 0:
+                    self.bomberman.rect.x += 5
+
+                elif tile.rect.collidepoint(self.bomberman.rect.topright) and not tile.rect.collidepoint(
+                        self.bomberman.rect.bottomright) and self.bomberman.current_shift_x > 0:
+                    self.bomberman.rect.y += 5
+                elif tile.rect.collidepoint(self.bomberman.rect.topleft) and not tile.rect.collidepoint(
+                        self.bomberman.rect.bottomleft) and self.bomberman.current_shift_x < 0:
+                    self.bomberman.rect.y += 5
+                elif tile.rect.collidepoint(self.bomberman.rect.bottomright) and not tile.rect.collidepoint(
+                        self.bomberman.rect.topright) and self.bomberman.current_shift_x > 0:
+                    self.bomberman.rect.y -= 5
+                elif tile.rect.collidepoint(self.bomberman.rect.bottomleft) and not tile.rect.collidepoint(
+                        self.bomberman.rect.topleft) and self.bomberman.current_shift_x < 0:
+                    self.bomberman.rect.y -= 5
+                else:
                     if tile.collides_with(self.bomberman.rect):
+
                         if self.bomberman.current_shift_x > 0:
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.x -= 1
+
                         elif self.bomberman.current_shift_x < 0:
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.x += 1
+
                         elif self.bomberman.current_shift_y > 0:
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.y -= 1
+
                         elif self.bomberman.current_shift_y < 0:
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.y += 1
-                    self.bomberman.current_shift_x = 0
-                    self.bomberman.current_shift_y = 0
+
+                        self.bomberman.current_shift_x = 0
+                        self.bomberman.current_shift_y = 0
 
     def process_bomberman_collision_with_d_blocks(self):
         for row in self.dstr_tilemap.tiles:
