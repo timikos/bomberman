@@ -202,3 +202,4 @@ class BombsList(DrawObject):
             bomb.process_draw()
             if bomb.destroy:
                 self.bombs.remove(bomb)
+                Globals.UpdateNext = True

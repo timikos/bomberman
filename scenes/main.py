@@ -41,7 +41,6 @@ class MainScene(Scene):
         self.field = Field(self.game, ground_texture=self.level_data['ground_texture'])
         self.ghosts = []
         self.modifiers = []
-
         self.modifiers = [SpeedModifier(self.game, 82, 82),
                           SpeedModifier(self.game, 162, 162),
                           BombPowerModifier(self.game, 350, 350),
@@ -90,6 +89,37 @@ class MainScene(Scene):
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
                        [self.door] + self.modifiers + [self.timer]
+        self.no_static_objects = [self.bomberman] + self.ghosts
+
+    def process_all_draw(self, type_of_objects='nonestatic'):
+        for item in self.objects:
+            item.process_draw()
+        self.additional_draw()
+        if type_of_objects=='nonestatic' and Globals.UpdateDisplay is False and Globals.UpdateNext is False:
+            print('Updating part of screen')
+            for item in self.no_static_objects:  # Обновление призраков/персонажа
+                rect = pygame.Rect(item.rect.x - item.speed, item.rect.y - item.speed,
+                                   item.rect.width + item.speed * 2 + 15, item.rect.height + item.speed * 3)
+                pygame.display.update(rect)
+            for item in self.bomb_list.bombs:  # Обновление картинки бомбы (Огней)
+                rect=pygame.Rect(item.rect.x - item.rect.width, item.rect.y - item.rect.height,
+                            item.rect.width * 3, item.rect.height * 3)
+                pygame.display.update(rect)
+            for item in self.modifiers:  # Обновление картинки бомбы (Огней)
+                rect = pygame.Rect(item.rect)
+                pygame.display.update(rect)
+            pygame.display.update(pygame.Rect(self.game.width // 2 - self.timer.get_width() // 2,
+                                              self.game.height - self.timer.get_height() - 10,
+                                              self.game.width, self.timer.get_height()))  # Обновление статистики снизу
+            dstrblocks = self.dstr_tilemap.get_ready_to_break_blocks()  # Получение блоков с анимацией разрушения
+            for item in dstrblocks:  # Обновление анимации блоков при разрушении
+                pygame.display.update(item)
+        elif Globals.UpdateDisplay is True or Globals.UpdateNext is True:  # Обновление всего экрана
+            print('Updating all screen')
+            pygame.display.flip()  # Переворот экрана
+            Globals.UpdateNext = False
+        self.screen.fill(Color.BLACK)
+        pygame.time.wait(10)
 
     def additional_logic(self):
         """Все процессы"""
