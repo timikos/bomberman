@@ -110,9 +110,10 @@ class MainScene(Scene):
                 for item in self.modifiers:  # Обновление картинки бомбы (Огней)
                     rect = pygame.Rect(item.rect)
                     pygame.display.update(rect)
+                # Обновление статистики снизу
                 pygame.display.update(pygame.Rect(self.game.width // 2 - self.timer.get_width() // 2,
                                                   self.game.height - self.timer.get_height() - 10,
-                                                  self.game.width, self.timer.get_height()))  # Обновление статистики снизу
+                                                  self.game.width, self.timer.get_height()))
                 dstrblocks = self.dstr_tilemap.get_ready_to_break_blocks()  # Получение блоков с анимацией разрушения
                 for item in dstrblocks:  # Обновление анимации блоков при разрушении
                     pygame.display.update(item)
@@ -160,7 +161,9 @@ class MainScene(Scene):
                 for fire in bomb.bomb_fire.fire_rects:
                     if ghost.collides_with(fire.fire_rect) and fire.active:
                         ghost.hidden = True
-                        self.score.add_count(100)
+                        self.ghosts.remove(ghost)
+                        if self.ghosts.__len__()!=0:
+                            self.score.add_count(100)
 
     def process_ghost_collisions_with_destroyable_tiles(self):
         """Коллизия врагов с разрушаемыми блоками"""
@@ -195,11 +198,12 @@ class MainScene(Scene):
     def process_bomberman_collision_with_door(self):
         """Коллизия бомбермена с дверью"""
         if self.bomberman.collides_with(self.door):
-            self.game.scenes[self.game.STATISTICS_SCENE_INDEX].set_info([
-                ['Заработано очков', self.score.count, self.score.count],
-                ['Жизней осталось', self.health.count, self.health.count * ScoreProperties.HEALTH]
-            ])
-            self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
+            if self.door.hidden is False:
+                self.game.scenes[self.game.STATISTICS_SCENE_INDEX].set_info([
+                    ['Заработано очков', self.score.count, self.score.count],
+                    ['Жизней осталось', self.health.count, self.health.count * ScoreProperties.HEALTH]
+                ])
+                self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
 
     def process_bomberman_collision_with_bomb_fire(self):
         """Коллизия главного героя с огнём от бомбы"""
@@ -330,8 +334,15 @@ class MainScene(Scene):
 
     def process_show_door(self):
         """Условие открытие двери"""
-        if self.score.count == 500:
-            self.door.show_door()
+        door_collide = False
+        if self.ghosts.__len__() == 0:
+            for item in self.dstr_tilemap.tiles:
+                for tile in item:
+                    if self.door.collides_with(tile) and tile.isDestroyed is False:
+                        door_collide = True
+                        print(door_collide)
+            if door_collide is False:
+                self.door.show_door()
 
     def process_game_lose(self):
         """Условие проигрыша"""
