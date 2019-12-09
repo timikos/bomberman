@@ -44,7 +44,7 @@ class Ghost(DrawObject):
         self.window_height = self.game.height
         self.rect = pygame.Rect(self.x, self.y, EnemyProperties.WIDTH, EnemyProperties.HEIGHT)
         self.rect.x = self.x
-        self.rect.y = 120 # ! 120 - Для проверки движения по горизонтали. Заменить на self.rect.y = self.y
+        self.rect.y = self.y
         self.start_move()
         self.data = self.images
 
@@ -53,56 +53,34 @@ class Ghost(DrawObject):
 
     def process_logic(self):
         """Логика движения призраков"""
-        # Движение вниз и проверка границ
-        if self.current_shift_y == 1 and self.rect.y < self.game.height - ScreenProperties.SCREEN_BORDER_HEIGHT:
-            self.image = self.images[0]
-            self.rect.y += self.speed
-        # Движение вверх и проверка границ
-        elif self.current_shift_y == -1 and self.rect.y > 40:
-            self.image = self.images[0]
-            self.rect.y -= self.speed
-        # Движение вправо и проверка границ
-        elif self.current_shift_x == 1 and self.rect.x < self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
-            self.image = self.images[1]
-            self.rect.x += self.speed
-        # Движение влево и проверка границ
-        elif self.current_shift_x == -1 and self.rect.x > 80:
-            self.rect.x -= self.speed
-            self.image = self.images[2]
         if Globals.TurnRight:
-            self.rect.x -= (Globals.FieldPosition-self.glob)
+            self.rect.x -= (Globals.FieldPosition - self.glob)
             self.glob = Globals.FieldPosition
         if Globals.TurnLeft:
-            self.rect.x += (self.glob-Globals.FieldPosition)
+            self.rect.x += (self.glob - Globals.FieldPosition)
             self.glob = Globals.FieldPosition
 
         # Движение по горизонтали:
         if self.current_shift_x:
-            # Движение вправо, проверка границы
-            if self.current_shift_x == 1 and self.rect.x < self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
+            # Движение вправо
+            if self.current_shift_x == 1:
                 self.image = self.images[1]
                 self.rect.x += self.speed
-            # Движение влево, проверка границы
-            elif self.current_shift_x == -1 and self.rect.x > FieldProperties.CELL_LENGTH * 2:
+            # Движение влево
+            elif self.current_shift_x == -1:
                 self.rect.x -= self.speed
                 self.image = self.images[2]
-            # Изменение направления движения при достижении боковых стенок
-            elif self.rect.x == FieldProperties.CELL_LENGTH * 2 or self.rect.x == self.game.width - ScreenProperties.SCREEN_BORDER_WIDTH:
-                self.current_shift_x *= -1
         # Движение по вертикали:
         elif self.current_shift_y:
-            # Движение вниз, проверка границы
-            if self.current_shift_y == 1 and self.rect.y < self.game.height - ScreenProperties.SCREEN_BORDER_HEIGHT:
+            # Движение вниз
+            if self.current_shift_y == 1:
                 self.image = self.images[0]
                 self.rect.y += self.speed
-            # Движение вверх, проверка границы
-            elif self.current_shift_y == -1 and self.rect.y > FieldProperties.CELL_LENGTH:
+            # Движение вверх
+            elif self.current_shift_y == -1:
                 self.image = self.images[0]
                 self.rect.y -= self.speed
-            # Изменение направления движения при достижении нижней или верхней стенки
-            elif self.rect.y == FieldProperties.CELL_LENGTH or self.rect.y == self.game.height - ScreenProperties.HEIGHT:
-                self.current_shift_y *= -1
-
+                
     def start_move(self):
         """Начало движения"""
         direction_move = randint(0, 3)

@@ -171,6 +171,7 @@ class MainScene(Scene):
             for tile in row:
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
+                        print('Монстр столкнулся с разрушаемым блоком')
                         # Если монстр сталкивается с блоком при движении по горизонтали
                         if ghost.current_shift_x:
                             ghost.current_shift_x *= -1
@@ -178,16 +179,14 @@ class MainScene(Scene):
                         else:
                             ghost.current_shift_y *= -1
 
-    """
-    !! Не работает коллизия призраков со стенками.
-    Костьль - реализовано через изменение движения монстров при достижении стенок - см. ghosts.py
-    """
+
     def process_ghost_collision_with_indestructible_tiles(self):
         """Коллизия призраков с неразрушаемыми блоками"""
         for row in self.tilemap.tiles:
             for tile in row:
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect):
+                        print('Монстр столкнулся с неразрушаемым блоком')
                         # Если монстр сталкивается с блоком при движении по горизонтали
                         if ghost.current_shift_x:
                             ghost.current_shift_x *= -1
