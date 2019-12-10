@@ -1,5 +1,5 @@
 {
-  "ground_texture": "images/levels/ground_3_snow.png",
+  "ground_texture": "images/levels/ground_1_grass.png",
   "objects": [
     {
       "type": "block",
@@ -21,8 +21,38 @@
     {
       "type": "ghost",
       "pos": {
-        "x": 1,
-        "y": 3
+        "x": 3,
+        "y": 11
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 19,
+        "y": 10
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 27,
+        "y": 10
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 29,
+        "y": 2
       },
       "data": {
         "type": "usual"
@@ -31,7 +61,7 @@
     {
       "type": "modifier",
       "pos": {
-        "x": 1,
+        "x": -7,
         "y": 3
       },
       "data": {
@@ -41,22 +71,14 @@
     {
       "type": "modifier",
       "pos": {
-        "x": 1,
+        "x": 11,
         "y": 4
       },
       "data": {
         "type": "bomb_power"
       }
-    },
-    {
-      "type": "modifier",
-      "pos": {
-        "x": 1,
-        "y": 5
-      },
-      "data": {
-        "type": "add_life"
-      }
     }
+
+
   ]
 }

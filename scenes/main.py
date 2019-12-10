@@ -12,7 +12,7 @@ from objects.text import Text
 from objects.timer import Timer
 from scenes.base import Scene
 from objects.ghosts import Ghost, SpeedGhost, SuperGhost
-from objects.blocks import IndestructibleBlockMap, DestroyedBlockMap
+from objects.blocks import IndestructibleBlockMap, DestroyedBlock
 from objects.score import Score, ScorePosition
 from objects.door import Door
 from objects.bombs import BombsList
@@ -22,69 +22,43 @@ from constants import Color, ScoreProperties, FieldProperties
 from Global import Globals
 import json
 
+from scenes.lvls import LvlsScene
 
 class MainScene(Scene):
+    print("NOW")
+    current_lvl = LvlsScene.cur
+    def __init__(self, game):
 
-    def __init__(self, game, level_num=0):
-        file_name = 'levels/level' + str(level_num) + '.json'
+        print("NOW1")
+        file_name = 'levels/level' + str(self.current_lvl) + '.json'
         with open(file_name, 'r') as f:
             data = json.load(f)
             self.level_data = data
         super().__init__(game)
 
+
     def create_objects(self):
+        print("NOW2")
         """Создание объектов"""
-        self.bomberman = Bomberman(self.game)
-        self.score = Score(self.game)
+        self.bomberman = Bomberman(self.game)  # Главный герой
+        self.score = Score(self.game)  # Счётчик очков
         self.health = Score(self.game, Color.RED, 5, 60, ScorePosition.LEFT_BOTTOM, "Health: ", text_after="",
-                            border_shift=(10, 10))
-        self.field = Field(self.game, ground_texture=self.level_data['ground_texture'])
-        self.ghosts = []
-        self.modifiers = []
-        self.modifiers = [SpeedModifier(self.game, 82, 82),
-                          SpeedModifier(self.game, 162, 162),
-                          BombPowerModifier(self.game, 350, 350),
-                          BombPowerModifier(self.game, 450, 450),
-                          AddLifeModifier(self.game, 250, 250),
-                          AddLifeModifier(self.game, 500, 300),
-                          MultiBombModifier(self.game, 200, 200),
-                          MultiBombModifier(self.game, 400, 400),
-                          AddLifeModifier(self.game, 500, 300)]
-
-        for obj in self.level_data['objects']:
-            x, y = self.field.x + int(obj['pos']['x']) * FieldProperties.CELL_LENGTH, \
-                   self.field.y + int(obj['pos']['y']) * FieldProperties.CELL_LENGTH
-            if obj['type'] == 'ghost':
-                t = obj['data']['type']
-                c = None
-                if t == 'usual':
-                    c = Ghost
-                elif t == 'speed':
-                    c = SpeedGhost
-                elif t == 'super':
-                    c = SuperGhost
-                self.ghosts += [c(game=self.game, x=x, y=y)]
-            elif obj['type'] == 'modifier':
-                t = obj['data']['type']
-                c = None
-                if t == 'speed':
-                    c = SpeedModifier
-                elif t == 'bomb_power':
-                    c = BombPowerModifier
-                elif t == 'add_life':
-                    c = AddLifeModifier
-                self.modifiers += [c(game=self.game, x=x, y=y)]
-
-        self.tilemap = IndestructibleBlockMap(self.game)
-        self.dstr_tilemap = DestroyedBlockMap(self.game)
-        self.door = Door(self.game)
+                            border_shift=(10, 10))   # Счётчик жизней
+        self.field = Field(self.game, ground_texture=self.level_data['ground_texture'])  # Поле
+        self.ghosts = []  # Список врагов
+        self.modifiers = []  # Список модификаторов
+        self.blocks = []  # Список блоков
+        self.tilemap = IndestructibleBlockMap(self.game)  # Сетка неразрушаемых блоков
+        self.door = Door(self.game)  # Дверь
         self.bomb_list = BombsList(self.game)
-        self.timer = Timer(self.game)
+        self.timer = Timer(self.game)  # Таймер обратного отсчёта
         self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
-        self.modifier_effects = {}
+        self.modifier_effects = {}  # Словарь эффектов модификаторов
         self.unneeded_blocks_deletion()
+
+        self.load_obj_for_lvl()  # Загрузка всех параметров для объектов уровня
         """Список объектов"""
-        self.objects = [self.field] + [self.bomb_list] + [self.dstr_tilemap] + [self.tilemap] + \
+        self.objects = [self.field] + [self.bomb_list] + self.blocks + [self.tilemap] + \
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
                        [self.door] + self.modifiers + [self.timer]
@@ -113,9 +87,9 @@ class MainScene(Scene):
                 pygame.display.update(pygame.Rect(self.game.width // 2 - self.timer.get_width() // 2,
                                                   self.game.height - self.timer.get_height() - 10,
                                                   self.game.width, self.timer.get_height()))
-                dstrblocks = self.dstr_tilemap.get_ready_to_break_blocks()  # Получение блоков с анимацией разрушения
-                for item in dstrblocks:  # Обновление анимации блоков при разрушении
-                    pygame.display.update(item)
+                #  dstrblocks = self.blocks.get_ready_to_break_blocks()  # Получение блоков с анимацией разрушения
+                # for item in dstrblocks:  # Обновление анимации блоков при разрушении
+                #     pygame.display.update(item)
             elif Globals.UpdateDisplay is True or Globals.UpdateNext is True:  # Обновление всего экрана
                 pygame.display.flip()  # Переворот экрана
                 Globals.UpdateNext = False
@@ -138,6 +112,7 @@ class MainScene(Scene):
         self.process_show_door()
         self.process_game_lose()
 
+
     def process_ghost_collisions_with_bomberman(self):
         """Коллизия бомбермэна с призраками"""
         for ghost in self.ghosts:
@@ -145,13 +120,12 @@ class MainScene(Scene):
                 self.respawn_bomberman_after_collision()
 
     def process_bomb_detection(self):
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                for bomb in self.bomb_list.bombs:
-                    for fire in bomb.bomb_fire.fire_rects:
-                        if tile.collides_with(fire.fire_rect) and fire.active:
-                            tile.start_ticks = pygame.time.get_ticks()
-                            tile.readyToBreak = True
+        for tile in self.blocks:
+            for bomb in self.bomb_list.bombs:
+                for fire in bomb.bomb_fire.fire_rects:
+                    if tile.collides_with(fire.fire_rect) and fire.active:
+                        tile.start_ticks = pygame.time.get_ticks()
+                        tile.readyToBreak = True
 
     def process_ghost_collisions_with_fire_bomb(self):
         """Коллизия врагов с огнём бомбы"""
@@ -166,31 +140,38 @@ class MainScene(Scene):
 
     def process_ghost_collisions_with_destroyable_tiles(self):
         """Коллизия врагов с разрушаемыми блоками"""
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                for ghost in self.ghosts:
-                    if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
-                        print('Монстр столкнулся с разрушаемым блоком')
-                        # Если монстр сталкивается с блоком при движении по горизонтали
-                        if ghost.current_shift_x:
-                            ghost.current_shift_x *= -1
-                        # Если монстр сталкивается с блоком при движении по вертикали
-                        else:
-                            ghost.current_shift_y *= -1
+
+        for tile in self.blocks:
+            for ghost in self.ghosts:
+                if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
+                    print('Монстр столкнулся с разрушаемым блоком')
+                    # Если монстр сталкивается с блоком при движении по горизонтали
+                    if ghost.current_shift_x:
+                        ghost.current_shift_x *= -1
+                    # Если монстр сталкивается с блоком при движении по вертикали
+                    else:
+                        ghost.current_shift_y *= -1
 
     def process_ghost_collision_with_indestructible_tiles(self):
         """Коллизия призраков с неразрушаемыми блоками"""
-        for row in self.tilemap.tiles:
-            for tile in row:
-                for ghost in self.ghosts:
-                    if tile.collides_with(ghost.rect):
-                        print('Монстр столкнулся с неразрушаемым блоком')
-                        # Если монстр сталкивается с блоком при движении по горизонтали
-                        if ghost.current_shift_x:
-                            ghost.current_shift_x *= -1
-                        # Если монстр сталкивается с блоком при движении по вертикали
-                        else:
-                            ghost.current_shift_y *= -1
+        for tile in self.blocks:
+            for ghost in self.ghosts:
+                if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
+                    print('Монстр столкнулся с неразрушаемым блоком')
+                    # Если монстр сталкивается с блоком при движении по горизонтали
+                    if ghost.current_shift_x:
+                        ghost.current_shift_x *= -1
+                    # Если монстр сталкивается с блоком при движении по вертикали
+                    else:
+                        ghost.current_shift_y *= -1
+
+
+    def process_ghost_collision_with_wall(self):
+        """Коллизия призраков с блоком"""
+        for ghost in self.ghosts:
+            if ghost.collides_with(self.tilemap.tiles):
+                ghost.start_move()
+
 
     def process_bomberman_collision_with_door(self):
         """Коллизия бомбермена с дверью"""
@@ -210,11 +191,13 @@ class MainScene(Scene):
                         fire.fire_rect) and fire.active and not self.bomberman.is_invulnerable():
                     self.respawn_bomberman_after_collision()
 
+
     def respawn_bomberman_after_collision(self):
-        self.health.sub(1)
-        Globals.FieldPosition = 400
-        self.bomberman.rect.x = 400
-        self.bomberman.rect.y = 300
+        """Респавн главного героя"""
+        self.health.sub_count(1)
+        self.bomberman.rect.x = self.bomberman.rect.x
+        self.bomberman.rect.y = self.bomberman.rect.y
+        self.bomberman.start_ticks = pygame.time.get_ticks()  # Запускает счеткик (персонаж неузвим 3 секунды)
 
     def process_bomberman_collision_with_modifiers(self):
         """Коллизия главного героя с модификаторами"""
@@ -278,34 +261,27 @@ class MainScene(Scene):
                         self.bomberman.current_shift_y = 0
 
     def process_bomberman_collision_with_d_blocks(self):
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                if tile.collides_with(self.bomberman.rect):
-                    if self.bomberman.current_shift_x > 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x -= 1
-                    elif self.bomberman.current_shift_x < 0:
-                        while tile.collides_with(self.bomberman.rect):
-                            self.bomberman.rect.x += 1
-                    elif self.bomberman.current_shift_y > 0:
-                        if self.bomberman.speed == 5:
-                            self.bomberman.rect.y -= 5
-                        elif self.bomberman.speed == 10:
-                            self.bomberman.rect.y -= 10
-                    elif self.bomberman.current_shift_y < 0:
-                        if self.bomberman.speed == 5:
-                            self.bomberman.rect.y += 5
-                        elif self.bomberman.speed == 10:
-                            self.bomberman.rect.y += 10
-                    self.bomberman.current_shift_x = 0
-                    self.bomberman.current_shift_y = 0
+        for tile in self.blocks:
+            if tile.collides_with(self.bomberman.rect):
+                if self.bomberman.current_shift_x > 0:
+                    while tile.collides_with(self.bomberman.rect):
+                        self.bomberman.rect.x -= 1
+                elif self.bomberman.current_shift_x < 0:
+                    while tile.collides_with(self.bomberman.rect):
+                        self.bomberman.rect.x += 1
+                elif self.bomberman.current_shift_y > 0:
+                    if self.bomberman.speed == 5:
+                        self.bomberman.rect.y -= 5
+                    elif self.bomberman.speed == 10:
+                        self.bomberman.rect.y -= 10
+                elif self.bomberman.current_shift_y < 0:
+                    if self.bomberman.speed == 5:
+                        self.bomberman.rect.y += 5
+                    elif self.bomberman.speed == 10:
+                        self.bomberman.rect.y += 10
+                self.bomberman.current_shift_x = 0
+                self.bomberman.current_shift_y = 0
 
-    def respawn_bomberman_after_collision(self):
-        """Респавн главного героя"""
-        self.health.sub_count(1)
-        self.bomberman.rect.x = self.bomberman.rect.x
-        self.bomberman.rect.y = self.bomberman.rect.y
-        self.bomberman.start_ticks = pygame.time.get_ticks()  # Запускает счеткик (персонаж неузвим 3 секунды)
 
     def process_modifiers_effects(self):
         """Эффекты модификаторов"""
@@ -330,14 +306,13 @@ class MainScene(Scene):
             self.bomberman.multi_bomb = False
 
     def process_show_door(self):
-        """Условие открытие двери"""
+        """Условие открытия двери"""
         door_collide = False
         if self.ghosts.__len__() == 0:
-            for item in self.dstr_tilemap.tiles:
-                for tile in item:
-                    if self.door.collides_with(tile) and tile.isDestroyed is False:
-                        door_collide = True
-                        print(door_collide)
+            for block in self.blocks:
+                if self.door.collides_with(block) and block.isDestroyed is False:
+                    door_collide = True
+                    print(door_collide)
             if door_collide is False:
                 self.door.show_door()
 
@@ -351,16 +326,44 @@ class MainScene(Scene):
             self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
 
     def unneeded_blocks_deletion(self):
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                delta_x = abs(((self.bomberman.rect.x + self.bomberman.rect.width // 2) // 40) - (tile.x // 40))
-                delta_y = abs(((self.bomberman.rect.y - self.bomberman.rect.height // 2) // 40) - ((tile.y - 40) // 40))
+        for tile in self.blocks:
+            delta_x = abs(((self.bomberman.rect.x + self.bomberman.rect.width // 2) // 40) - (tile.x // 40))
+            delta_y = abs(((self.bomberman.rect.y - self.bomberman.rect.height // 2) // 40) - ((tile.y - 40) // 40))
+            if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
+                tile.isDestroyed = True
+        for tile in self.blocks:
+            for ghost in self.ghosts:
+                delta_x = abs(((ghost.rect.x + ghost.rect.width // 2) // 40) - (tile.x // 40))
+                delta_y = abs(((ghost.rect.y - ghost.rect.height // 2) // 40) - ((tile.y - 40) // 40))
                 if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
                     tile.isDestroyed = True
-        for row in self.dstr_tilemap.tiles:
-            for tile in row:
-                for ghost in self.ghosts:
-                    delta_x = abs(((ghost.rect.x + ghost.rect.width // 2) // 40) - (tile.x // 40))
-                    delta_y = abs(((ghost.rect.y - ghost.rect.height // 2) // 40) - ((tile.y - 40) // 40))
-                    if (delta_x <= 2 and delta_y == 0) or (delta_y <= 2 and delta_x == 0):
-                        tile.isDestroyed = True
+
+    def load_obj_for_lvl(self):
+        for obj in self.level_data['objects']:
+            x, y = self.field.x + int(obj['pos']['x']) * FieldProperties.CELL_LENGTH, \
+                   self.field.y + int(obj['pos']['y']) * FieldProperties.CELL_LENGTH
+            if obj['type'] == 'ghost':
+                t = obj['data']['type']
+                c = None
+                if t == 'usual':
+                    c = Ghost
+                elif t == 'speed':
+                    c = SpeedGhost
+                elif t == 'super':
+                    c = SuperGhost
+                self.ghosts += [c(game=self.game, x=x, y=y)]
+            elif obj['type'] == 'modifier':
+                t = obj['data']['type']
+                c = None
+                if t == 'speed':
+                    c = SpeedModifier
+                elif t == 'bomb_power':
+                    c = BombPowerModifier
+                elif t == 'add_life':
+                    c = AddLifeModifier
+                elif t == 'multi_bomb':
+                    c = MultiBombModifier
+                self.modifiers += [c(game=self.game, x=x, y=y)]
+            elif obj['type'] == 'block':
+                c = DestroyedBlock
+                self.blocks += [c(game=self.game, x=x, y=y)]

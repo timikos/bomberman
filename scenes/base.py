@@ -7,6 +7,7 @@ import pygame
 from constants import Color
 
 
+
 class Scene:
     def __init__(self, game):
         self.game = game

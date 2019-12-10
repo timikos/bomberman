@@ -138,6 +138,7 @@ class DestroyedBlock(Block):
             return False
 
 
+
 """Сетка разрушаемых блоков"""
 
 

@@ -74,20 +74,19 @@ class BombFire(DrawObject):
                 if i + 1 >= self.update_power:
                     fire_side = 'end_left'
                 lfire = Fire(self.game, left_x_fire, y, fire_side)
-                for tile_row in self.game.scenes[1].tilemap.tiles:
-                    for tile in tile_row:
+                for tiles in self.game.scenes[1].tilemap.tiles:
+                    for block in tiles:
                         lfire.update_x(Globals.FieldPosition)
-                        if tile.collides_with(lfire.fire_rect):
+                        if block.collides_with(lfire.fire_rect):
                             self.left = False
                             break
                 else:
-                    for tile_row in self.game.scenes[1].dstr_tilemap.tiles:
-                        for tile in tile_row:
-                            lfire.update_x(Globals.FieldPosition)
-                            if tile.collides_with(lfire.fire_rect):
-                                self.fire_rects.append(lfire)
-                                self.left = False
-                                break
+                    for block in self.game.scenes[1].blocks:
+                        lfire.update_x(Globals.FieldPosition)
+                        if block.collides_with(lfire.fire_rect):
+                            self.fire_rects.append(lfire)
+                            self.left = False
+                            break
                     else:
                         self.fire_rects.append(lfire)
             if self.right:
@@ -95,20 +94,19 @@ class BombFire(DrawObject):
                 if i + 1 >= self.update_power:
                     fire_side = 'end_right'
                 rfire = Fire(self.game, right_x_fire, y, fire_side)
-                for tile_row in self.game.scenes[1].tilemap.tiles:
-                    for tile in tile_row:
+                for tiles in self.game.scenes[1].tilemap.tiles:
+                    for block in tiles:
                         rfire.update_x(Globals.FieldPosition)
-                        if tile.collides_with(rfire.fire_rect):
+                        if block.collides_with(rfire.fire_rect):
                             self.right = False
                             break
                 else:
-                    for tile_row in self.game.scenes[1].dstr_tilemap.tiles:
-                        for tile in tile_row:
-                            rfire.update_x(Globals.FieldPosition)
-                            if tile.collides_with(rfire.fire_rect):
-                                self.fire_rects.append(rfire)
-                                self.right = False
-                                break
+                    for block in self.game.scenes[1].blocks:
+                        rfire.update_x(Globals.FieldPosition)
+                        if block.collides_with(rfire.fire_rect):
+                            self.fire_rects.append(rfire)
+                            self.right = False
+                            break
                     else:
                         self.fire_rects.append(rfire)
             if self.up:
@@ -116,20 +114,19 @@ class BombFire(DrawObject):
                 if i + 1 >= self.update_power:
                     fire_side = 'end_up'
                 upfire = Fire(self.game, x, up_y_fire, fire_side)
-                for tile_row in self.game.scenes[1].tilemap.tiles:
-                    for tile in tile_row:
+                for tiles in self.game.scenes[1].tilemap.tiles:
+                    for block in tiles:
                         upfire.update_x(Globals.FieldPosition)
-                        if tile.collides_with(upfire.fire_rect):
+                        if block.collides_with(upfire.fire_rect):
                             self.up = False
                             break
                 else:
-                    for tile_row in self.game.scenes[1].dstr_tilemap.tiles:
-                        for tile in tile_row:
-                            upfire.update_x(Globals.FieldPosition)
-                            if tile.collides_with(upfire.fire_rect):
-                                self.fire_rects.append(upfire)
-                                self.up = False
-                                break
+                    for block in self.game.scenes[1].blocks:
+                        upfire.update_x(Globals.FieldPosition)
+                        if block.collides_with(upfire.fire_rect):
+                            self.fire_rects.append(upfire)
+                            self.up = False
+                            break
                     else:
                         self.fire_rects.append(upfire)
             if self.down:
@@ -144,13 +141,12 @@ class BombFire(DrawObject):
                             self.down = False
                             break
                 else:
-                    for tile_row in self.game.scenes[1].dstr_tilemap.tiles:
-                        for tile in tile_row:
-                            dfire.update_x(Globals.FieldPosition)
-                            if tile.collides_with(dfire.fire_rect):
-                                self.fire_rects.append(dfire)
-                                self.down = False
-                                break
+                    for block in self.game.scenes[1].blocks:
+                        dfire.update_x(Globals.FieldPosition)
+                        if block.collides_with(dfire.fire_rect):
+                            self.fire_rects.append(dfire)
+                            self.down = False
+                            break
                     else:
                         self.fire_rects.append(dfire)
         self.fire_rects.append(Fire(self.game, x, y, 'center'))  # Центральный огонь

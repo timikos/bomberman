@@ -1,0 +1,212 @@
+{
+  "ground_texture": "images/levels/ground_4_stone.png",
+  "objects": [
+    {
+      "type": "block",
+      "pos": {
+        "x": 3,
+        "y": 5
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 1,
+        "y": 2
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 1,
+        "y": 11
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 5,
+        "y": 11
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 6,
+        "y": 5
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 8,
+        "y": 1
+      },
+      "data": {
+        "type": "speed"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 8,
+        "y": 13
+      },
+      "data": {
+        "type": "speed"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 15,
+        "y": 5
+      },
+      "data": {
+        "type": "super"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 15,
+        "y": 6
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 19,
+        "y": 9
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 20,
+        "y": 1
+      },
+      "data": {
+        "type": "speed"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 20,
+        "y": 13
+      },
+      "data": {
+        "type": "speed"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 24,
+        "y": 5
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 25,
+        "y": 11
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 29,
+        "y": 2
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 29,
+        "y": 12
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": -9,
+        "y": 3
+      },
+      "data": {
+        "type": "speed"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": -5,
+        "y": 3
+      },
+      "data": {
+        "type": "bomb_power"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 5,
+        "y": 7
+      },
+      "data": {
+        "type": "add_life"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 9,
+        "y": 7
+      },
+      "data": {
+        "type": "multi_bomb"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 19,
+        "y": 3
+      },
+      "data": {
+        "type": "speed"
+      }
+    }
+  ]
+}

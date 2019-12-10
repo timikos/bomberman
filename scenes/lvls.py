@@ -4,6 +4,7 @@
 
 Описание: данный класс реализует сцену с главным меню
 """
+import json
 
 from constants import Color
 from objects.buttons import ButtonAnimation
@@ -12,25 +13,32 @@ from objects.background import Background
 from Global import Globals
 import pygame
 
-class MenuScene(Scene):
+
+class LvlsScene(Scene):
+    cur = 1
     def create_objects(self):
         """Создание объектов"""
-        self.button_start = ButtonAnimation(self.game, (350, 425, 100, 40), Color.WHITE, "Запуск игры",
-                                            self.set_main_scene)
-        self.button_info = ButtonAnimation(self.game, (350, 475, 100, 40), Color.WHITE, "Управление",
-                                           self.set_info_scene)
-        self.change_lvl = ButtonAnimation(self.game, (350, 525, 100, 40), Color.WHITE, "Выбор уровня",
-                                           self.set_lvls_scene)
+        self.button_1_lvl = ButtonAnimation(self.game, (350, 400, 100, 40), Color.WHITE, "1 - Поляна",
+                                            self.set_lvl_2)
+        self.button_2_lvl = ButtonAnimation(self.game, (350, 430, 100, 40), Color.WHITE, "2 - Пустыня",
+                                            self.set_lvl_2)
+        self.button_3_lvl = ButtonAnimation(self.game, (350, 460, 100, 40), Color.WHITE, "3 - Зима",
+                                            self.set_lvl_2)
+        self.button_4_lvl = ButtonAnimation(self.game, (350, 490, 100, 40), Color.WHITE, "4 - Гора",
+                                            self.set_lvl_2)
+        self.button_5_lvl = ButtonAnimation(self.game, (350, 520, 100, 40), Color.WHITE, "5 - Ад",
+                                            self.set_lvl_2)
         self.button_exit = ButtonAnimation(self.game, (350, 575, 100, 40), Color.WHITE, 'Выход', self.exit)
         self.button_camera_on = ButtonAnimation(self.game, (600, 625, 140, 40), Color.WHITE, "Вкл камера v2.0",
-                                             self.on_camera_status, 0)
+                                                self.on_camera_status, 0)
         self.button_camera_off = ButtonAnimation(self.game, (600, 625, 140, 40), Color.WHITE, "Выкл камера v2.0",
-                                                self.off_camera_status, 0)
+                                                 self.off_camera_status, 0)
+
         self.Background = Background(self.game, (0, 0))
 
-
         """Список объектов"""
-        self.objects = [self.Background, self.button_start, self.button_info, self.change_lvl, self.button_exit]
+        self.objects = [self.Background, self.button_exit,
+                        self.button_1_lvl, self.button_2_lvl, self.button_3_lvl, self.button_4_lvl, self.button_5_lvl]
 
     def process_all_draw(self):
         """Обработка всей отрисовки"""
@@ -71,17 +79,24 @@ class MenuScene(Scene):
     def off_camera_status(self):
         Globals.CameraStatus = False
 
+    def set_lvl_2(self):
+        print(self.cur)
+        self.cur = 1
+        print(self.cur)
+        # self.game.scenes[1].change_lvl()
+        print(self.cur)
+        # file_name = 'levels/level' + str(self.cur) + '.json'
+        # with open(file_name, 'r') as f:
+        #     data = json.load(f)
+        #     self.game.scenes[1].level_data = data
+        #     print("done")
+        # self.game.scenes[1].load_obj_for_lvl()
+        # self.set_next_scene(self.game.MAIN_SCENE_INDEX)
+
     def set_main_scene(self):
         """Переход на сцену игры"""
         self.set_next_scene(self.game.MAIN_SCENE_INDEX)
 
-    def set_info_scene(self):
-        """Переход на сцену с информацией"""
-        self.set_next_scene(self.game.INFO_SCENE_INDEX)
-
-    def set_lvls_scene(self):
-        """Переход на сцену с информацией"""
-        self.set_next_scene(self.game.LVLS_SCENE_INDEX)
 
     def exit(self):
         """Выход"""

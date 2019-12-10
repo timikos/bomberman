@@ -10,6 +10,7 @@ from scenes.main import MainScene
 from scenes.menu import MenuScene
 from scenes.info import InfoScene
 from scenes.statistics import StatisticsScene
+from scenes.lvls import LvlsScene
 from constants import ScreenProperties
 from objects.music import Sound
 
@@ -20,6 +21,7 @@ class Game:
     GAMEOVER_SCENE_INDEX = 2
     INFO_SCENE_INDEX = 3
     STATISTICS_SCENE_INDEX = 4
+    LVLS_SCENE_INDEX = 5
 
     def __init__(self, width=ScreenProperties.WIDTH, height=ScreenProperties.HEIGHT):
         self.width = width
@@ -37,7 +39,8 @@ class Game:
             MainScene(self),
             FinalScene(self),
             InfoScene(self),
-            StatisticsScene(self)
+            StatisticsScene(self),
+            LvlsScene(self),
         ]
 
     def create_window(self):
@@ -56,7 +59,7 @@ class Game:
             for event in eventlist:
                 if event.type == pygame.QUIT:
                     self.game_over = True
-            if self.current_scene != self.previus_scene and self.current_scene==1:
+            if self.current_scene != self.previus_scene and self.current_scene == 1:
                 self.scenes[self.current_scene].process_all_draw('all')
                 self.previus_scene = self.current_scene
             self.scenes[self.current_scene].process_frame(eventlist)  # Обработка текущей сцены

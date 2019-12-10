@@ -11,7 +11,7 @@ from objects.field import Field
 
 class Modifier(DrawObject):
     """Базовый класс модификаторов"""
-    def __init__(self, game, image, x=0, y=0, hidden=False):
+    def __init__(self, game, image, x=40, y=40, hidden=False):
         super().__init__(game)
         self.x, self.y = Field.get_cell_by_pos(x, y)
         self.hidden = hidden

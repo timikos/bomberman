@@ -5,3 +5,5 @@ class Globals:
     UpdateNext = False
     TurnLeft = False
     TurnRight = False
+
+

@@ -1,0 +1,142 @@
+{
+  "ground_texture": "images/levels/ground_2_dust.png",
+  "objects": [
+    {
+      "type": "block",
+      "pos": {
+        "x": 3,
+        "y": 5
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 3,
+        "y": 1
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 3,
+        "y": 5
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 3,
+        "y": 9
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 3,
+        "y": 13
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 9,
+        "y": 3
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 23,
+        "y": 3
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 27,
+        "y": 1
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 27,
+        "y": 5
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 27,
+        "y": 9
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 27,
+        "y": 13
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 17,
+        "y": 7
+      },
+      "data": {
+        "type": "speed"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": -7,
+        "y": 7
+      },
+      "data": {
+        "type": "bomb_power"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 5,
+        "y": 7
+      },
+      "data": {
+        "type": "add_life"
+      }
+    }
+  ]
+}

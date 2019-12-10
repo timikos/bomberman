@@ -1,0 +1,32 @@
+{
+  "ground_texture": "images/levels/ground_test.png",
+  "objects": [
+    {
+      "type": "block",
+      "pos": {
+        "x": 3,
+        "y": 5
+      }
+    },
+    {
+      "type": "ghost",
+      "pos": {
+        "x": 1,
+        "y": 11
+      },
+      "data": {
+        "type": "usual"
+      }
+    },
+    {
+      "type": "modifier",
+      "pos": {
+        "x": 1,
+        "y": 3
+      },
+      "data": {
+        "type": "speed"
+      }
+    }
+  ]
+}
