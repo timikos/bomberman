@@ -80,29 +80,39 @@ class LvlsScene(Scene):
         Globals.CameraStatus = False
 
     def set_lvl_1(self):
+        """Загрузка 1 уровня"""
         self.cur = 1
         self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(1)
         self.set_main_scene()
+        print("Уровень 1 загружен")
 
     def set_lvl_2(self):
+        """Загрузка 2 уровня"""
         self.cur = 2
         self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(2)
         self.set_main_scene()
+        print("Уровень 2 загружен")
 
     def set_lvl_3(self):
+        """Загрузка 3 уровня"""
         self.cur = 3
         self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(3)
         self.set_main_scene()
+        print("Уровень 3 загружен")
 
     def set_lvl_4(self):
+        """Загрузка 4 уровня"""
         self.cur = 4
         self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(4)
         self.set_main_scene()
+        print("Уровень 4 загружен")
 
     def set_lvl_5(self):
+        """Загрузка 5 уровня"""
         self.cur = 5
         self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(5)
         self.set_main_scene()
+        print("Уровень 5 загружен")
 
     def set_main_scene(self):
         """Переход на сцену игры"""
