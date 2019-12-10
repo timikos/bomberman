@@ -172,12 +172,13 @@ class MainScene(Scene):
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
                         print('Монстр столкнулся с разрушаемым блоком')
-                        # Если монстр сталкивается с блоком при движении по горизонтали
-                        if ghost.current_shift_x:
-                            ghost.current_shift_x *= -1
-                        # Если монстр сталкивается с блоком при движении по вертикали
-                        else:
-                            ghost.current_shift_y *= -1
+                        # # Если монстр сталкивается с блоком при движении по горизонтали
+                        # if ghost.current_shift_x:
+                        #     ghost.current_shift_x *= -1
+                        # # Если монстр сталкивается с блоком при движении по вертикали
+                        # else:
+                        #     ghost.current_shift_y *= -1
+                        ghost.change_move_after_collision()
 
 
     def process_ghost_collision_with_indestructible_tiles(self):
@@ -187,12 +188,7 @@ class MainScene(Scene):
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect):
                         print('Монстр столкнулся с неразрушаемым блоком')
-                        # Если монстр сталкивается с блоком при движении по горизонтали
-                        if ghost.current_shift_x:
-                            ghost.current_shift_x *= -1
-                        # Если монстр сталкивается с блоком при движении по вертикали
-                        else:
-                            ghost.current_shift_y *= -1
+                        ghost.change_move_after_collision()
 
     def process_bomberman_collision_with_door(self):
         """Коллизия бомбермена с дверью"""

@@ -93,6 +93,31 @@ class Ghost(DrawObject):
         elif direction_move == 3:
             self.current_shift_y = -1
 
+    def change_move_after_collision(self):
+        """Изменение направления движения после коллизии с блоком"""
+        # Движение по горизонтали
+        if self.current_shift_x:
+            self.current_shift_y = randint(-1, 1)
+            # Измененяем напралвление движения с горизонтального на вертикальное
+            if self.current_shift_y:
+                self.rect.x -= self.current_shift_x*5
+                self.current_shift_x = 0
+            # Либо на противоположное
+            elif self.current_shift_y == 0:
+                self.current_shift_x *= -1
+        # Движение по вертикали
+        else:
+            if self.current_shift_y:
+                self.current_shift_x = randint(-1, 1)
+                # Измененяем напралвление движения с вертикального на горизонтальное
+                if self.current_shift_x:
+                    self.rect.y -= self.current_shift_y*5
+                    self.current_shift_y = 0
+                # Либо на противоположное
+                elif self.current_shift_x == 0:
+                    self.current_shift_y *= -1
+
+
     def collides_with(self, other):
         """Коллизия с объектами"""
         return self.rect.colliderect(other)
