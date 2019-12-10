@@ -25,20 +25,27 @@ import json
 from scenes.lvls import LvlsScene
 
 class MainScene(Scene):
-    print("NOW")
-    current_lvl = LvlsScene.cur
-    def __init__(self, game):
+    current_lvl = 0
 
-        print("NOW1")
-        file_name = 'levels/level' + str(self.current_lvl) + '.json'
+    @staticmethod
+    def get_level_info(ind):
+        file_name = 'levels/level' + str(ind) + '.json'
+        data = {}
         with open(file_name, 'r') as f:
             data = json.load(f)
-            self.level_data = data
-        super().__init__(game)
+        return data
 
+    def __init__(self, game, level_num=1):
+        self.level_data = self.get_level_info(level_num)
+        super().__init__(game)
+        self.load_level(LvlsScene.cur)
+
+    def load_level(self, ind):
+        self.current_lvl = ind
+        self.level_data = self.get_level_info(ind)
+        self.create_objects()
 
     def create_objects(self):
-        print("NOW2")
         """Создание объектов"""
         self.bomberman = Bomberman(self.game)  # Главный герой
         self.score = Score(self.game)  # Счётчик очков

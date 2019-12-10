@@ -19,15 +19,15 @@ class LvlsScene(Scene):
     def create_objects(self):
         """Создание объектов"""
         self.button_1_lvl = ButtonAnimation(self.game, (350, 400, 100, 40), Color.WHITE, "1 - Поляна",
-                                            self.set_lvl_2)
+                                            self.set_lvl_1)
         self.button_2_lvl = ButtonAnimation(self.game, (350, 430, 100, 40), Color.WHITE, "2 - Пустыня",
                                             self.set_lvl_2)
         self.button_3_lvl = ButtonAnimation(self.game, (350, 460, 100, 40), Color.WHITE, "3 - Зима",
-                                            self.set_lvl_2)
+                                            self.set_lvl_3)
         self.button_4_lvl = ButtonAnimation(self.game, (350, 490, 100, 40), Color.WHITE, "4 - Гора",
-                                            self.set_lvl_2)
+                                            self.set_lvl_4)
         self.button_5_lvl = ButtonAnimation(self.game, (350, 520, 100, 40), Color.WHITE, "5 - Ад",
-                                            self.set_lvl_2)
+                                            self.set_lvl_5)
         self.button_exit = ButtonAnimation(self.game, (350, 575, 100, 40), Color.WHITE, 'Выход', self.exit)
         self.button_camera_on = ButtonAnimation(self.game, (600, 625, 140, 40), Color.WHITE, "Вкл камера v2.0",
                                                 self.on_camera_status, 0)
@@ -79,19 +79,30 @@ class LvlsScene(Scene):
     def off_camera_status(self):
         Globals.CameraStatus = False
 
-    def set_lvl_2(self):
-        print(self.cur)
+    def set_lvl_1(self):
         self.cur = 1
-        print(self.cur)
-        # self.game.scenes[1].change_lvl()
-        print(self.cur)
-        # file_name = 'levels/level' + str(self.cur) + '.json'
-        # with open(file_name, 'r') as f:
-        #     data = json.load(f)
-        #     self.game.scenes[1].level_data = data
-        #     print("done")
-        # self.game.scenes[1].load_obj_for_lvl()
-        # self.set_next_scene(self.game.MAIN_SCENE_INDEX)
+        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(1)
+        self.set_main_scene()
+
+    def set_lvl_2(self):
+        self.cur = 2
+        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(2)
+        self.set_main_scene()
+
+    def set_lvl_3(self):
+        self.cur = 3
+        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(3)
+        self.set_main_scene()
+
+    def set_lvl_4(self):
+        self.cur = 4
+        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(4)
+        self.set_main_scene()
+
+    def set_lvl_5(self):
+        self.cur = 5
+        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(5)
+        self.set_main_scene()
 
     def set_main_scene(self):
         """Переход на сцену игры"""
