@@ -81,7 +81,6 @@ class MainScene(Scene):
         self.bomb_list = BombsList(self.game)
         self.timer = Timer(self.game)
         self.text_count = Text(self.game, text='', color=Color.RED, x=400, y=550)
-
         self.modifier_effects = {}
         self.unneeded_blocks_deletion()
         """Список объектов"""
@@ -98,14 +97,14 @@ class MainScene(Scene):
             for item in self.objects:
                 item.process_draw()
             self.additional_draw()
-            if type_of_objects=='nonestatic' and Globals.UpdateDisplay is False and Globals.UpdateNext is False:
+            if type_of_objects == 'nonestatic' and Globals.UpdateDisplay is False and Globals.UpdateNext is False:
                 for item in self.no_static_objects:  # Обновление призраков/персонажа
                     rect = pygame.Rect(item.rect.x - item.speed, item.rect.y - item.speed,
                                        item.rect.width + item.speed * 2 + 15, item.rect.height + item.speed * 3)
                     pygame.display.update(rect)
                 for item in self.bomb_list.bombs:  # Обновление картинки бомбы (Огней)
-                    rect=pygame.Rect(item.rect.x - item.rect.width, item.rect.y - item.rect.height,
-                                item.rect.width * 3, item.rect.height * 3)
+                    rect = pygame.Rect(item.rect.x - item.rect.width, item.rect.y - item.rect.height,
+                                       item.rect.width * 3, item.rect.height * 3)
                     pygame.display.update(rect)
                 for item in self.modifiers:  # Обновление картинки бомбы (Огней)
                     rect = pygame.Rect(item.rect)
@@ -162,7 +161,7 @@ class MainScene(Scene):
                     if ghost.collides_with(fire.fire_rect) and fire.active:
                         ghost.hidden = True
                         self.ghosts.remove(ghost)
-                        if self.ghosts.__len__()!=0:
+                        if self.ghosts.__len__() != 0:
                             self.score.add_count(100)
 
     def process_ghost_collisions_with_destroyable_tiles(self):
@@ -178,7 +177,6 @@ class MainScene(Scene):
                         # Если монстр сталкивается с блоком при движении по вертикали
                         else:
                             ghost.current_shift_y *= -1
-
 
     def process_ghost_collision_with_indestructible_tiles(self):
         """Коллизия призраков с неразрушаемыми блоками"""
