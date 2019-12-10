@@ -212,8 +212,10 @@ class MainScene(Scene):
             if modifier.collides_with(self.bomberman):
                 modifier.hide()
                 self.modifier_effects[modifier.name] = pygame.time.get_ticks()
-                self.modifiers.remove(modifier)
-                print(self.bomberman.speed)
+                timer_pos = self.timer.get_position()
+                active_buffs = list(filter(lambda baff : baff.hidden, self.modifiers))
+                modifier.x, modifier.y = timer_pos[0], timer_pos[1] - 35
+                modifier.margin = 36 * (len(active_buffs)-1)
 
     def process_bomberman_collision_with_blocks(self):
         """Коллизия главного героя с неразрушаемыми блоками"""
@@ -300,17 +302,45 @@ class MainScene(Scene):
             self.bomberman.speed = 10
         else:
             self.bomberman.speed = 5
+            for buff in self.modifiers:
+                if buff.hidden and buff.name == 'speed':
+                    buff.destroy = True
+                    self.modifiers.remove(buff)
+                    active_buffs = list(filter(lambda baff: baff.hidden, self.modifiers))
+                    for a_buff in active_buffs:
+                        a_buff.margin -= 36
         if self.modifier_effects.get('bomb_power', 0):
             self.bomberman.bomb_power = 2
         else:
             self.bomberman.bomb_power = 1
+            for buff in self.modifiers:
+                if buff.hidden and buff.name == 'bomb_power':
+                    buff.destroy = True
+                    self.modifiers.remove(buff)
+                    active_buffs = list(filter(lambda baff: baff.hidden, self.modifiers))
+                    for a_buff in active_buffs:
+                        a_buff.margin -= 36
         if self.modifier_effects.get('add_life', 0):
             self.health.add_count(1)
             self.modifier_effects['add_life'] = 0
+            for buff in self.modifiers:
+                if buff.hidden and buff.name == 'add_life':
+                    buff.destroy = True
+                    self.modifiers.remove(buff)
+                    active_buffs = list(filter(lambda baff: baff.hidden, self.modifiers))
+                    for a_buff in active_buffs:
+                        a_buff.margin -= 36
         if self.modifier_effects.get('multi_bomb', 0):
             self.bomberman.multi_bomb = True
         else:
             self.bomberman.multi_bomb = False
+            for buff in self.modifiers:
+                if buff.hidden and buff.name == 'multi_bomb':
+                    buff.destroy = True
+                    self.modifiers.remove(buff)
+                    active_buffs = list(filter(lambda baff: baff.hidden, self.modifiers))
+                    for a_buff in active_buffs:
+                        a_buff.margin -= 36
 
     def process_show_door(self):
         """Условие открытия двери"""

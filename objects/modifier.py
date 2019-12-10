@@ -17,12 +17,12 @@ class Modifier(DrawObject):
         self.hidden = hidden
         self.rect = pygame.Rect(self.x, self.y, 35, 35)
         self.image = image
+        self.destroy = False
+        self.margin = 0
 
     def hide(self):
         """Скрытие после коллизии"""
         self.hidden = True
-        self.rect.x = 0
-        self.rect.y = 0
         Globals.UpdateNext = True
 
     def collides_with(self, other):
@@ -34,10 +34,17 @@ class Modifier(DrawObject):
         self.rect.x = self.x - x + 2
         self.rect.y = self.y + 2
 
+    def get_sticky_position(self):
+        return [self.game.width // 2 - 35 + self.margin, self.game.height - 65]
+
     def process_draw(self):
-        self.update_x(Globals.FieldPosition - 400)
-        if not self.hidden:
-            self.game.screen.blit(self.image, self.rect)
+        if not self.destroy:
+            if self.hidden:
+                self.rect.x, self.rect.y = self.get_sticky_position()
+                self.game.screen.blit(self.image, self.rect)
+            else:
+                self.update_x(Globals.FieldPosition - 400)
+                self.game.screen.blit(self.image, self.rect)
 
 
 """Модификатор увеличения скорости"""
