@@ -1,5 +1,5 @@
 """
-Классы BombFire, Bomb, BombList
+Классы Fire, BombFire, Bomb, BombList
 
 Описание: данные классы реализуют создание бомбы и её взрыв
 """
@@ -12,6 +12,7 @@ from objects.music import Sound
 
 
 class Fire(DrawObject):
+    """Огонь"""
     fire_center = 'images/bombs/fire_center.png'
     fire_horizontal = 'images/bombs/fire_horizontal.png'
     fire_vertical = 'images/bombs/fire_vertical.png'
@@ -50,7 +51,7 @@ class Fire(DrawObject):
 
 
 class BombFire(DrawObject):
-
+    """Огонь от бомбы"""
     def __init__(self, game, x, y, update_power=1):
         super().__init__(game)
         self.game = game
@@ -203,7 +204,6 @@ class Bomb(DrawObject):
         elif not self.hidden and 2 < seconds <= 3:
             self.bomb_fire.activated()
             self.bomb_fire.process_draw()
-            # Sound.explosion.play(0)
         elif not self.hidden and seconds > 3:
             self.hide_bomb()
 
@@ -217,6 +217,7 @@ class Bomb(DrawObject):
 
 
 class BombsList(DrawObject):
+    """Список бомб"""
     def __init__(self, game):
         super().__init__(game)
         self.bombs = []

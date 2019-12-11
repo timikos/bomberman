@@ -71,6 +71,7 @@ class MainScene(Scene):
                        [self.door] + self.modifiers + [self.timer]
         self.no_static_objects = [self.bomberman] + self.ghosts
 
+
     def process_all_draw(self, type_of_objects='nonestatic'):
         if Globals.CameraStatus is False:
             super().process_all_draw()
