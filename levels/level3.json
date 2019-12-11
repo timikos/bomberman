@@ -4,8 +4,239 @@
     {
       "type": "block",
       "pos": {
-        "x": 3,
+        "x": 5,
+        "y": 1
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 5,
+        "y": 3
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 5,
         "y": 5
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 5,
+        "y": 7
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 5,
+        "y": 9
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 5,
+        "y": 11
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 9,
+        "y": 3
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 9,
+        "y": 5
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 9,
+        "y": 11
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 9,
+        "y": 13
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 13,
+        "y": 1
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 13,
+        "y": 3
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 13,
+        "y": 5
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 13,
+        "y": 7
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 13,
+        "y": 9
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 13,
+        "y": 11
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 17,
+        "y": 3
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 17,
+        "y": 5
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 17,
+        "y": 7
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 17,
+        "y": 9
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 17,
+        "y": 11
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 17,
+        "y": 13
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 21,
+        "y": 1
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 21,
+        "y": 3
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 21,
+        "y": 5
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 21,
+        "y": 7
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 21,
+        "y": 9
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 21,
+        "y": 11
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 25,
+        "y": 3
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 25,
+        "y": 5
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 25,
+        "y": 7
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 25,
+        "y": 9
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 25,
+        "y": 11
+      }
+    },
+    {
+      "type": "block",
+      "pos": {
+        "x": 25,
+        "y": 13
       }
     },
     {
@@ -31,7 +262,7 @@
     {
       "type": "ghost",
       "pos": {
-        "x": 5,
+        "x": 7,
         "y": 4
       },
       "data": {
@@ -51,7 +282,7 @@
     {
       "type": "ghost",
       "pos": {
-        "x": 9,
+        "x": 7,
         "y": 13
       },
       "data": {
@@ -61,7 +292,7 @@
     {
       "type": "ghost",
       "pos": {
-        "x": 13,
+        "x": 11,
         "y": 1
       },
       "data": {
@@ -72,7 +303,7 @@
       "type": "ghost",
       "pos": {
         "x": 17,
-        "y": 4
+        "y": 2
       },
       "data": {
         "type": "usual"
@@ -151,7 +382,7 @@
     {
       "type": "modifier",
       "pos": {
-        "x": 3,
+        "x": 2,
         "y": 1
       },
       "data": {

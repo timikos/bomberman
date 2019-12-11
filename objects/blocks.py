@@ -117,6 +117,7 @@ class DestroyedBlock(Block):
         return mil_sec
 
     def process_draw(self):
+        self.update_x(Globals.FieldPosition - 400)
         if not self.isDestroyed:
             self.game.screen.blit(self.image, self.rect)
             if self.readyToBreak:
@@ -158,7 +159,6 @@ class DestroyedBlockMap(DrawObject):
     def process_draw(self):
         for x in self.tiles:
             for tile in x:
-                tile.update_x(Globals.FieldPosition - 400)
                 tile.process_draw()
 
     def process_event(self, event):
