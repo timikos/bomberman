@@ -387,4 +387,4 @@ class MainScene(Scene):
                 self.modifiers += [c(game=self.game, x=x, y=y)]
             elif obj['type'] == 'block':
                 c = DestroyedBlock
-                self.blocks += [c(game=self.game, x=x, y=y)]
+                self.blocks += [c(game=self.game, x=x/FieldProperties.CELL_LENGTH, y=y/FieldProperties.CELL_LENGTH)]
