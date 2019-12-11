@@ -71,6 +71,7 @@ class MainScene(Scene):
                        [self.door] + self.modifiers + [self.timer]
         self.no_static_objects = [self.bomberman] + self.ghosts
 
+
     def process_all_draw(self, type_of_objects='nonestatic'):
         if Globals.CameraStatus is False:
             super().process_all_draw()
@@ -205,39 +206,36 @@ class MainScene(Scene):
         """Коллизия главного героя с неразрушаемыми блоками"""
         for row in self.tilemap.tiles:
             for tile in row:
-
                 if tile.rect.collidepoint(self.bomberman.rect.topleft) and not tile.rect.collidepoint(
-                        self.bomberman.rect.topright) and self.bomberman.current_shift_y < 0:
+                        self.bomberman.rect.topright) and self.bomberman.current_shift_y < 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.x += 5
                 elif tile.rect.collidepoint(self.bomberman.rect.topright) and not tile.rect.collidepoint(
-                        self.bomberman.rect.topleft) and self.bomberman.current_shift_y < 0:
+                        self.bomberman.rect.topleft) and self.bomberman.current_shift_y < 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.x -= 5
                 elif tile.rect.collidepoint(self.bomberman.rect.bottomright) and not tile.rect.collidepoint(
-                        self.bomberman.rect.bottomleft) and self.bomberman.current_shift_y > 0:
+                        self.bomberman.rect.bottomleft) and self.bomberman.current_shift_y > 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.x -= 5
                 elif tile.rect.collidepoint(self.bomberman.rect.bottomleft) and not tile.rect.collidepoint(
-                        self.bomberman.rect.bottomright) and self.bomberman.current_shift_y > 0:
+                        self.bomberman.rect.bottomright) and self.bomberman.current_shift_y > 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.x += 5
 
                 elif tile.rect.collidepoint(self.bomberman.rect.topright) and not tile.rect.collidepoint(
-                        self.bomberman.rect.bottomright) and self.bomberman.current_shift_x > 0:
+                        self.bomberman.rect.bottomright) and self.bomberman.current_shift_x > 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.y += 5
                 elif tile.rect.collidepoint(self.bomberman.rect.topleft) and not tile.rect.collidepoint(
-                        self.bomberman.rect.bottomleft) and self.bomberman.current_shift_x < 0:
+                        self.bomberman.rect.bottomleft) and self.bomberman.current_shift_x < 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.y += 5
                 elif tile.rect.collidepoint(self.bomberman.rect.bottomright) and not tile.rect.collidepoint(
-                        self.bomberman.rect.topright) and self.bomberman.current_shift_x > 0:
+                        self.bomberman.rect.topright) and self.bomberman.current_shift_x > 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.y -= 5
                 elif tile.rect.collidepoint(self.bomberman.rect.bottomleft) and not tile.rect.collidepoint(
-                        self.bomberman.rect.topleft) and self.bomberman.current_shift_x < 0:
+                        self.bomberman.rect.topleft) and self.bomberman.current_shift_x < 0 and tile.rect.centery != self.bomberman.rect.centery:
                     self.bomberman.rect.y -= 5
                 else:
                     if tile.collides_with(self.bomberman.rect):
-
                         if self.bomberman.current_shift_x > 0:
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.x -= 1
-
                         elif self.bomberman.current_shift_x < 0:
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.x += 1
@@ -256,6 +254,8 @@ class MainScene(Scene):
     def process_bomberman_collision_with_d_blocks(self):
         for tile in self.blocks:
             if tile.collides_with(self.bomberman.rect):
+                print(tile.rect.centery)
+                print(self.bomberman.rect.centery)
                 if self.bomberman.current_shift_x > 0:
                     while tile.collides_with(self.bomberman.rect):
                         self.bomberman.rect.x -= 1

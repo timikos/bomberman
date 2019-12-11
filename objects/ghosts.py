@@ -146,7 +146,6 @@ class SpeedGhost(Ghost):
 
     def __init__(self, game, speed=2, x=0, y=0):
         super().__init__(game, speed, x=x, y=y)
-        self.image = pygame.image.load(SpeedGhost.filename)
 
         """Загрузка картинок в список"""
         if SpeedGhost.images is None:
