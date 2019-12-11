@@ -159,16 +159,9 @@ class MainScene(Scene):
         for row in self.tilemap.tiles:
             for tile in row:
                 for ghost in self.ghosts:
-                    if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
+                    if tile.collides_with(ghost.rect):
                         print('Монстр столкнулся с неразрушаемым блоком')
                         ghost.change_move_after_collision()
-
-
-    def process_ghost_collision_with_wall(self):
-        """Коллизия призраков с блоком"""
-        for ghost in self.ghosts:
-            if ghost.collides_with(self.tilemap.tiles):
-                ghost.start_move()
 
 
     def process_bomberman_collision_with_door(self):
