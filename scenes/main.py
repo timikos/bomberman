@@ -65,7 +65,7 @@ class MainScene(Scene):
 
         self.load_obj_for_lvl()  # Загрузка всех параметров для объектов уровня
         """Список объектов"""
-        self.objects = [self.field] + [self.bomb_list] + self.blocks + [self.tilemap] + \
+        self.objects = [self.field] + [self.bomb_list] + self.blocks + [self.tilemap] +\
                        [self.bomberman] + self.ghosts + \
                        [self.score] + [self.health] + \
                        [self.door] + self.modifiers + [self.timer]
@@ -147,30 +147,21 @@ class MainScene(Scene):
 
     def process_ghost_collisions_with_destroyable_tiles(self):
         """Коллизия врагов с разрушаемыми блоками"""
-
         for tile in self.blocks:
             for ghost in self.ghosts:
                 if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
                     print('Монстр столкнулся с разрушаемым блоком')
-                    # Если монстр сталкивается с блоком при движении по горизонтали
-                    if ghost.current_shift_x:
-                        ghost.current_shift_x *= -1
-                    # Если монстр сталкивается с блоком при движении по вертикали
-                    else:
-                        ghost.current_shift_y *= -1
+                    ghost.change_move_after_collision()
+
 
     def process_ghost_collision_with_indestructible_tiles(self):
         """Коллизия призраков с неразрушаемыми блоками"""
-        for tile in self.blocks:
-            for ghost in self.ghosts:
-                if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
-                    print('Монстр столкнулся с неразрушаемым блоком')
-                    # Если монстр сталкивается с блоком при движении по горизонтали
-                    if ghost.current_shift_x:
-                        ghost.current_shift_x *= -1
-                    # Если монстр сталкивается с блоком при движении по вертикали
-                    else:
-                        ghost.current_shift_y *= -1
+        for row in self.tilemap.tiles:
+            for tile in row:
+                for ghost in self.ghosts:
+                    if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
+                        print('Монстр столкнулся с неразрушаемым блоком')
+                        ghost.change_move_after_collision()
 
 
     def process_ghost_collision_with_wall(self):
