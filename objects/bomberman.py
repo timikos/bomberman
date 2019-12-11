@@ -110,6 +110,10 @@ class Bomberman(DrawObject):
                     Globals.UpdateDisplay = True
         else:
             Globals.UpdateDisplay = False
+        if Globals.FieldPosition < 285:
+            Globals.FieldPosition = 285
+        if Globals.FieldPosition > 995:
+            Globals.FieldPosition = 995
 
     def collides_with(self, other):
         """Коллизия с объектом"""
