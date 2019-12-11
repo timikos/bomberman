@@ -43,7 +43,7 @@ class BombermanProperties:
     DIRECTION_X = 0  # Начальное направление
     DIRECTION_Y = 0  # Начальное направление
     WIDTH = 35  # Ширина прямоугольника бомбермена
-    HEIGHT = 35  # Высота прямоугольника бомбермена
+    HEIGHT = 42  # Высота прямоугольника бомбермена
 
 
 class EnemyProperties:
