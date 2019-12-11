@@ -19,7 +19,7 @@ class Timer(DrawObject):
         self.start_ticks = 0
         self.seconds = self.max_time_seconds // 100
         self.text_timer = None
-        self.font_timer = pygame.font.Font(InterfaceProperties.TEXT_FONT, InterfaceProperties.FONT_SIZE)
+        self.font_timer = pygame.font.Font(InterfaceProperties.TEXT_FONT, InterfaceProperties.FONT_SIZE - 20)
         self.text2 = "Время выходит!"
         self.timer_update()
 
@@ -50,9 +50,11 @@ class Timer(DrawObject):
         else:  # Окончание таймера
             self.game.current_scene = 2
 
+    def get_position(self):
+        return [self.game.width // 2 - self.get_width() // 2, self.game.height - self.get_height() - 10]
+
     def process_draw(self):
-        self.game.screen.blit(self.text_timer, (self.game.width // 2 - self.get_width() // 2,
-                                                self.game.height - self.get_height() - 10))
+        self.game.screen.blit(self.text_timer, self.get_position())
         if self.seconds < 30:
             self.game.screen.blit(self.text_end, (self.game.scenes[1].bomberman.x // 2 + 75,
                                                 0))
