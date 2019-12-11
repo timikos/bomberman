@@ -5,13 +5,14 @@
 """
 
 import pygame
-from random import randint, randrange
+from random import randint
 from objects.base import DrawObject
-from constants import EnemyProperties, ScreenProperties, FieldProperties
+from constants import EnemyProperties
 from Global import Globals
 
 
 class Ghost(DrawObject):
+    """Обычный монстр"""
     filename = 'images/ghosts/enemy_1_Main.png'
 
     """Список картинок состояния"""
@@ -132,10 +133,8 @@ class Ghost(DrawObject):
             self.current_shift_y = 0
 
 
-"""Монстр с увеличенной скоростью"""
-
-
 class SpeedGhost(Ghost):
+    """Монстр с увеличенной скоростью"""
     filename = 'images/ghosts/enemy_2_Main.png'
 
     """Список изображений состояния"""
@@ -154,10 +153,8 @@ class SpeedGhost(Ghost):
                 SpeedGhost.images.append(pygame.image.load(name))
 
 
-"""Монстр с увеличенной скоростью и возможностью передвигаться через разрушаемые блоки"""
-
-
 class SuperGhost(Ghost):
+    """Монстр с увеличенной скоростью и возможностью передвигаться через разрушаемые блоки"""
     filename = 'images/ghosts/enemy_3_Main.png'
 
     """Список изображений состояния"""

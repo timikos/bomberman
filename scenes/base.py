@@ -123,7 +123,9 @@ class Scene:
         self.game.game_over = True
 
     def on_camera_status(self):
+        """Включена камера v.2"""
         Globals.CameraStatus = True
 
     def off_camera_status(self):
+        """Выключена камера v.2"""
         Globals.CameraStatus = False

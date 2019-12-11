@@ -1,8 +1,8 @@
 """
-Сцена <Главное меню>
-Класс MenuScene
+Сцена <Выбор уровня>
+Класс LvlsScene
 
-Описание: данный класс реализует сцену с главным меню
+Описание: данный класс реализует сцену с выбором уровня
 """
 
 from constants import Color
@@ -14,7 +14,7 @@ import pygame
 
 
 class LvlsScene(Scene):
-    current_lvl = 1
+    current_lvl = 1  # Текущий уровень
     def create_objects(self):
         """Создание объектов"""
         self.button_1_lvl = ButtonAnimation(self.game, (350, 400, 100, 40), Color.WHITE, "1 - Поляна",

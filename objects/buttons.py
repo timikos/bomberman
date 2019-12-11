@@ -47,7 +47,7 @@ class BaseButtonAnim(object):
         self.__dict__.update(settings)
 
     def render_text(self):
-        """Pre render the buttons text."""
+        """Пре рендер текста"""
         if self.text:
             if self.hover_font_color:
                 color = self.hover_font_color
@@ -110,11 +110,8 @@ class BaseButtonAnim(object):
             surface.blit(text, text_rect)
 
 
-"""Анимированные кнопки"""
-
-
 class ButtonAnimation(DrawObject):
-
+    """Анимированные кнопки"""
     def __init__(self, game, rect=(10, 10, 100, 40), color=(0, 0, 0), text='Test', function=None , max_anim=20):
         super().__init__(game)
         self.rect = rect

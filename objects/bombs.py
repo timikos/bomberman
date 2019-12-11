@@ -8,7 +8,6 @@ import pygame
 from objects.base import DrawObject
 from constants import BombProperties, FieldProperties
 from Global import Globals
-from objects.music import Sound
 
 
 class Fire(DrawObject):

@@ -142,7 +142,8 @@ class MainScene(Scene):
                 for fire in bomb.bomb_fire.fire_rects:
                     if ghost.collides_with(fire.fire_rect) and fire.active:
                         ghost.hidden = True
-                        self.ghosts.remove(ghost)
+                        if ghost in self.ghosts:
+                            self.ghosts.remove(ghost)
                         if self.ghosts.__len__() != 0:
                             self.score.add_count(100)
 
@@ -151,7 +152,6 @@ class MainScene(Scene):
         for tile in self.blocks:
             for ghost in self.ghosts:
                 if tile.collides_with(ghost.rect) and not ghost.pass_throw_destruct_blocks:
-                    print('Монстр столкнулся с разрушаемым блоком')
                     ghost.change_move_after_collision()
 
 
@@ -161,7 +161,6 @@ class MainScene(Scene):
             for tile in row:
                 for ghost in self.ghosts:
                     if tile.collides_with(ghost.rect):
-                        print('Монстр столкнулся с неразрушаемым блоком')
                         ghost.change_move_after_collision()
 
 

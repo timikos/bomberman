@@ -47,10 +47,8 @@ class Modifier(DrawObject):
                 self.game.screen.blit(self.image, self.rect)
 
 
-"""Модификатор увеличения скорости"""
-
-
 class SpeedModifier(Modifier):
+    """Модификатор увеличения скорости"""
     filename = 'images/modifiers/speed.png'
     name = 'speed'
 
@@ -59,10 +57,8 @@ class SpeedModifier(Modifier):
         super().__init__(game, self.image, x, y, hidden)
 
 
-"""Модификатор увеличения линии огня"""
-
-
 class BombPowerModifier(Modifier):
+    """Модификатор увеличения линии огня"""
     filename = 'images/modifiers/5.png'
     name = 'bomb_power'
 
@@ -71,10 +67,8 @@ class BombPowerModifier(Modifier):
         super().__init__(game, self.image, x, y, hidden)
 
 
-"""Модификатор увеличения жизней"""
-
-
 class AddLifeModifier(Modifier):
+    """Модификатор увеличения жизней"""
     filename = 'images/modifiers/2.png'
     name = 'add_life'
 
@@ -83,10 +77,8 @@ class AddLifeModifier(Modifier):
         super().__init__(game, self.image, x, y, hidden)
 
 
-"""Модификатор увеличения количества бомб"""
-
-
 class MultiBombModifier(Modifier):
+    """Модификатор увеличения количества бомб"""
     filename = 'images/modifiers/4.png'
     name = 'multi_bomb'
 

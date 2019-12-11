@@ -6,7 +6,6 @@
 import pygame
 from constants import Color, InterfaceProperties, TimerProperties
 from objects.base import DrawObject
-from objects.text import Text
 
 
 class Timer(DrawObject):

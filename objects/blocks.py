@@ -9,10 +9,8 @@ from constants import FieldProperties
 from objects.base import DrawObject
 from Global import Globals
 
-"""Базовый класс блоков"""
-
-
 class Block(DrawObject):
+    """Базовый класс блоков"""
     def __init__(self, game, x=0, y=0, cell_length=FieldProperties.CELL_LENGTH):
         super().__init__(game)
         self.border = []
@@ -22,10 +20,8 @@ class Block(DrawObject):
         self.rect = pygame.Rect(self.x, self.y, cell_length, 35)
 
 
-"""Неразрушаемый блок"""
-
-
 class IndestructibleBlock(Block):
+    """Неразрушаемый блок"""
     filename = 'images/blocks/block.png'
 
     def __init__(self, game, x, y):
@@ -49,10 +45,8 @@ class IndestructibleBlock(Block):
         return self.rect.colliderect(other)
 
 
-"""Сетка неразрушаемых блоков"""
-
-
 class IndestructibleBlockMap(DrawObject):
+    """Сетка неразрушаемых блоков"""
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.game = game
@@ -84,10 +78,8 @@ class IndestructibleBlockMap(DrawObject):
                 tile.process_event(event)
 
 
-"""Разрушаемый блок"""
-
-
 class DestroyedBlock(Block):
+    """Разрушаемый блок"""
     """Список картинок состояния"""
     images = ['images/blocks/d_block_0.png',
               'images/blocks/d_block_1.png',
@@ -139,11 +131,8 @@ class DestroyedBlock(Block):
             return False
 
 
-
-"""Сетка разрушаемых блоков"""
-
-
 class DestroyedBlockMap(DrawObject):
+    """Сетка разрушаемых блоков"""
     def __init__(self, game, x=0, y=0, width=FieldProperties.WIDTH, height=FieldProperties.HEIGHT):
         super().__init__(game)
         self.x = x

@@ -37,9 +37,9 @@ class Bomberman(DrawObject):
         self.current_shift_y = BombermanProperties.DIRECTION_Y
         self.x = x
         self.y = y
-        self.speed = speed
-        self.bomb_power = 1
-        self.multi_bomb = False
+        self.speed = speed  # Скорость
+        self.bomb_power = 1  # Сила взрыва
+        self.multi_bomb = False  # Параметр нескольких бомб
         self.rect = pygame.Rect(self.x, self.y, BombermanProperties.WIDTH, BombermanProperties.HEIGHT)
         self.start_ticks = 0
 
@@ -119,11 +119,6 @@ class Bomberman(DrawObject):
         """Коллизия с объектом"""
         return self.rect.colliderect(other)
 
-    # def collides_with_list(self,list):
-    """Коллизия со списком объектов"""
-
-    # print(self.rect.collidelist(list))
-    # return self.rect.collidelist(list)
 
     def is_invulnerable(self):
         """Проверяет, неуязвим ли персонаж"""
