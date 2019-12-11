@@ -38,7 +38,7 @@ class MainScene(Scene):
     def __init__(self, game, level_num=1):
         self.level_data = self.get_level_info(level_num)
         super().__init__(game)
-        self.load_level(LvlsScene.cur)
+        self.load_level(LvlsScene.current_lvl)
 
     def load_level(self, ind):
         self.current_lvl = ind
@@ -173,7 +173,7 @@ class MainScene(Scene):
                     ['Заработано очков', self.score.count, self.score.count],
                     ['Жизней осталось', self.health.count, self.health.count * ScoreProperties.HEALTH]
                 ])
-                self.set_next_scene(self.game.STATISTICS_SCENE_INDEX)
+                self.set_lvl_2()
 
     def process_bomberman_collision_with_bomb_fire(self):
         """Коллизия главного героя с огнём от бомбы"""

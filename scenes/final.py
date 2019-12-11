@@ -25,7 +25,3 @@ class FinalScene(Scene):
 
         """Список объектов"""
         self.objects = [self.highscore, self.button_exit]
-
-    def exit(self):
-        """Выход"""
-        self.game.game_over = True

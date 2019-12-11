@@ -21,13 +21,12 @@ class MenuScene(Scene):
                                            self.set_info_scene)
         self.change_lvl = ButtonAnimation(self.game, (350, 525, 100, 40), Color.WHITE, "Выбор уровня",
                                            self.set_lvls_scene)
-        self.button_exit = ButtonAnimation(self.game, (350, 575, 100, 40), Color.WHITE, 'Выход', self.exit)
         self.button_camera_on = ButtonAnimation(self.game, (600, 625, 140, 40), Color.WHITE, "Вкл камера v2.0",
                                              self.on_camera_status, 0)
         self.button_camera_off = ButtonAnimation(self.game, (600, 625, 140, 40), Color.WHITE, "Выкл камера v2.0",
                                                 self.off_camera_status, 0)
         self.Background = Background(self.game, (0, 0))
-
+        self.button_exit = ButtonAnimation(self.game, (350, 575, 100, 40), Color.WHITE, 'Выход', self.exit)
 
         """Список объектов"""
         self.objects = [self.Background, self.button_start, self.button_info, self.change_lvl, self.button_exit]
@@ -65,24 +64,3 @@ class MenuScene(Scene):
             self.button_camera_off.process_event(event)
         self.additional_event_check(event)
 
-    def on_camera_status(self):
-        Globals.CameraStatus = True
-
-    def off_camera_status(self):
-        Globals.CameraStatus = False
-
-    def set_main_scene(self):
-        """Переход на сцену игры"""
-        self.set_next_scene(self.game.MAIN_SCENE_INDEX)
-
-    def set_info_scene(self):
-        """Переход на сцену с информацией"""
-        self.set_next_scene(self.game.INFO_SCENE_INDEX)
-
-    def set_lvls_scene(self):
-        """Переход на сцену с информацией"""
-        self.set_next_scene(self.game.LVLS_SCENE_INDEX)
-
-    def exit(self):
-        """Выход"""
-        self.game.game_over = True

@@ -4,7 +4,6 @@
 
 Описание: данный класс реализует сцену с главным меню
 """
-import json
 
 from constants import Color
 from objects.buttons import ButtonAnimation
@@ -15,7 +14,7 @@ import pygame
 
 
 class LvlsScene(Scene):
-    cur = 1
+    current_lvl = 1
     def create_objects(self):
         """Создание объектов"""
         self.button_1_lvl = ButtonAnimation(self.game, (350, 400, 100, 40), Color.WHITE, "1 - Поляна",
@@ -28,16 +27,16 @@ class LvlsScene(Scene):
                                             self.set_lvl_4)
         self.button_5_lvl = ButtonAnimation(self.game, (350, 520, 100, 40), Color.WHITE, "5 - Ад",
                                             self.set_lvl_5)
-        self.button_exit = ButtonAnimation(self.game, (350, 575, 100, 40), Color.WHITE, 'Выход', self.exit)
         self.button_camera_on = ButtonAnimation(self.game, (600, 625, 140, 40), Color.WHITE, "Вкл камера v2.0",
                                                 self.on_camera_status, 0)
         self.button_camera_off = ButtonAnimation(self.game, (600, 625, 140, 40), Color.WHITE, "Выкл камера v2.0",
                                                  self.off_camera_status, 0)
-
+        self.button_back = ButtonAnimation(self.game, (350, 560, 100, 40), Color.WHITE, 'Назад', self.back)
+        self.button_exit = ButtonAnimation(self.game, (350, 600, 100, 40), Color.WHITE, 'Выход', self.exit)
         self.Background = Background(self.game, (0, 0))
 
         """Список объектов"""
-        self.objects = [self.Background, self.button_exit,
+        self.objects = [self.Background, self.button_exit, self.button_back,
                         self.button_1_lvl, self.button_2_lvl, self.button_3_lvl, self.button_4_lvl, self.button_5_lvl]
 
     def process_all_draw(self):
@@ -72,53 +71,3 @@ class LvlsScene(Scene):
         else:
             self.button_camera_off.process_event(event)
         self.additional_event_check(event)
-
-    def on_camera_status(self):
-        Globals.CameraStatus = True
-
-    def off_camera_status(self):
-        Globals.CameraStatus = False
-
-    def set_lvl_1(self):
-        """Загрузка 1 уровня"""
-        self.cur = 1
-        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(1)
-        self.set_main_scene()
-        print("Уровень 1 загружен")
-
-    def set_lvl_2(self):
-        """Загрузка 2 уровня"""
-        self.cur = 2
-        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(2)
-        self.set_main_scene()
-        print("Уровень 2 загружен")
-
-    def set_lvl_3(self):
-        """Загрузка 3 уровня"""
-        self.cur = 3
-        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(3)
-        self.set_main_scene()
-        print("Уровень 3 загружен")
-
-    def set_lvl_4(self):
-        """Загрузка 4 уровня"""
-        self.cur = 4
-        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(4)
-        self.set_main_scene()
-        print("Уровень 4 загружен")
-
-    def set_lvl_5(self):
-        """Загрузка 5 уровня"""
-        self.cur = 5
-        self.game.scenes[self.game.MAIN_SCENE_INDEX].load_level(5)
-        self.set_main_scene()
-        print("Уровень 5 загружен")
-
-    def set_main_scene(self):
-        """Переход на сцену игры"""
-        self.set_next_scene(self.game.MAIN_SCENE_INDEX)
-
-
-    def exit(self):
-        """Выход"""
-        self.game.game_over = True
