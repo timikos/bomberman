@@ -232,10 +232,11 @@ class MainScene(Scene):
                     self.bomberman.rect.y -= 5
                 else:
                     if tile.collides_with(self.bomberman.rect):
-                        if self.bomberman.current_shift_x > 0:
+                        print(tile.rect.collidepoint(self.bomberman.rect.midright))
+                        if tile.rect.collidepoint(self.bomberman.rect.midright):
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.x -= 1
-                        elif self.bomberman.current_shift_x < 0:
+                        elif tile.rect.collidepoint(self.bomberman.rect.midleft):
                             while tile.collides_with(self.bomberman.rect):
                                 self.bomberman.rect.x += 1
 
@@ -255,10 +256,10 @@ class MainScene(Scene):
             if tile.collides_with(self.bomberman.rect):
                 print(tile.rect.centery)
                 print(self.bomberman.rect.centery)
-                if self.bomberman.current_shift_x > 0:
+                if tile.rect.collidepoint(self.bomberman.rect.midright):
                     while tile.collides_with(self.bomberman.rect):
                         self.bomberman.rect.x -= 1
-                elif self.bomberman.current_shift_x < 0:
+                elif tile.rect.collidepoint(self.bomberman.rect.midleft):
                     while tile.collides_with(self.bomberman.rect):
                         self.bomberman.rect.x += 1
                 elif self.bomberman.current_shift_y > 0:
